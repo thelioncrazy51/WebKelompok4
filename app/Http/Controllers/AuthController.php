@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class AuthController extends Controller
+{
+    // Menampilkan form register
+    public function showRegisterForm()
+    {
+        return view('pages.auth.register', [
+            'title' => 'Register'
+        ]);
+    }
+
+    // Proses register
+    public function register(Request $request)
+    {
+
+        $messages = [
+            'email.regex' => 'Tolong masukkan email dengan benar',
+            'password.regex' => 'Password harus mengandung 6 karakter meliputi huruf dan angka.'
+        ];
+
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'email' => [
+                'required',
+                'max:255',
+                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|co.id|ac.id)$/',
+                'unique:users'
+            ],
+            'password' => [
+                'required',
+                'min:6',
+                function ($attribute, $value, $fail) {
+                    if (!preg_match('/[A-Za-z]/', $value)) {
+                        $fail('Password harus mengandung minimal 1 huruf.');
+                    }
+                    if (!preg_match('/\d/', $value)) {
+                        $fail('Password harus mengandung minimal 1 angka.');
+                    }
+                },
+                'confirmed'
+            ]
+        ], $messages);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'member'
+        ]);
+        return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
+    }
+
+    // Menampilkan form login
+    public function showLoginForm()
+    {
+        return view('pages.auth.login', [
+            'title' => 'Login'
+        ]);
+    }
+
+    // Proses login
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Simpan data user di session
+            session(['user' => $user]);
+
+            // Redirect berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect('/admin/dashboard');
+            } else {
+                return redirect('/member/dashboard');
+            }
+        }
+
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ]);
+    }
+
+    // Proses logout
+    public function logout()
+    {
+        session()->forget('user');
+        return redirect('/login');
+    }
+}

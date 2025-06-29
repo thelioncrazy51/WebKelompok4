@@ -1,0 +1,57 @@
+.custom-button {
+    color: rgb(237, 237, 13) !important;
+    border-color: rgb(237, 237, 13) !important;
+    border: 2px solid rgb(237, 237, 13) !important;
+    background-color: transparent !important;
+}
+
+.custom-button:hover {
+    background-color: rgb(237, 237, 13) !important;
+    color: white !important;
+    border-color: rgb(237, 237, 13) !important;
+}
+
+.freedoka {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+}
+
+.poppins {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+}
+
+.nav-item {
+    padding-right: 10px;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+.container-our-team {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.team {
+    width: calc(50% - 20px);
+    display: flex;
+    height: 200px;
+    padding: 10px;
+    text-align: left;
+}
+
+.team-profile {
+    margin-left: 10px;
+}
+
+.pict-team-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50px;
+}
