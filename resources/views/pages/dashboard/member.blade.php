@@ -11,34 +11,76 @@
         border-radius: 15px;
         border: 1px solid rgba(255, 255, 255, 0.18);
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: all 0.3s ease;
+        padding: 2rem;
+        max-width: 600px;
+        margin: 2rem auto;
     }
+    
     .glass-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-5px);
         box-shadow: 0 15px 40px 0 rgba(0, 0, 0, 0.35);
     }
-    .text-highlight {
+    
+    .welcome-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .welcome-title {
         color: #145214;
         font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
     }
-    p, a {
-        color: #145214;
-    }
-    .welcome {
-        width: calc(50% - 20px);
+    
+    .user-info {
         display: flex;
-        height: 200px;
-        padding: 10px;
-        text-align: left;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .user-email {
+        color: #145214;
+        font-size: 1.1rem;
+    }
+    
+    .logout-btn {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background-color: #145214;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        align-self: flex-start;
+        margin-top: 1rem;
+    }
+    
+    .logout-btn:hover {
+        background-color: #0e3a0e;
+        color: white;
     }
 </style>
 
-    <div class="welcome glass-card">
-        <h1 class="text-highlight">Welcome</h1>
+<div class="glass-card">
+    <div class="welcome-content">
+        <h1 class="welcome-title">Welcome Back!</h1>
+        
         @auth
-        <p>Email: {{ Auth::user()->email }}</p>
-        <a href="{{ route('logout') }}">Logout</a>
+        <div class="user-info">
+            <p class="user-email">Logged in as: <strong>{{ Auth::user()->email }}</strong></p>
+            <a href="{{ route('logout') }}" class="logout-btn" 
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+               Logout
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </div>
         @endauth
     </div>
+</div>
 
 @endsection
