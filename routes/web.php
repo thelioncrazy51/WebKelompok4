@@ -5,6 +5,7 @@ use App\Http\Controllers\HalamanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MemberController;
 
 // Halaman Home
 Route::get('/', function () {
