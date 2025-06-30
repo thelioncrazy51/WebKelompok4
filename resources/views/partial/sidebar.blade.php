@@ -26,7 +26,7 @@
     <ul class="sidebar-menu" style="list-style: none; padding: 0;">
         <!-- Menu Umum -->
         <li style="margin-bottom: 10px;">
-            <a href="{{ route('dashboard') }}" style="
+            <a href="{{ $isAdmin ? route('admin.dashboard') : route('dashboard') }}" style="
                 display: block;
                 padding: 10px 15px;
                 color: white;
