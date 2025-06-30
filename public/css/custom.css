@@ -37,21 +37,3 @@
     justify-content: center;
     gap: 30px;
 }
-
-.team {
-    width: calc(50% - 20px);
-    display: flex;
-    height: 200px;
-    padding: 10px;
-    text-align: left;
-}
-
-.team-profile {
-    margin-left: 10px;
-}
-
-.pict-team-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50px;
-}
