@@ -78,7 +78,7 @@
 </style>
 
     <div class="welcome glass-card">
-        <h1>Welcome, Member!</h1>
+        <h1>Welcome</h1>
         @auth
         <p>Email: {{ Auth::user()->email }}</p>
         <a href="{{ route('logout') }}">Logout</a>
