@@ -31,15 +31,8 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-// Untuk Member
-// Untuk member biasa
-Route::middleware(['auth'])->group(function () {
-    Route::get('/member/dashboard', [DashboardController::class, 'memberDashboard'])
-         ->name('dashboard'); // Ini yang memberikan nama 'dashboard' pada route
-});
 
-// Untuk admin
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])
-         ->name('admin.dashboard');
+// routes/web.php
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
