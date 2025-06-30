@@ -12,6 +12,18 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/harvest_prediction', function () {
+    return view('pages.harvest_prediction', [
+        'title' => 'Prediksi Panen'
+    ])->name('harvest.prediction');
+});
+
+Route::get('/data', function () {
+    return view('pages.data', [
+        'title' => 'Data'
+    ])->name('admin.data');
+});
+
 Route::get('/data', [DataController::class, 'showData']);
 
 //Pages Processing
