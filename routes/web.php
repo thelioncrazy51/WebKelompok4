@@ -33,12 +33,15 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', function () {
-        return view('pages.dashboard.admin');
+        return view('pages.dashboard.admin', [
+            'title' => 'Admin Dashboard'
+        ]);
     });
 
     Route::get('/member/dashboard', function () {
         return view('pages.dashboard.member', [
-            'user' => Auth::user() // Pastikan melewatkan user yang terautentikasi
+            'user' => Auth::user(), // Pastikan melewatkan user yang terautentikasi
+            'title' => 'Dashboard'
         ]);
     })->middleware('auth');
 });
