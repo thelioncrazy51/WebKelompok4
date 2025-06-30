@@ -1,6 +1,6 @@
 @extends('main.layout')
 
-@section('title', 'Dashboard Member')
+@section('title', 'Dashboard Admin')
 
 @section('container')
 <div class="glass-card">
