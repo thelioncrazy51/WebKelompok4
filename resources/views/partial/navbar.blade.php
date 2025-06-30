@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link {{ ($title === 'Products') ? 'fw-bold text-success' : '' }}" href="/">HOME</a>
+          <a class="nav-link {{ ($title === 'Home') ? 'fw-bold text-success' : '' }}" href="/">HOME</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {{ ($title === 'Products') ? 'fw-bold text-success' : '' }}" href="/products">PRODUCTS</a>
@@ -24,12 +24,32 @@
         <li class="nav-item">
           <a class="nav-link {{ ($title === 'News & Article') ? 'fw-bold text-success' : '' }}" href="/news-article">NEWS & ARTICLE</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link {{ ($title === 'Login') ? 'fw-bold text-success' : '' }}" href="/login">LOGIN</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ ($title === 'Register') ? 'fw-bold text-success' : '' }}" href="/register">REGISTER</a>
-        </li>
+        
+        @auth
+          {{-- Tampilan setelah login --}}
+          <li class="nav-item">
+            <a class="nav-link {{ ($title === 'Dashboard') ? 'fw-bold text-success' : '' }}" 
+               href="{{ Auth::user()->role === 'admin' ? '/admin/dashboard' : '/member/dashboard' }}">
+              DASHBOARD
+            </a>
+          </li>
+          <li class="nav-item">
+            <form action="/logout" method="POST">
+              @csrf
+              <button type="submit" class="nav-link btn btn-link" style="border:none; background:none; cursor:pointer;">
+                LOGOUT
+              </button>
+            </form>
+          </li>
+        @else
+          {{-- Tampilan sebelum login --}}
+          <li class="nav-item">
+            <a class="nav-link {{ ($title === 'Login') ? 'fw-bold text-success' : '' }}" href="/login">LOGIN</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ ($title === 'Register') ? 'fw-bold text-success' : '' }}" href="/register">REGISTER</a>
+          </li>
+        @endauth
       </ul>
     </div>
   </div>
