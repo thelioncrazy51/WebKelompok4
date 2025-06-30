@@ -13,7 +13,8 @@
           <a class="nav-link {{ ($title === 'Home') ? 'fw-bold text-success' : '' }}" href="/">HOME</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ ($title === 'Products') ? 'fw-bold text-success' : '' }}" href="/products">PRODUCTS</a>
+            <a class="nav-link {{ ($title === 'Products' || request()->routeIs('products')) ? 'fw-bold text-success' : '' }}" 
+               href="/products">PRODUCTS</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {{ ($title === 'About Us') ? 'fw-bold text-success' : '' }}" href="/about-us">ABOUT US</a>
