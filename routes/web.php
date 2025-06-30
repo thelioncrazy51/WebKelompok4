@@ -45,8 +45,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Untuk member
+// Untuk member
 Route::middleware(['auth'])->group(function () {
     Route::get('/member/dashboard', [DashboardController::class, 'memberDashboard'])->name('dashboard');
+    Route::get('/harvest-prediction', [MemberController::class, 'harvestPrediction'])->name('harvest.prediction');
+    Route::get('/products', [MemberController::class, 'products'])->name('products');
 });
 
 // Untuk admin
