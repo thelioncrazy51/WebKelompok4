@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard</title>
-</head>
-<body>
-    <h1>Welcome, Admin!</h1>
-    <p>Email: {{ session('user')->email }}</p>
-    <a href="{{ route('logout') }}">Logout</a>
-</body>
-</html>
+@extends('main.layout')
+
+@section('title', 'Dashboard Member')
+
+@section('container')
+<div class="glass-card">
+    <h1>Selamat Datang, {{ $user->name }}</h1>
+    <p>Email: {{ $user->email }}</p>
+    <!-- Konten dashboard lainnya -->
+</div>
+@endsection
