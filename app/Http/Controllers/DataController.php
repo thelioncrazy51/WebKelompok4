@@ -9,7 +9,7 @@ class DataController extends Controller
 {
     public function showData() {
         // Ambil semua data dari tabel (contoh: 'users')
-        $data = DB::table('users')->get(); 
+        $data = DB::table('users')->select('*')->get(); 
         // atau jika pakai Eloquent Model:
         // $data = User::all();
 
