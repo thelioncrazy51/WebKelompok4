@@ -43,19 +43,19 @@
         color: #145214;
         font-weight: 700;
     }
-    ul.mission-list {
+    .mission-list {
         list-style: none;
         padding-left: 0;
         font-weight: 500;
         color: #145214;
     }
-    ul.mission-list li {
+    .mission-list li {
         position: relative;
         padding-left: 30px;
         margin-bottom: 15px;
         font-size: 1.1rem;
     }
-    ul.mission-list li::before {
+    .mission-list li::before {
         content: '✓';
         position: absolute;
         left: 0;
@@ -67,6 +67,23 @@
     }
     p, li, h5, h6 {
         color: #145214;
+    }
+    .team {
+        width: calc(50% - 20px);
+        display: flex;
+        height: 200px;
+        padding: 10px;
+        text-align: left;
+    }
+    
+    .team-profile {
+        margin-left: 10px;
+    }
+    
+    .pict-team-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50px;
     }
 </style>
 
