@@ -6,13 +6,12 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function memberDashboard()
+    // DashboardController.php
+    public function index()
     {
-        return view('pages.dashboard.member', ['title' => 'Member Dashboard']);
-    }
-
-    public function adminDashboard()
-    {
-        return view('pages.dashboard.admin', ['title' => 'Admin Dashboard']);
+        if (Auth::user()->role === 'admin') {
+            return view('pages.dashboard.admin');
+        }
+        return view('pages.dashboard.member');
     }
 }
