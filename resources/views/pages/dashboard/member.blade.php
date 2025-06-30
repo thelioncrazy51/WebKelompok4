@@ -70,10 +70,12 @@
     }
 </style>
 
-    <h1>Welcome, Member!</h1>
-    @auth
-    <p>Email: {{ Auth::user()->email }}</p>
-    <a href="{{ route('logout') }}">Logout</a>
-    @endauth
+    <div class="team glass-card">
+        <h1>Welcome, Member!</h1>
+        @auth
+        <p>Email: {{ Auth::user()->email }}</p>
+        <a href="{{ route('logout') }}">Logout</a>
+        @endauth
+    </div>
 
 @endsection
