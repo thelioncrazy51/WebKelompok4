@@ -12,11 +12,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/data', function () {
-    return view('pages.data', [
-        'title' => 'Database'
-    ]);
-});
+Route::get('/data', [DataController::class, 'showData']);
 
 //Pages Processing
 Route::get('/products', [HalamanController::class, 'product'])->name('products');
@@ -39,3 +35,4 @@ Route::middleware('auth.custom')->group(function () {
         return view('pages.dashboard.member');
     });
 });
+
