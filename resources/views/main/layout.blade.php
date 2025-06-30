@@ -96,7 +96,7 @@
     @include('partial.navbar')
     
     @auth
-        @include('components.sidebar')
+        @include('partial.sidebar')
     @endauth
     
     <div class="main-content">
