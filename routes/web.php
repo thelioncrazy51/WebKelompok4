@@ -31,17 +31,15 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::middleware('auth')->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('pages.dashboard.admin', [
-            'title' => 'Admin Dashboard'
-        ]);
-    });
+// Untuk Member
+Route::middleware(['auth'])->group(function () {
+    Route::get('/member/dashboard', [MemberController::class, 'dashboard'])->name('dashboard');
+    Route::get('/harvest/prediction', [HarvestController::class, 'prediction'])->name('harvest.prediction');
+    Route::get('/products', [ProductController::class, 'index'])->name('products');
+});
 
-    Route::get('/member/dashboard', function () {
-        return view('pages.dashboard.member', [
-            'user' => Auth::user(), // Pastikan melewatkan user yang terautentikasi
-            'title' => 'Dashboard'
-        ]);
-    })->middleware('auth');
+// Untuk Admin
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/data', [AdminController::class, 'data'])->name('admin.data');
 });
