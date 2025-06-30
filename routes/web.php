@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/member/dashboard', function () {
-        return view('pages.dashboard.member');
-    });
+        return view('pages.dashboard.member', [
+            'user' => Auth::user() // Pastikan melewatkan user yang terautentikasi
+        ]);
+    })->middleware('auth');
 });
