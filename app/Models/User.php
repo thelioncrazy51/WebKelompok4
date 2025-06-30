@@ -24,11 +24,6 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = $value; // Tanpa bcrypt
-    }
-
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -8,14 +8,10 @@ use Illuminate\Support\Facades\DB;
 class DataController extends Controller
 {
     public function showData() {
-        $data = DB::table('users')->get()->map(function($user) {
-            // Tambahkan kolom password_plain hanya jika password ada
-            if (isset($user->password)) {
-                $user->password_plain = '***HASHED***'; // Default value
-                // Jika benar-benar perlu, bisa ditambahkan logika khusus
-            }
-            return $user;
-        });
+        // Ambil semua data dari tabel (contoh: 'users')
+        $data = DB::table('users')->select('*')->get(); 
+        // atau jika pakai Eloquent Model:
+        // $data = User::all();
 
         return view('pages.data', [
             'title' => 'Data'

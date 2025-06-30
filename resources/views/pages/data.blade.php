@@ -84,14 +84,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($row as $key => $value)
-                    <td>
-                        @if($key === 'password')
-                            ***HASHED PASSWORD***
-                        @else
-                            {{ $value }}
-                        @endif
-                    </td>
+                @foreach($data as $row)
+                    <tr>
+                        @foreach($row as $value)
+                            <td>{{ $value }}</td>
+                        @endforeach
+                    </tr>
                 @endforeach
             </tbody>
         </table>
