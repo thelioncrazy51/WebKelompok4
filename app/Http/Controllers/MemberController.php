@@ -12,7 +12,7 @@ class MemberController extends Controller
      */
     public function dashboard()
     {
-        return view('member.dashboard', [
+        return view('pages.dashboard.member', [
             'title' => 'Dashboard Member',
             'user' => Auth::user()
         ]);
@@ -23,7 +23,7 @@ class MemberController extends Controller
      */
     public function harvestPrediction()
     {
-        return view('member.harvest-prediction', [
+        return view('pages.harvest_prediction', [
             'title' => 'Prediksi Panen',
             'user' => Auth::user()
         ]);
@@ -34,7 +34,7 @@ class MemberController extends Controller
      */
     public function products()
     {
-        return view('member.products', [
+        return view('pages.products', [
             'title' => 'Produk',
             'user' => Auth::user()
         ]);
