@@ -29,9 +29,8 @@
         @auth
           {{-- Tampilan setelah login --}}
           <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Dashboard') ? 'fw-bold text-success' : '' }}" 
-               href="{{ Auth::user()->role === 'admin' ? '/admin/dashboard' : '/member/dashboard' }}">
-              DASHBOARD
+            <a class="nav-link {{ ($title === 'Dashboard' || request()->routeIs('dashboard')) ? 'fw-bold text-success' : '' }}" 
+               href="{{ Auth::user()->role === 'admin' ? '/admin/dashboard' : '/member/dashboard' }}">DASHBOARD
             </a>
           </li>
           <li class="nav-item">
