@@ -82,6 +82,7 @@ class AuthController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             // Simpan data user di session
+            $request->session()->regenerate(); // Tambahkan ini
             session(['user' => $user]);
 
             // Redirect berdasarkan role
