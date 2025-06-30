@@ -12,6 +12,10 @@ class AuthController extends Controller
     // Menampilkan form register
     public function showRegisterForm()
     {
+        if (Auth::check()) {
+            return redirect(Auth::user()->role === 'admin' ? '/admin/dashboard' : '/member/dashboard');
+        }
+        
         return view('pages.auth.register', [
             'title' => 'Register'
         ]);
@@ -65,6 +69,10 @@ class AuthController extends Controller
     // Menampilkan form login
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            return redirect(Auth::user()->role === 'admin' ? '/admin/dashboard' : '/member/dashboard');
+        }
+        
         return view('pages.auth.login', [
             'title' => 'Login'
         ]);
