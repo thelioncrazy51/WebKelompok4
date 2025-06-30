@@ -33,11 +33,13 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Untuk Member
 Route::middleware(['auth'])->group(function () {
-    Route::get('/member/dashboard', [MemberController::class, 'dashboard'])->name('dashboard');
-    Route::get('/harvest/prediction', [HarvestController::class, 'prediction'])->name('harvest.prediction');
-    Route::get('/products', [ProductController::class, 'index'])->name('products');
+    // Route Member
+    Route::prefix('member')->group(function () {
+        Route::get('/dashboard', [MemberController::class, 'dashboard'])->name('member.dashboard');
+        Route::get('/harvest-prediction', [MemberController::class, 'harvestPrediction'])->name('member.harvest.prediction');
+        Route::get('/products', [MemberController::class, 'products'])->name('member.products');
+    });
 });
-
 // Untuk Admin
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
