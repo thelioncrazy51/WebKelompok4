@@ -65,12 +65,19 @@
         font-size: 1.3rem;
         text-shadow: 0 0 4px #093809;
     }
-    p, li, h5, h6 {
+    p, h1, a {
         color: #145214;
+    }
+    welcome {
+        width: calc(50% - 20px);
+        display: flex;
+        height: 200px;
+        padding: 10px;
+        text-align: left;
     }
 </style>
 
-    <div class="team glass-card">
+    <div class="welcome glass-card">
         <h1>Welcome, Member!</h1>
         @auth
         <p>Email: {{ Auth::user()->email }}</p>
