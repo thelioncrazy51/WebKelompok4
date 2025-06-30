@@ -78,15 +78,11 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        if ($user && Hash::check($request->password, $user->password)) {
-            // Simpan data user di session
-            $request->session()->regenerate(); // Tambahkan ini
-            session(['user' => $user]);
-
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+    
             // Redirect berdasarkan role
-            if ($user->role === 'admin') {
+            if (Auth::user()->role === 'admin') {
                 return redirect('/admin/dashboard');
             } else {
                 return redirect('/member/dashboard');
@@ -99,9 +95,11 @@ class AuthController extends Controller
     }
 
     // Proses logout
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget('user');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect('/login');
     }
 }
