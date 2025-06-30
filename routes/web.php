@@ -35,7 +35,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     // Route Member
     Route::prefix('member')->group(function () {
-        Route::get('/dashboard', [MemberController::class, 'dashboard'])->name('member.dashboard');
+        Route::get('/member/dashboard', [MemberController::class, 'dashboard'])->name('member.dashboard');
         Route::get('/harvest-prediction', [MemberController::class, 'harvestPrediction'])->name('member.harvest.prediction');
         Route::get('/products', [MemberController::class, 'products'])->name('member.products');
     });
