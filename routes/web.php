@@ -30,7 +30,7 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])
 //Member Processing
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('pages.dashboard.admin');
