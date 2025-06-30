@@ -26,7 +26,7 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::middleware('auth.custom')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('pages.dashboard.admin');
     });
@@ -35,4 +35,3 @@ Route::middleware('auth.custom')->group(function () {
         return view('pages.dashboard.member');
     });
 });
-
