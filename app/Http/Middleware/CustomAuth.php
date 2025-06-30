@@ -15,9 +15,14 @@ class CustomAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $response = $next($request);
+    
         if (!session('user')) {
             return redirect('/login');
         }
-        return $next($request);
+
+        return $response->header('X-Frame-Options', 'SAMEORIGIN')
+                        ->header('X-Content-Type-Options', 'nosniff')
+                        ->header('X-XSS-Protection', '1; mode=block');
     }
 }
