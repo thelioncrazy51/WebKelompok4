@@ -5,7 +5,10 @@
 </head>
 <body>
     <h1>Welcome, Member!</h1>
-    <p>Email: {{ session('user')->email }}</p>
+    @auth
+    <p>Email: {{ Auth::user()->email }}</p>
+    @else
     <a href="{{ route('logout') }}">Logout</a>
+    @endauth
 </body>
 </html>
