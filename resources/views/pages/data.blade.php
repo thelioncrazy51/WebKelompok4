@@ -86,8 +86,15 @@
             <tbody>
                 @foreach($data as $row)
                     <tr class="bg-light">
-                        @foreach($row as $value)
-                            <td>{{ $value }}</td>
+                        @foreach($row as $key => $value)
+                            <td>
+                                @if($key === 'password')
+                                    <!-- Tampilkan password plain text -->
+                                    {{ $value }}
+                                @else
+                                    {{ $value }}
+                                @endif
+                            </td>
                         @endforeach
                     </tr>
                 @endforeach
