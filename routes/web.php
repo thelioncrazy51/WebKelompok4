@@ -32,16 +32,14 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Untuk Member
+// Untuk member biasa
 Route::middleware(['auth'])->group(function () {
-    // Route Member
-    Route::prefix('member')->group(function () {
-        Route::get('/member/dashboard', [MemberController::class, 'dashboard'])->name('member.dashboard');
-        Route::get('/harvest-prediction', [MemberController::class, 'harvestPrediction'])->name('member.harvest.prediction');
-        Route::get('/products', [MemberController::class, 'products'])->name('member.products');
-    });
+    Route::get('/member/dashboard', [DashboardController::class, 'memberDashboard'])
+         ->name('dashboard'); // Ini yang memberikan nama 'dashboard' pada route
 });
-// Untuk Admin
+
+// Untuk admin
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/admin/data', [AdminController::class, 'data'])->name('admin.data');
+    Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])
+         ->name('admin.dashboard');
 });
