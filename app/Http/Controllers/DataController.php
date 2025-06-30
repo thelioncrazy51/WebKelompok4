@@ -13,6 +13,8 @@ class DataController extends Controller
         // atau jika pakai Eloquent Model:
         // $data = User::all();
 
-        return view('pages.data', compact('data'));
+        return view('pages.data', [
+            'title' => 'Data'
+        ], compact('data'));
     }
 }
