@@ -10,20 +10,19 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link {{ ($title === 'Home') ? 'fw-bold text-success' : '' }}" href="/">HOME</a>
+            <a class="nav-link {{ ($title === 'Home') ? 'fw-bold text-success' : '' }}" href="/">HOME</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Products' || request()->routeIs('products')) ? 'fw-bold text-success' : '' }}" 
-               href="/products">PRODUCTS</a>
+            <a class="nav-link {{ ($title === 'Products') ? 'fw-bold text-success' : '' }}" href="/product">PRODUCTS</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ ($title === 'About Us') ? 'fw-bold text-success' : '' }}" href="/about-us">ABOUT US</a>
+            <a class="nav-link {{ ($title === 'About Us') ? 'fw-bold text-success' : '' }}" href="/about-us">ABOUT US</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ ($title === 'Career') ? 'fw-bold text-success' : '' }}" href="/career">CAREER</a>
+            <a class="nav-link {{ ($title === 'Career') ? 'fw-bold text-success' : '' }}" href="/career">CAREER</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ ($title === 'News & Article') ? 'fw-bold text-success' : '' }}" href="/news-article">NEWS & ARTICLE</a>
+            <a class="nav-link {{ ($title === 'News & Article') ? 'fw-bold text-success' : '' }}" href="/news-article">NEWS & ARTICLE</a>
         </li>
         
         @auth
