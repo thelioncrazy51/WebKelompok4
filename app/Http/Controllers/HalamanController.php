@@ -7,6 +7,26 @@ use Illuminate\Http\Request;
 class HalamanController extends Controller
 {
     /**
+     * Halaman Home
+     */
+    public function index()
+    {
+        return view('pages.index', [
+            'title' => 'Home'
+        ]);
+    }
+
+    /**
+     * Halaman Product
+     */
+    public function product()
+    {
+        return view('pages.product', [
+            'title' => 'Product'
+        ]);
+    }
+
+    /**
      * Halaman About Us
      */
     public function about()
