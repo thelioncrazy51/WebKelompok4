@@ -12,6 +12,12 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/data', function () {
+    return view('pages.data', [
+        'title' => 'Database'
+    ]);
+});
+
 //Pages Processing
 Route::get('/products', [HalamanController::class, 'product'])->name('products');
 Route::get('/about-us', [HalamanController::class, 'about'])->name('about');
