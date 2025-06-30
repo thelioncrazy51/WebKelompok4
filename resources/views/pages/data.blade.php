@@ -71,28 +71,28 @@
 </style>
 
 <div class="glass-card p-4 mb-4">
-    <h2>Data dari Database</h2>
-    <table>
-        <thead>
-            <tr>
-                <!-- Header kolom (otomatis ambil nama kolom) -->
-                @if(count($data) > 0)
-                    @foreach($data[0] as $key => $value)
-                        <th>{{ ucfirst($key) }}</th>
-                    @endforeach
-                @endif
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Isi data -->
-            @foreach($data as $row)
+    <h2 class="section-title">Data dari Database</h2>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="bg-success text-white">
                 <tr>
-                    @foreach($row as $value)
-                        <td>{{ $value }}</td>
-                    @endforeach
+                    @if(count($data) > 0)
+                        @foreach($data[0] as $key => $value)
+                            <th>{{ ucfirst($key) }}</th>
+                        @endforeach
+                    @endif
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach($data as $row)
+                    <tr class="bg-light">
+                        @foreach($row as $value)
+                            <td>{{ $value }}</td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection
