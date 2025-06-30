@@ -24,7 +24,7 @@
     p, a {
         color: #145214;
     }
-    welcome {
+    .welcome {
         width: calc(50% - 20px);
         display: flex;
         height: 200px;
