@@ -19,8 +19,13 @@ Route::get('/products', [HalamanController::class, 'product'])->name('products')
 Route::get('/about-us', [HalamanController::class, 'about'])->name('about');
 Route::get('/career', [HalamanController::class, 'career'])->name('career');
 Route::get('/news-article', [HalamanController::class, 'newsAndArticle'])->name('news-article');
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::get('/login', [AuthController::class, 'showLoginForm'])
+    ->name('login')
+    ->middleware('guest');
+
+Route::get('/register', [AuthController::class, 'showRegisterForm'])
+    ->name('register')
+    ->middleware('guest');
 
 //Member Processing
 Route::post('/register', [AuthController::class, 'register']);
