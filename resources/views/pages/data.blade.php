@@ -77,12 +77,10 @@
         font-size: 0.8rem;
     }
     .toggle-password {
-        margin-left: -35px;
         background: none;
         border: none;
         cursor: pointer;
         padding: 5px;
-        z-index: 2;
     }
     .eye-icon {
         font-style: normal;
