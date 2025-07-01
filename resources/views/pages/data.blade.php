@@ -79,35 +79,46 @@
 </style>
 
 <div class="glass-card p-4 mb-4">
-    <h2 class="section-title">Data dari Database</h2>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
-        <i class="fas fa-plus"></i> Add User
-    </button>
-    <div class="table-responsive">
-        @if(isset($data) && is_countable($data) && count($data) > 0)
-            <table class="table table-hover">
-                <thead class="bg-success text-white">
-                    <tr>
-                        @foreach($data[0] as $key => $value)
-                            <th>{{ ucfirst($key) }}</th>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($data as $row)
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title">User Management</h2>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <i class="fas fa-plus"></i> Add User
+        </button>
+    </div>
+    
+    <div class="glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title">Data dari Database</h2>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                <i class="fas fa-plus"></i> Add User
+            </button>
+        </div>
+        <div class="table-responsive">
+            @if(isset($data) && is_countable($data) && count($data) > 0)
+                <table class="table table-hover">
+                    <thead class="bg-success text-white">
                         <tr>
-                            @foreach($row as $value)
-                                <td>{{ $value }}</td>
+                            @foreach($data[0] as $key => $value)
+                                <th>{{ ucfirst($key) }}</th>
                             @endforeach
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <div class="alert alert-warning">
-                Tidak ada data yang tersedia.
-            </div>
-        @endif
+                    </thead>
+                    <tbody>
+                        @foreach($data as $row)
+                            <tr>
+                                @foreach($row as $value)
+                                    <td>{{ $value }}</td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <div class="alert alert-warning">
+                    Tidak ada data yang tersedia.
+                </div>
+            @endif
+        </div>
     </div>
 </div>
 
