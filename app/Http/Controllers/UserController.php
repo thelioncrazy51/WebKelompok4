@@ -9,8 +9,11 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        return view('pages.data', compact('users'));
+        $data = User::all();
+        return view('pages.data', [
+            'data' => $data,
+            'title' => 'Data'
+        ]);
     }
 
     public function store(Request $request)

@@ -86,49 +86,34 @@
         </button>
     </div>
     
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead class="bg-success text-white">
-                <tr>
-                    @if(count($users) > 0)
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                    @endif
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($users as $user)
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ ucfirst($user->role) }}</td>
-                        <td class="action-buttons">
-                            <button class="btn btn-primary btn-sm btn-action" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#editUserModal"
-                                    data-id="{{ $user->id }}"
-                                    data-name="{{ $user->name }}"
-                                    data-email="{{ $user->email }}"
-                                    data-role="{{ $user->role }}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-action" 
-                                        onclick="return confirm('Are you sure you want to delete this user?')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <div class="glass-card p-4 mb-4">
+        <h2 class="section-title">Data dari Database</h2>
+        <div class="table-responsive">
+            @if(isset($data) && is_countable($data) && count($data) > 0)
+                <table class="table table-hover">
+                    <thead class="bg-success text-white">
+                        <tr>
+                            @foreach($data[0] as $key => $value)
+                                <th>{{ ucfirst($key) }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($data as $row)
+                            <tr>
+                                @foreach($row as $value)
+                                    <td>{{ $value }}</td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <div class="alert alert-warning">
+                    Tidak ada data yang tersedia.
+                </div>
+            @endif
+        </div>
     </div>
 </div>
 
