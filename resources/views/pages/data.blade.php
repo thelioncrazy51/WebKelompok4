@@ -234,7 +234,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Role</label>
-                        <div class="form-control-plaintext">{{ ucfirst($user->role) }}</div>
+                        <div class="form-control-plaintext" id="edit_role_display"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -268,10 +268,12 @@
             var id = button.getAttribute('data-id');
             var name = button.getAttribute('data-name');
             var email = button.getAttribute('data-email');
-            
+            var role = button.getAttribute('data-role');
+
             var modal = this;
             modal.querySelector('#edit_name').value = name;
             modal.querySelector('#edit_email').value = email;
+            modal.querySelector('#edit_role_display').textContent = role.charAt(0).toUpperCase() + role.slice(1);
             
             // Set form action URL
             document.getElementById('editUserForm').action = '/users/' + id;
