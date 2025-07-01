@@ -68,31 +68,170 @@
     p, li, h5, h6 {
         color: #145214;
     }
+    .action-buttons {
+        white-space: nowrap;
+    }
+    .btn-action {
+        padding: 5px 10px;
+        margin: 0 2px;
+        font-size: 0.8rem;
+    }
 </style>
 
 <div class="glass-card p-4 mb-4">
-    <h2 class="section-title">Data dari Database</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title">User Management</h2>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <i class="fas fa-plus"></i> Add User
+        </button>
+    </div>
+    
     <div class="table-responsive">
         <table class="table table-hover">
             <thead class="bg-success text-white">
                 <tr>
-                    @if(count($data) > 0)
-                        @foreach($data[0] as $key => $value)
-                            <th>{{ ucfirst($key) }}</th>
-                        @endforeach
+                    @if(count($users) > 0)
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
                     @endif
                 </tr>
             </thead>
             <tbody>
-                @foreach($data as $row)
+                @foreach($users as $user)
                     <tr>
-                        @foreach($row as $value)
-                            <td>{{ $value }}</td>
-                        @endforeach
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ ucfirst($user->role) }}</td>
+                        <td class="action-buttons">
+                            <button class="btn btn-primary btn-sm btn-action" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editUserModal"
+                                    data-id="{{ $user->id }}"
+                                    data-name="{{ $user->name }}"
+                                    data-email="{{ $user->email }}"
+                                    data-role="{{ $user->role }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm btn-action" 
+                                        onclick="return confirm('Are you sure you want to delete this user?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('users.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="member">Member</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editUserForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit_name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="edit_name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="edit_email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_password" class="form-label">Password (Leave blank to keep current)</label>
+                        <input type="password" class="form-control" id="edit_password" name="password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_role" class="form-label">Role</label>
+                        <select class="form-select" id="edit_role" name="role" required>
+                            <option value="member">Member</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Script untuk mengisi data ke modal edit
+    document.addEventListener('DOMContentLoaded', function() {
+        var editUserModal = document.getElementById('editUserModal');
+        editUserModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            var name = button.getAttribute('data-name');
+            var email = button.getAttribute('data-email');
+            var role = button.getAttribute('data-role');
+            
+            var modal = this;
+            modal.querySelector('#edit_name').value = name;
+            modal.querySelector('#edit_email').value = email;
+            modal.querySelector('#edit_role').value = role;
+            
+            // Set form action URL
+            document.getElementById('editUserForm').action = '/users/' + id;
+        });
+    });
+</script>
 @endsection
