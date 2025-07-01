@@ -61,3 +61,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::resource('users', UserController::class);
+
+Route::get('/users/export', [UserController::class, 'export'])->name('users.export');

@@ -109,6 +109,9 @@
 <div class="glass-card p-4 mb-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="section-title">Data dari Database</h2>
+        <a href="{{ route('users.export') }}" class="btn btn-info me-2">
+            <i class="fas fa-file-excel"></i> Export Excel
+        </a>
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
             <i class="fas fa-plus"></i> Add User
         </button>
