@@ -114,7 +114,7 @@
             const mainContent = document.querySelector('.main-content');
             
             if (window.innerWidth <= 768) {
-                if (sidebar.style.display === 'none' || !sidebar.style.display) {
+                if (sidebar.style.display === 'none') {
                     sidebar.style.display = 'block';
                     mainContent.style.marginLeft = '0';
                 } else {
