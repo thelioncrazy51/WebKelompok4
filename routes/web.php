@@ -51,7 +51,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/member/dashboard', [DashboardController::class, 'memberDashboard'])->name('dashboard');
     Route::get('/harvest-prediction', [MemberController::class, 'harvestPrediction'])->name('harvest.prediction');
-    Route::get('/products', [HalamanController::class, 'product'])->name('products');
 });
 
 // Untuk admin
