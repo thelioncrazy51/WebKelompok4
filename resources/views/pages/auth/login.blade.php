@@ -86,16 +86,16 @@
 </div>
 <script>
     function togglePassword(fieldId) {
-    const passwordField = document.getElementById(fieldId);
-    const eyeIcon = passwordField.nextElementSibling.querySelector('.eye-icon');
+        const passwordField = document.getElementById(fieldId);
+        const eyeIcon = passwordField.nextElementSibling.querySelector('.eye-icon');
 
-    if (passwordField.type === "password") {
-        passwordField.type = "text";
-        eyeIcon.textContent = "🙈";
-    } else {
-        passwordField.type = "password";
-        eyeIcon.textContent = "👁️";
-    }
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.textContent = "🙈";
+        } else {
+            passwordField.type = "password";
+            eyeIcon.textContent = "👁️";
+        }
     }
 </script>
 @endsection

@@ -76,6 +76,17 @@
         margin: 0 2px;
         font-size: 0.8rem;
     }
+    .toggle-password {
+        margin-left: -35px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        z-index: 2;
+    }
+    .eye-icon {
+        font-style: normal;
+    }
 </style>
 
 <div class="glass-card p-4 mb-4">
@@ -158,14 +169,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select class="form-select" id="role" name="role" required>
-                            <option value="member">Member</option>
-                            <option value="admin">Admin</option>
-                        </select>
+                        <div class="input-password">
+                            <input type="password" class="password form-control" id="password" name="password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                <i class="eye-icon">👁️</i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -199,14 +208,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="edit_password" class="form-label">Password (Leave blank to keep current)</label>
-                        <input type="password" class="form-control" id="edit_password" name="password">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_role" class="form-label">Role</label>
-                        <select class="form-select" id="edit_role" name="role" required>
-                            <option value="member">Member</option>
-                            <option value="admin">Admin</option>
-                        </select>
+                        <div class="input-password">
+                            <input type="password" class="password form-control" id="edit_password" name="password">
+                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                <i class="eye-icon">👁️</i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -219,6 +226,19 @@
 </div>
 
 <script>
+    function togglePassword(fieldId) {
+        const passwordField = document.getElementById(fieldId);
+        const eyeIcon = passwordField.nextElementSibling.querySelector('.eye-icon');
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.textContent = "🙈";
+        } else {
+            passwordField.type = "password";
+            eyeIcon.textContent = "👁️";
+        }
+    }
+
     // Script untuk mengisi data ke modal edit
     document.addEventListener('DOMContentLoaded', function() {
         var editUserModal = document.getElementById('editUserModal');
