@@ -232,6 +232,10 @@
                             </button>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <div class="form-control-plaintext">{{ ucfirst($user->role) }}</div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -264,12 +268,10 @@
             var id = button.getAttribute('data-id');
             var name = button.getAttribute('data-name');
             var email = button.getAttribute('data-email');
-            var role = button.getAttribute('data-role');
             
             var modal = this;
             modal.querySelector('#edit_name').value = name;
             modal.querySelector('#edit_email').value = email;
-            modal.querySelector('#edit_role').value = role;
             
             // Set form action URL
             document.getElementById('editUserForm').action = '/users/' + id;
