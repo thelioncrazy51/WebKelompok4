@@ -22,14 +22,13 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'role' => 'required|in:admin,member'
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => $request->role
+            'role' => 'member'
         ]);
 
         return redirect()->back()->with('success', 'User created successfully.');
@@ -41,14 +40,12 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'nullable|min:6',
-            'role' => 'required|in:admin,member'
         ]);
 
         $user = User::findOrFail($id);
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role
         ];
 
         if ($request->password) {
