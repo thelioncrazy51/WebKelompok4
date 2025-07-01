@@ -5,10 +5,10 @@
 
 <div class="sidebar" style="
     width: 250px;
-    height: 100vh;
+    height: calc(100vh - 56px);
     position: fixed;
     left: 0;
-    top: 0;
+    top: 56px;
     background: linear-gradient(180deg, #0b3d0b, #145214);
     color: white;
     padding: 20px;

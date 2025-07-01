@@ -16,6 +16,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+        body {
+            padding-top: 56px; /* Memberi ruang untuk navbar fixed */
+        }
+
         /* Navbar styling */
         .navbar {
             position: fixed;
@@ -36,7 +40,8 @@
         .sidebar {
             width: 250px;
             height: calc(100vh - 56px); /* Tinggi viewport dikurangi navbar */
-            position: sticky;
+            position: fixed;
+            left: 0;
             top: 56px; /* Sesuaikan dengan tinggi navbar */
             background: linear-gradient(180deg, #0b3d0b, #145214);
             color: white;
@@ -90,16 +95,17 @@
         }
         
         .main-content {
-            flex: 1;
+            margin-left: 0; /* Default tanpa sidebar */
             padding: 20px;
             transition: margin-left 0.3s;
+            padding-top: 76px; /* Ruang untuk navbar */
         }
         
-        body:not(.auth) .main-content {
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 1200px; /* Lebar maksimum content */
-        }
+        @auth
+            .main-content {
+                margin-left: 250px; /* Geser untuk sidebar */
+            }
+        @endauth
 
         @media (max-width: 768px) {
             .wrapper {
@@ -114,14 +120,15 @@
             }
             
             .main-content {
-                margin-left: 0;
+                margin-left: 0 !important;
             }
         }
     </style>
 </head>
 <body @yield('body-attr')>
-<!-- Navbar di atas semua elemen -->
-    @include('partial.navbar')
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top" style="background-color:rgb(13, 159, 44);">
+        @include('partial.navbar')
+    </nav>
     <div class="wrapper">
         @auth
             <!-- Sidebar -->
