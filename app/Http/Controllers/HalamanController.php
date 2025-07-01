@@ -42,7 +42,7 @@ class HalamanController extends Controller
     public function product()
     {
         return view('pages.products', [
-            'title' => 'ProductS'
+            'title' => 'Products'
         ]);
     }
 }
