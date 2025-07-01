@@ -16,19 +16,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Navbar styling */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030; /* Nilai z-index lebih tinggi dari sidebar */
+        }
+        
+        /* Wrapper untuk sidebar dan content */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 56px; /* Sesuaikan dengan tinggi navbar */
+        }
+        
         /* Sidebar styling */
         .sidebar {
             width: 250px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
+            height: calc(100vh - 56px); /* Tinggi viewport dikurangi navbar */
+            position: sticky;
+            top: 56px; /* Sesuaikan dengan tinggi navbar */
             background: linear-gradient(180deg, #0b3d0b, #145214);
             color: white;
             padding: 20px;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            z-index: 1000;
+            z-index: 1020; /* Lebih rendah dari navbar */
             font-family: 'Poppins', sans-serif;
+            overflow-y: auto;
         }
         
         .sidebar-header {
@@ -74,16 +90,27 @@
         }
         
         .main-content {
-            margin-left: 250px;
+            flex: 1;
             padding: 20px;
             transition: margin-left 0.3s;
         }
         
+        body:not(.auth) .main-content {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1200px; /* Lebar maksimum content */
+        }
+
         @media (max-width: 768px) {
+            .wrapper {
+                flex-direction: column;
+            }
+            
             .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
+                top: 0;
             }
             
             .main-content {
@@ -93,35 +120,41 @@
     </style>
 </head>
 <body @yield('body-attr')>
+<!-- Navbar di atas semua elemen -->
     @include('partial.navbar')
-    
-    @auth
-        @include('partial.sidebar')
-    @endauth
-    
-    <div class="main-content">
-        <div class="container mt-3">
-            @yield('container')
+    <div class="wrapper">
+        @auth
+            <!-- Sidebar -->
+            @include('partial.sidebar')
+        @endauth
+        
+        <!-- Main Content yang menyesuaikan -->
+        <div class="main-content">
+            <div class="container mt-3">
+                @yield('container')
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     
     <script>
-        // Optional: Toggle sidebar for mobile
+        // Toggle sidebar untuk mobile
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
-            const mainContent = document.querySelector('.main-content');
-            
-            if (window.innerWidth <= 768) {
-                if (sidebar.style.display === 'none') {
-                    sidebar.style.display = 'block';
-                    mainContent.style.marginLeft = '0';
-                } else {
-                    sidebar.style.display = 'none';
+            if (sidebar) {
+                if (window.innerWidth <= 768) {
+                    sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
                 }
             }
         }
+        
+        // Tambahkan class auth ke body jika user login
+        document.addEventListener('DOMContentLoaded', function() {
+            @auth
+                document.body.classList.add('auth');
+            @endauth
+        });
     </script>
 </body>
 </html>
