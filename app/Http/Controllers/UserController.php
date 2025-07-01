@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data = User::all();
+        $data = User::select('id', 'name', 'email', 'password', 'role');
         return view('pages.data', [
             'data' => $data,
             'title' => 'Data'

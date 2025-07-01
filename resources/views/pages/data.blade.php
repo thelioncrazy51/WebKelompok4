@@ -80,45 +80,60 @@
 
 <div class="glass-card p-4 mb-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="section-title">User Management</h2>
+        <h2 class="section-title">Data dari Database</h2>
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
             <i class="fas fa-plus"></i> Add User
         </button>
     </div>
-    
-    <div class="glass-card p-4 mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="section-title">Data dari Database</h2>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                <i class="fas fa-plus"></i> Add User
-            </button>
-        </div>
-        <div class="table-responsive">
-            @if(isset($data) && is_countable($data) && count($data) > 0)
-                <table class="table table-hover">
-                    <thead class="bg-success text-white">
+    <div class="table-responsive">
+        @if(isset($data) && is_countable($data) && count($data) > 0)
+            <table class="table table-hover">
+                <thead class="bg-success text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($data as $row)
                         <tr>
-                            @foreach($data[0] as $key => $value)
-                                <th>{{ ucfirst($key) }}</th>
-                            @endforeach
+                            <td>{{ $row->id ?? $row['id'] }}</td>
+                            <td>{{ $row->name ?? $row['name'] }}</td>
+                            <td>{{ $row->email ?? $row['email'] }}</td>
+                            <td>{{ $row->password ?? $row['password'] }}</td>
+                            <td>{{ ucfirst($row->role ?? $row['role']) }}</td>
+                            <td class="action-buttons">
+                                <button class="btn btn-primary btn-sm btn-action" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#editUserModal"
+                                        data-id="{{ $row->id ?? $row['id'] }}"
+                                        data-name="{{ $row->name ?? $row['name'] }}"
+                                        data-email="{{ $row->email ?? $row['email'] }}"
+                                        data-role="{{ $row->role ?? $row['role'] }}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <form action="{{ route('users.destroy', $row->id ?? $row['id']) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm btn-action" 
+                                            onclick="return confirm('Are you sure you want to delete this user?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($data as $row)
-                            <tr>
-                                @foreach($row as $value)
-                                    <td>{{ $value }}</td>
-                                @endforeach
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @else
-                <div class="alert alert-warning">
-                    Tidak ada data yang tersedia.
-                </div>
-            @endif
-        </div>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <div class="alert alert-warning">
+                Tidak ada data yang tersedia.
+            </div>
+        @endif
     </div>
 </div>
 
