@@ -16,28 +16,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Navbar styling */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1030; /* Bootstrap default z-index for navbar */
-            width: 100%;
-        }
-
         /* Sidebar styling */
         .sidebar {
             width: 250px;
             height: 100vh;
             position: fixed;
             left: 0;
-            top: 56px; /* Sesuaikan dengan tinggi navbar Anda */
+            top: 0;
             background: linear-gradient(180deg, #0b3d0b, #145214);
             color: white;
             padding: 20px;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            z-index: 1020; /* Di bawah navbar */
+            z-index: 1000;
             font-family: 'Poppins', sans-serif;
         }
         
@@ -86,7 +76,6 @@
         .main-content {
             margin-left: 250px;
             padding: 20px;
-            padding-top: 76px; /* Tinggi navbar + padding */
             transition: margin-left 0.3s;
         }
         
@@ -95,12 +84,10 @@
                 width: 100%;
                 height: auto;
                 position: relative;
-                top: 0;
             }
             
             .main-content {
                 margin-left: 0;
-                padding-top: 20px;
             }
         }
     </style>
@@ -127,7 +114,7 @@
             const mainContent = document.querySelector('.main-content');
             
             if (window.innerWidth <= 768) {
-                if (sidebar.style.display === 'none') {
+                if (sidebar.style.display === 'none' || !sidebar.style.display) {
                     sidebar.style.display = 'block';
                     mainContent.style.marginLeft = '0';
                 } else {
