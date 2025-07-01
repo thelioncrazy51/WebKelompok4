@@ -95,10 +95,10 @@
         }
         
         .main-content {
+            flex: 1;
             margin-left: 0; /* Default tanpa sidebar */
             padding: 20px;
             transition: margin-left 0.3s;
-            padding-top: 76px; /* Ruang untuk navbar */
         }
         
         @auth
