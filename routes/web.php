@@ -58,3 +58,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard');
     Route::get('/admin/data', [DataController::class, 'showData'])->name('admin.data'); // Tambahkan ini
 });
+
+Route::resource('users', UserController::class);
