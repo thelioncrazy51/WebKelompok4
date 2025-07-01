@@ -76,14 +76,33 @@
         margin: 0 2px;
         font-size: 0.8rem;
     }
+    .input-password {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .password {
+        padding-right: 40px; /* Beri ruang untuk eye icon */
+        flex: 1;
+    }
     .toggle-password {
+        position: absolute;
+        right: 10px;
         background: none;
         border: none;
         cursor: pointer;
-        padding: 5px;
+        padding: 0;
+        margin: 0;
+        color: #6c757d;
+    }
+    .toggle-password:hover {
+        color: #495057;
     }
     .eye-icon {
-        font-style: normal;
+        font-size: 1rem;
+        display: inline-block;
+        width: 20px;
+        text-align: center;
     }
 </style>
 
