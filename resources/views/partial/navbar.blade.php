@@ -8,7 +8,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav ms-auto mb-3 mb-lg-0">
+      <ul class="navbar-nav ms-auto mb-3 mb-lg-0 gap-3">
         <li class="nav-item">
             <a class="nav-link {{ ($title === 'Home') ? 'fw-bold text-success' : '' }}" href="/">HOME</a>
         </li>
