@@ -19,9 +19,6 @@
             <a class="nav-link {{ ($title === 'About Us') ? 'fw-bold text-success' : '' }}" href="/about-us">ABOUT US</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Career') ? 'fw-bold text-success' : '' }}" href="/career">CAREER</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link {{ ($title === 'News & Article') ? 'fw-bold text-success' : '' }}" href="/news-article">NEWS & ARTICLE</a>
         </li>
         
