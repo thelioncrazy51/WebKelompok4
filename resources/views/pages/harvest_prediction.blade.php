@@ -61,28 +61,9 @@
         <p style="color: #145214;">Anda login sebagai administrator. Gunakan menu navigasi untuk mengelola sistem.</p>
         
         <!-- You can add more dashboard content here -->
-        <div class="mt-4">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="glass-card" style="padding: 1rem; min-height: 120px;">
-                        <h5 style="color: #145214;">Total Pengguna</h5>
-                        <p style="font-size: 2rem; color: #0b3d0b; font-weight: 700;">{{ $totalUsers ?? '0' }}</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="glass-card" style="padding: 1rem; min-height: 120px;">
-                        <h5 style="color: #145214;">Admin</h5>
-                        <p style="font-size: 2rem; color: #0b3d0b; font-weight: 700;">{{ $adminCount ?? '0' }}</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="glass-card" style="padding: 1rem; min-height: 120px;">
-                        <h5 style="color: #145214;">Member</h5>
-                        <p style="font-size: 2rem; color: #0b3d0b; font-weight: 700;">{{ $memberCount ?? '0' }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        
+        
     </div>
 </div>
 
