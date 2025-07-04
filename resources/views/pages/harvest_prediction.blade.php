@@ -161,6 +161,15 @@
     .soil-info strong {
         color: #145214;
     }
+    .location-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .location-group {
+        margin-bottom: 0;
+    }
 </style>
 
 <div class="glass-card">
@@ -169,17 +178,40 @@
     <div class="dashboard-section">
         <div class="input-form">
             <form id="harvestPredictionForm">
-                <div class="form-group">
-                    <label for="region" class="form-label">Daerah Pertanian</label>
-                    <select id="region" class="form-control" required>
-                        <option value="">Pilih daerah</option>
-                        <option value="jawa-barat">Jawa Barat</option>
-                        <option value="jawa-tengah">Jawa Tengah</option>
-                        <option value="jawa-timur">Jawa Timur</option>
-                        <option value="sumatera-utara">Sumatera Utara</option>
-                        <option value="bali">Bali</option>
-                        <option value="kalimantan-tengah">Kalimantan Tengah</option>
-                    </select>
+                <div class="location-container">
+                    <div class="form-group location-group">
+                        <label for="province" class="form-label">Provinsi</label>
+                        <select id="province" class="form-control" required>
+                            <option value="">Pilih Provinsi</option>
+                            <option value="jawa-barat">Jawa Barat</option>
+                            <option value="jawa-tengah">Jawa Tengah</option>
+                            <option value="jawa-timur">Jawa Timur</option>
+                            <option value="sumatera-utara">Sumatera Utara</option>
+                            <option value="bali">Bali</option>
+                            <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group location-group">
+                        <label for="city" class="form-label">Kota/Kabupaten</label>
+                        <select id="city" class="form-control" required disabled>
+                            <option value="">Pilih Kota/Kabupaten</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group location-group">
+                        <label for="district" class="form-label">Kecamatan</label>
+                        <select id="district" class="form-control" required disabled>
+                            <option value="">Pilih Kecamatan</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group location-group">
+                        <label for="village" class="form-label">Desa/Kelurahan</label>
+                        <select id="village" class="form-control" required disabled>
+                            <option value="">Pilih Desa/Kelurahan</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div id="soilInfoContainer" class="soil-info" style="display: none;">
@@ -216,7 +248,7 @@
             <div class="result-card">
                 <h3 class="result-title">Hasil Prediksi Panen</h3>
                 <div class="result-value">
-                    <p><strong>Daerah:</strong> <span id="resultRegion"></span></p>
+                    <p><strong>Lokasi:</strong> <span id="resultLocation"></span></p>
                     <p><strong>Jenis Tanaman:</strong> <span id="resultPlant"></span></p>
                     <p><strong>Kondisi Tanah:</strong> <span id="resultSoil"></span></p>
                     <p><strong>Perkiraan Waktu Panen:</strong> <span id="resultHarvestTime"></span></p>
@@ -244,73 +276,230 @@
 </div>
 
 <script>
-    // Region data with automatic soil conditions (simulated from government API)
-    const regionData = {
+    // Location data hierarchy (simulated from government API)
+    const locationData = {
         'jawa-barat': {
             name: 'Jawa Barat',
-            soilType: 'Latosol',
-            soilFertility: 'subur',
-            soilPh: '5.5 - 6.5',
-            soilMoisture: 'Tinggi',
-            fertilityDesc: 'Sangat subur dengan kandungan organik tinggi, cocok untuk berbagai tanaman'
+            cities: {
+                'bandung': {
+                    name: 'Kota Bandung',
+                    districts: {
+                        'bandung-kulon': {
+                            name: 'Bandung Kulon',
+                            villages: {
+                                'cirobon': 'Cirobon',
+                                'cibuntu': 'Cibuntu',
+                                'gempolsari': 'Gempolsari'
+                            },
+                            soilData: {
+                                soilType: 'Latosol',
+                                soilFertility: 'subur',
+                                soilPh: '5.5 - 6.5',
+                                soilMoisture: 'Tinggi',
+                                fertilityDesc: 'Sangat subur dengan kandungan organik tinggi'
+                            }
+                        },
+                        'bandung-wetan': {
+                            name: 'Bandung Wetan',
+                            villages: {
+                                'tamansari': 'Tamansari',
+                                'citarum': 'Citarum',
+                                'balonggede': 'Balonggede'
+                            },
+                            soilData: {
+                                soilType: 'Andosol',
+                                soilFertility: 'subur',
+                                soilPh: '5.0 - 6.0',
+                                soilMoisture: 'Sedang',
+                                fertilityDesc: 'Tanah vulkanik yang subur'
+                            }
+                        }
+                    }
+                },
+                'sumedang': {
+                    name: 'Kabupaten Sumedang',
+                    districts: {
+                        'sumedang-selatan': {
+                            name: 'Sumedang Selatan',
+                            villages: {
+                                'cimanggung': 'Cimanggung',
+                                'cikahuripan': 'Cikahuripan',
+                                'citali': 'Citali'
+                            },
+                            soilData: {
+                                soilType: 'Regosol',
+                                soilFertility: 'sedang',
+                                soilPh: '6.0 - 7.0',
+                                soilMoisture: 'Sedang',
+                                fertilityDesc: 'Kesuburan sedang, cocok untuk tanaman pangan'
+                            }
+                        },
+                        'tanjungkerta': {
+                            name: 'Tanjungkerta',
+                            villages: {
+                                'tanjungkerta': 'Tanjungkerta',
+                                'mekarjaya': 'Mekarjaya',
+                                'sukamenak': 'Sukamenak'
+                            },
+                            soilData: {
+                                soilType: 'Grumusol',
+                                soilFertility: 'kurang-subur',
+                                soilPh: '6.5 - 7.5',
+                                soilMoisture: 'Rendah',
+                                fertilityDesc: 'Memerlukan pengolahan tanah khusus'
+                            }
+                        }
+                    }
+                }
+            }
         },
         'jawa-tengah': {
             name: 'Jawa Tengah',
-            soilType: 'Grumusol',
-            soilFertility: 'sedang',
-            soilPh: '6.0 - 7.0',
-            soilMoisture: 'Sedang',
-            fertilityDesc: 'Kesuburan sedang, membutuhkan pupuk tambahan untuk hasil optimal'
-        },
-        'jawa-timur': {
-            name: 'Jawa Timur',
-            soilType: 'Regosol',
-            soilFertility: 'kurang-subur',
-            soilPh: '6.5 - 7.5',
-            soilMoisture: 'Rendah',
-            fertilityDesc: 'Tanah kurang subur, membutuhkan pengolahan dan pemupukan intensif'
-        },
-        'sumatera-utara': {
-            name: 'Sumatera Utara',
-            soilType: 'Andosol',
-            soilFertility: 'subur',
-            soilPh: '5.0 - 6.0',
-            soilMoisture: 'Sangat Tinggi',
-            fertilityDesc: 'Tanah vulkanik yang sangat subur, kaya mineral'
-        },
-        'bali': {
-            name: 'Bali',
-            soilType: 'Latosol',
-            soilFertility: 'subur',
-            soilPh: '5.5 - 6.5',
-            soilMoisture: 'Tinggi',
-            fertilityDesc: 'Tanah subur dengan irigasi baik, cocok untuk tanaman pangan'
-        },
-        'kalimantan-tengah': {
-            name: 'Kalimantan Tengah',
-            soilType: 'Podzolik',
-            soilFertility: 'kurang-subur',
-            soilPh: '4.5 - 5.5',
-            soilMoisture: 'Sangat Tinggi',
-            fertilityDesc: 'Tanah masam, membutuhkan pengapuran dan pemupukan khusus'
+            cities: {
+                'semarang': {
+                    name: 'Kota Semarang',
+                    districts: {
+                        'semarang-barat': {
+                            name: 'Semarang Barat',
+                            villages: {
+                                'bojongsalaman': 'Bojongsalaman',
+                                'tambakharjo': 'Tambakharjo',
+                                'kembangarum': 'Kembangarum'
+                            },
+                            soilData: {
+                                soilType: 'Aluvial',
+                                soilFertility: 'subur',
+                                soilPh: '6.0 - 7.0',
+                                soilMoisture: 'Tinggi',
+                                fertilityDesc: 'Tanah endapan sungai yang subur'
+                            }
+                        }
+                    }
+                },
+                'magelang': {
+                    name: 'Kabupaten Magelang',
+                    districts: {
+                        'salaman': {
+                            name: 'Salaman',
+                            villages: {
+                                'kalirejo': 'Kalirejo',
+                                'salamkanci': 'Salamkanci',
+                                'ngargoretno': 'Ngargoretno'
+                            },
+                            soilData: {
+                                soilType: 'Andosol',
+                                soilFertility: 'subur',
+                                soilPh: '5.5 - 6.5',
+                                soilMoisture: 'Tinggi',
+                                fertilityDesc: 'Tanah vulkanik sangat subur'
+                            }
+                        }
+                    }
+                }
+            }
         }
+        // Other provinces would be added here similarly
     };
 
-    // Listen for region selection changes
-    document.getElementById('region').addEventListener('change', function() {
-        const selectedRegion = this.value;
+    // DOM elements
+    const provinceSelect = document.getElementById('province');
+    const citySelect = document.getElementById('city');
+    const districtSelect = document.getElementById('district');
+    const villageSelect = document.getElementById('village');
+    const soilInfoContainer = document.getElementById('soilInfoContainer');
+
+    // Province change handler
+    provinceSelect.addEventListener('change', function() {
+        const provinceId = this.value;
         
-        if (selectedRegion && regionData[selectedRegion]) {
-            const region = regionData[selectedRegion];
+        // Reset downstream selects
+        citySelect.innerHTML = '<option value="">Pilih Kota/Kabupaten</option>';
+        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+        soilInfoContainer.style.display = 'none';
+        
+        // Disable downstream selects
+        citySelect.disabled = true;
+        districtSelect.disabled = true;
+        villageSelect.disabled = true;
+        
+        if (provinceId && locationData[provinceId]) {
+            citySelect.disabled = false;
+            
+            // Populate cities
+            const cities = locationData[provinceId].cities;
+            for (const cityId in cities) {
+                const option = document.createElement('option');
+                option.value = cityId;
+                option.textContent = cities[cityId].name;
+                citySelect.appendChild(option);
+            }
+        }
+    });
+
+    // City change handler
+    citySelect.addEventListener('change', function() {
+        const provinceId = provinceSelect.value;
+        const cityId = this.value;
+        
+        // Reset downstream selects
+        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+        soilInfoContainer.style.display = 'none';
+        
+        // Disable downstream selects
+        districtSelect.disabled = true;
+        villageSelect.disabled = true;
+        
+        if (provinceId && cityId && locationData[provinceId]?.cities[cityId]) {
+            districtSelect.disabled = false;
+            
+            // Populate districts
+            const districts = locationData[provinceId].cities[cityId].districts;
+            for (const districtId in districts) {
+                const option = document.createElement('option');
+                option.value = districtId;
+                option.textContent = districts[districtId].name;
+                districtSelect.appendChild(option);
+            }
+        }
+    });
+
+    // District change handler
+    districtSelect.addEventListener('change', function() {
+        const provinceId = provinceSelect.value;
+        const cityId = citySelect.value;
+        const districtId = this.value;
+        
+        // Reset downstream select
+        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+        soilInfoContainer.style.display = 'none';
+        
+        // Disable downstream select
+        villageSelect.disabled = true;
+        
+        if (provinceId && cityId && districtId && 
+            locationData[provinceId]?.cities[cityId]?.districts[districtId]) {
+            villageSelect.disabled = false;
+            
+            // Populate villages
+            const villages = locationData[provinceId].cities[cityId].districts[districtId].villages;
+            for (const villageId in villages) {
+                const option = document.createElement('option');
+                option.value = villageId;
+                option.textContent = villages[villageId];
+                villageSelect.appendChild(option);
+            }
             
             // Display soil information
-            document.getElementById('soilInfoContainer').style.display = 'block';
-            document.getElementById('soilTypeDisplay').textContent = `Jenis Tanah: ${region.soilType}`;
-            document.getElementById('soilFertilityDisplay').textContent = `Tingkat Kesuburan: ${region.fertilityDesc}`;
-            document.getElementById('soilPhDisplay').textContent = `pH Tanah: ${region.soilPh}`;
-            document.getElementById('soilMoistureDisplay').textContent = `Kelembaban Tanah: ${region.soilMoisture}`;
-        } else {
-            document.getElementById('soilInfoContainer').style.display = 'none';
+            const soilData = locationData[provinceId].cities[cityId].districts[districtId].soilData;
+            if (soilData) {
+                document.getElementById('soilTypeDisplay').textContent = `Jenis Tanah: ${soilData.soilType}`;
+                document.getElementById('soilFertilityDisplay').textContent = `Tingkat Kesuburan: ${soilData.fertilityDesc}`;
+                document.getElementById('soilPhDisplay').textContent = `pH Tanah: ${soilData.soilPh}`;
+                document.getElementById('soilMoistureDisplay').textContent = `Kelembaban Tanah: ${soilData.soilMoisture}`;
+                soilInfoContainer.style.display = 'block';
+            }
         }
     });
 
@@ -322,17 +511,26 @@
         document.getElementById('predictionResult').style.display = 'none';
         
         // Get form values
-        const region = document.getElementById('region').value;
+        const provinceId = provinceSelect.value;
+        const cityId = citySelect.value;
+        const districtId = districtSelect.value;
+        const villageId = villageSelect.value;
         const plantType = document.getElementById('plantType').value;
         
-        if (!region || !plantType) {
-            alert('Silakan pilih daerah dan jenis tanaman terlebih dahulu');
+        if (!provinceId || !cityId || !districtId || !villageId || !plantType) {
+            alert('Silakan lengkapi semua data lokasi dan pilih jenis tanaman');
             document.getElementById('loadingIndicator').style.display = 'none';
             return;
         }
         
-        // Get soil condition from region data
-        const soilCondition = regionData[region]?.soilFertility || 'sedang';
+        // Get soil condition from location data
+        const soilCondition = locationData[provinceId]?.cities[cityId]?.districts[districtId]?.soilData?.soilFertility || 'sedang';
+        
+        // Get location names
+        const provinceName = locationData[provinceId].name;
+        const cityName = locationData[provinceId].cities[cityId].name;
+        const districtName = locationData[provinceId].cities[cityId].districts[districtId].name;
+        const villageName = locationData[provinceId].cities[cityId].districts[districtId].villages[villageId];
         
         // Simulate API call (in a real app, this would be an actual API call)
         setTimeout(function() {
@@ -340,7 +538,7 @@
             document.getElementById('loadingIndicator').style.display = 'none';
             
             // Display results
-            document.getElementById('resultRegion').textContent = regionData[region].name;
+            document.getElementById('resultLocation').textContent = `${villageName}, ${districtName}, ${cityName}, ${provinceName}`;
             document.getElementById('resultPlant').textContent = document.getElementById('plantType').options[document.getElementById('plantType').selectedIndex].text;
             
             // Display soil condition with description
@@ -352,7 +550,7 @@
             document.getElementById('resultSoil').textContent = soilDesc[soilCondition];
             
             // Generate prediction based on inputs
-            const prediction = generatePrediction(region, plantType, soilCondition);
+            const prediction = generatePrediction(provinceId, plantType, soilCondition);
             document.getElementById('resultHarvestTime').textContent = prediction.harvestTime;
             
             // Fill care plan table
@@ -481,7 +679,7 @@
         return plantData[soilCondition] || plantData['subur'];
     }
     
-    // Functions to generate care plans for different plants
+    // Functions to generate care plans for different plants (same as before)
     function generateRiceCarePlan(soilCondition) {
         const days = soilCondition === 'subur' ? 100 : (soilCondition === 'sedang' ? 110 : 120);
         const plan = [];
