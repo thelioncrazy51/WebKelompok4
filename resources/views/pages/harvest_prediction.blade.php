@@ -2,7 +2,7 @@
 
 @section('body-attr', 'style=background:linear-gradient(135deg, #0b3d0b, #a7d7a7);')
 
-@section('title', 'Dashboard Admin')
+@section('title', 'Prediksi panen')
 
 @section('container')
 <style>
@@ -40,23 +40,6 @@
         left: 0;
         border-radius: 2px;
     }
-    .user-info {
-        background: rgba(255, 255, 255, 0.7);
-        border-radius: 10px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border-left: 4px solid #145214;
-    }
-    .info-label {
-        font-weight: 600;
-        color: #145214;
-        margin-bottom: 0.5rem;
-    }
-    .info-value {
-        font-size: 1.1rem;
-        color: #0b3d0b;
-        margin-bottom: 1rem;
-    }
     .dashboard-section {
         margin-top: 2rem;
     }
@@ -71,20 +54,7 @@
 </style>
 
 <div class="glass-card">
-    <h1 class="welcome-title">Selamat Datang, {{ $user->name }}</h1>
-    
-    <div class="user-info">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="info-label">Email</div>
-                <div class="info-value">{{ $user->email }}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="info-label">Role</div>
-                <div class="info-value text-capitalize">{{ $user->role }}</div>
-            </div>
-        </div>
-    </div>
+    <h1 class="welcome-title">Prediksi Panen</h1>
 
     <div class="dashboard-section">
         <h3 class="section-title">Admin Dashboard</h3>
