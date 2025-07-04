@@ -47,6 +47,21 @@
         margin: 0;
         color: red;
     }
+    .modal-content {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+    }
+    .modal-header {
+        border-bottom: 1px solid #145214;
+    }
+    .modal-title {
+        color: #145214;
+        font-weight: 700;
+    }
 </style>
 
 <div class="row justify-content-center">
