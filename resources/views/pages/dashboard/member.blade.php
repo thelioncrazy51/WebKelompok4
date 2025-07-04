@@ -72,19 +72,6 @@
 
 <div class="glass-card">
     <h1 class="welcome-title">Selamat Datang, {{ $user->name }}</h1>
-    
-    <div class="user-info">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="info-label">Email</div>
-                <div class="info-value">{{ $user->email }}</div>
-            </div>
-            <div class="col-md-6">
-                <div class="info-label">Role</div>
-                <div class="info-value text-capitalize">{{ $user->role }}</div>
-            </div>
-        </div>
-    </div>
 
     <div class="dashboard-section">
         
