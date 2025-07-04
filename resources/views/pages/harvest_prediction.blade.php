@@ -149,6 +149,18 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+    .soil-info {
+        background-color: rgba(20, 82, 20, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+    .soil-info p {
+        margin: 0.5rem 0;
+    }
+    .soil-info strong {
+        color: #145214;
+    }
 </style>
 
 <div class="glass-card">
@@ -170,6 +182,14 @@
                     </select>
                 </div>
                 
+                <div id="soilInfoContainer" class="soil-info" style="display: none;">
+                    <p><strong>Kondisi Tanah Otomatis Terdeteksi:</strong></p>
+                    <p id="soilTypeDisplay">Jenis Tanah: -</p>
+                    <p id="soilFertilityDisplay">Tingkat Kesuburan: -</p>
+                    <p id="soilPhDisplay">pH Tanah: -</p>
+                    <p id="soilMoistureDisplay">Kelembaban Tanah: -</p>
+                </div>
+                
                 <div class="form-group">
                     <label for="plantType" class="form-label">Jenis Tanaman</label>
                     <select id="plantType" class="form-control" required>
@@ -180,16 +200,6 @@
                         <option value="cabai">Cabai</option>
                         <option value="tomat">Tomat</option>
                         <option value="tebu">Tebu</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="soilCondition" class="form-label">Kondisi Tanah</label>
-                    <select id="soilCondition" class="form-control" required>
-                        <option value="">Pilih kondisi tanah</option>
-                        <option value="subur">Subur</option>
-                        <option value="sedang">Sedang</option>
-                        <option value="kurang-subur">Kurang Subur</option>
                     </select>
                 </div>
                 
@@ -234,6 +244,76 @@
 </div>
 
 <script>
+    // Region data with automatic soil conditions (simulated from government API)
+    const regionData = {
+        'jawa-barat': {
+            name: 'Jawa Barat',
+            soilType: 'Latosol',
+            soilFertility: 'subur',
+            soilPh: '5.5 - 6.5',
+            soilMoisture: 'Tinggi',
+            fertilityDesc: 'Sangat subur dengan kandungan organik tinggi, cocok untuk berbagai tanaman'
+        },
+        'jawa-tengah': {
+            name: 'Jawa Tengah',
+            soilType: 'Grumusol',
+            soilFertility: 'sedang',
+            soilPh: '6.0 - 7.0',
+            soilMoisture: 'Sedang',
+            fertilityDesc: 'Kesuburan sedang, membutuhkan pupuk tambahan untuk hasil optimal'
+        },
+        'jawa-timur': {
+            name: 'Jawa Timur',
+            soilType: 'Regosol',
+            soilFertility: 'kurang-subur',
+            soilPh: '6.5 - 7.5',
+            soilMoisture: 'Rendah',
+            fertilityDesc: 'Tanah kurang subur, membutuhkan pengolahan dan pemupukan intensif'
+        },
+        'sumatera-utara': {
+            name: 'Sumatera Utara',
+            soilType: 'Andosol',
+            soilFertility: 'subur',
+            soilPh: '5.0 - 6.0',
+            soilMoisture: 'Sangat Tinggi',
+            fertilityDesc: 'Tanah vulkanik yang sangat subur, kaya mineral'
+        },
+        'bali': {
+            name: 'Bali',
+            soilType: 'Latosol',
+            soilFertility: 'subur',
+            soilPh: '5.5 - 6.5',
+            soilMoisture: 'Tinggi',
+            fertilityDesc: 'Tanah subur dengan irigasi baik, cocok untuk tanaman pangan'
+        },
+        'kalimantan-tengah': {
+            name: 'Kalimantan Tengah',
+            soilType: 'Podzolik',
+            soilFertility: 'kurang-subur',
+            soilPh: '4.5 - 5.5',
+            soilMoisture: 'Sangat Tinggi',
+            fertilityDesc: 'Tanah masam, membutuhkan pengapuran dan pemupukan khusus'
+        }
+    };
+
+    // Listen for region selection changes
+    document.getElementById('region').addEventListener('change', function() {
+        const selectedRegion = this.value;
+        
+        if (selectedRegion && regionData[selectedRegion]) {
+            const region = regionData[selectedRegion];
+            
+            // Display soil information
+            document.getElementById('soilInfoContainer').style.display = 'block';
+            document.getElementById('soilTypeDisplay').textContent = `Jenis Tanah: ${region.soilType}`;
+            document.getElementById('soilFertilityDisplay').textContent = `Tingkat Kesuburan: ${region.fertilityDesc}`;
+            document.getElementById('soilPhDisplay').textContent = `pH Tanah: ${region.soilPh}`;
+            document.getElementById('soilMoistureDisplay').textContent = `Kelembaban Tanah: ${region.soilMoisture}`;
+        } else {
+            document.getElementById('soilInfoContainer').style.display = 'none';
+        }
+    });
+
     document.getElementById('harvestPredictionForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -244,7 +324,15 @@
         // Get form values
         const region = document.getElementById('region').value;
         const plantType = document.getElementById('plantType').value;
-        const soilCondition = document.getElementById('soilCondition').value;
+        
+        if (!region || !plantType) {
+            alert('Silakan pilih daerah dan jenis tanaman terlebih dahulu');
+            document.getElementById('loadingIndicator').style.display = 'none';
+            return;
+        }
+        
+        // Get soil condition from region data
+        const soilCondition = regionData[region]?.soilFertility || 'sedang';
         
         // Simulate API call (in a real app, this would be an actual API call)
         setTimeout(function() {
@@ -252,9 +340,16 @@
             document.getElementById('loadingIndicator').style.display = 'none';
             
             // Display results
-            document.getElementById('resultRegion').textContent = document.getElementById('region').options[document.getElementById('region').selectedIndex].text;
+            document.getElementById('resultRegion').textContent = regionData[region].name;
             document.getElementById('resultPlant').textContent = document.getElementById('plantType').options[document.getElementById('plantType').selectedIndex].text;
-            document.getElementById('resultSoil').textContent = document.getElementById('soilCondition').options[document.getElementById('soilCondition').selectedIndex].text;
+            
+            // Display soil condition with description
+            const soilDesc = {
+                'subur': 'Subur (Kaya nutrisi, cocok untuk berbagai tanaman)',
+                'sedang': 'Sedang (Memerlukan pemupukan tambahan)',
+                'kurang-subur': 'Kurang Subur (Perlu perlakuan khusus dan pemupukan intensif)'
+            };
+            document.getElementById('resultSoil').textContent = soilDesc[soilCondition];
             
             // Generate prediction based on inputs
             const prediction = generatePrediction(region, plantType, soilCondition);
@@ -335,6 +430,48 @@
                 'kurang-subur': {
                     harvestTime: '95-105 hari',
                     carePlan: generateSoybeanCarePlan('kurang-subur')
+                }
+            },
+            'cabai': {
+                'subur': {
+                    harvestTime: '70-80 hari',
+                    carePlan: generateChiliCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '80-90 hari',
+                    carePlan: generateChiliCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '90-100 hari',
+                    carePlan: generateChiliCarePlan('kurang-subur')
+                }
+            },
+            'tomat': {
+                'subur': {
+                    harvestTime: '65-75 hari',
+                    carePlan: generateTomatoCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '75-85 hari',
+                    carePlan: generateTomatoCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '85-95 hari',
+                    carePlan: generateTomatoCarePlan('kurang-subur')
+                }
+            },
+            'tebu': {
+                'subur': {
+                    harvestTime: '330-360 hari',
+                    carePlan: generateSugarcaneCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '360-390 hari',
+                    carePlan: generateSugarcaneCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '390-420 hari',
+                    carePlan: generateSugarcaneCarePlan('kurang-subur')
                 }
             }
         };
@@ -456,6 +593,123 @@
                 activity: week >= 10 ? 'Panen' : 'Pengendalian hama',
                 condition: 'Sinar matahari cukup',
                 note: week >= 10 ? 'Panen saat polong matang' : 'Penyemprotan pestisida'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateChiliCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 80 : (soilCondition === 'sedang' ? 90 : 100);
+        const plan = [];
+        
+        // Week 1-3: Preparation and planting
+        for (let i = 1; i <= 21; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
+                condition: 'Tanah gembur',
+                note: i <= 7 ? 'Pengolahan tanah' : 'Bibit umur 25-30 hari'
+            });
+        }
+        
+        // Week 4-8: Growth phase
+        for (let i = 22; i <= 56; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Kelembaban sedang',
+                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+            });
+        }
+        
+        // Week 9-12: Flowering to harvest
+        for (let i = 57; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 10 ? 'Panen bertahap' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: week >= 10 ? 'Panen saat buah merah 80%' : 'Penyemprotan pestisida'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateTomatoCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 75 : (soilCondition === 'sedang' ? 85 : 95);
+        const plan = [];
+        
+        // Week 1-3: Preparation and planting
+        for (let i = 1; i <= 21; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
+                condition: 'Tanah gembur',
+                note: i <= 7 ? 'Pengolahan tanah' : 'Bibit umur 21-25 hari'
+            });
+        }
+        
+        // Week 4-8: Growth phase
+        for (let i = 22; i <= 56; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Kelembaban sedang',
+                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+            });
+        }
+        
+        // Week 9-12: Flowering to harvest
+        for (let i = 57; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 10 ? 'Panen bertahap' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: week >= 10 ? 'Panen saat buah matang' : 'Penyemprotan pestisida'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateSugarcaneCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 360 : (soilCondition === 'sedang' ? 390 : 420);
+        const plan = [];
+        
+        // Month 1-3: Preparation and planting
+        for (let i = 1; i <= 90; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 30 ? 'Persiapan lahan' : 'Penanaman stek',
+                condition: 'Tanah gembur',
+                note: i <= 30 ? 'Pengolahan tanah intensif' : 'Stek batang berkualitas'
+            });
+        }
+        
+        // Month 4-9: Growth phase
+        for (let i = 91; i <= 270; i++) {
+            const month = Math.floor((i-1)/30) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Cukup air',
+                note: month >= 6 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+            });
+        }
+        
+        // Month 10-14: Maturation phase
+        for (let i = 271; i <= days; i++) {
+            const month = Math.floor((i-1)/30) + 1;
+            plan.push({
+                day: i,
+                activity: month >= 12 ? 'Persiapan panen' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: month >= 12 ? 'Pengeringan lahan' : 'Pemantauan pertumbuhan'
             });
         }
         
