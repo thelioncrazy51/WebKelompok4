@@ -112,18 +112,41 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function togglePassword(fieldId) {
-    const passwordField = document.getElementById(fieldId);
-    const eyeIcon = passwordField.nextElementSibling.querySelector('.eye-icon');
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('modal'))
+            const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
+            document.getElementById('modalTitle').textContent = '{{ session('modal.title') }}';
+            document.getElementById('modalMessage').textContent = '{{ session('modal.message') }}';
+            document.getElementById('goToLogin').style.display = 'block';
+            modal.show();
+        @endif
+        
+        @if($errors->any())
+            const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
+            document.getElementById('modalTitle').textContent = 'Registrasi Gagal';
+            document.getElementById('modalMessage').innerHTML = `
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            `;
+            document.getElementById('goToLogin').style.display = 'none';
+            modal.show();
+        @endif
+    });
 
-    if (passwordField.type === "password") {
-        passwordField.type = "text";
-        eyeIcon.textContent = "🙈";
-    } else {
-        passwordField.type = "password";
-        eyeIcon.textContent = "👁️";
+    function togglePassword(fieldId) {
+        const passwordField = document.getElementById(fieldId);
+        const eyeIcon = passwordField.nextElementSibling.querySelector('.eye-icon');
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.textContent = "🙈";
+        } else {
+            passwordField.type = "password";
+            eyeIcon.textContent = "👁️";
+        }
     }
-}
 </script>
 @endsection
