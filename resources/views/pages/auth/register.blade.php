@@ -110,18 +110,18 @@
     </div>
 </div>
 
-<!-- Modal untuk notifikasi -->
+<!-- Modal Notification -->
 <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle"></h5>
+                <h5 class="modal-title text-success" id="modalTitle"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalMessage"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <a href="/login" class="btn btn-success" id="goToLogin">Login</a>
+                <a href="/login" class="btn btn-success" id="goToLoginBtn">Login</a>
             </div>
         </div>
     </div>
@@ -130,23 +130,25 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Untuk success modal
         @if(session('modal'))
             const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
             document.getElementById('modalTitle').textContent = '{{ session('modal.title') }}';
             document.getElementById('modalMessage').textContent = '{{ session('modal.message') }}';
-            document.getElementById('goToLogin').style.display = 'block';
+            document.getElementById('goToLoginBtn').style.display = 'block';
             modal.show();
         @endif
         
+        // Untuk error messages
         @if($errors->any())
             const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
             document.getElementById('modalTitle').textContent = 'Registrasi Gagal';
             document.getElementById('modalMessage').innerHTML = `
                 @foreach ($errors->all() as $error)
-                    <p>{{ $error }}</p>
+                    <p class="text-danger">{{ $error }}</p>
                 @endforeach
             `;
-            document.getElementById('goToLogin').style.display = 'none';
+            document.getElementById('goToLoginBtn').style.display = 'none';
             modal.show();
         @endif
     });
