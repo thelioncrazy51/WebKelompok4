@@ -63,7 +63,7 @@ class AuthController extends Controller
             'password' => $request->password,
             'role' => 'member'
         ]);
-        return redirect('/login')->with('modal', [
+        return redirect('/register')->with('modal', [
             'title' => 'Registrasi Berhasil',
             'message' => 'Silakan login menggunakan akun yang telah dibuat.'
         ]);
