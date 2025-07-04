@@ -548,7 +548,7 @@
                     }
                 }
             }
-        }
+        },
         'jawa-timur': {
             name: 'Jawa Timur',
             cities: {
@@ -864,7 +864,7 @@
                     }
                 }
             }
-        }
+        },
         'aceh': {
             name: 'Aceh',
             cities: {
