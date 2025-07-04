@@ -51,58 +51,103 @@
         border-bottom: 2px solid #145214;
         padding-bottom: 0.5rem;
     }
-    .form-control {
-        border-radius: 10px;
-        border: 1px solid #0b3d0b;
-        padding: 12px 15px;
+    .input-form {
+        margin-bottom: 2rem;
     }
-    .btn-primary {
-        background-color: #0b3d0b;
-        border-color: #0b3d0b;
-        border-radius: 10px;
-        padding: 12px 25px;
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
         font-weight: 600;
+        color: #145214;
     }
-    .btn-primary:hover {
-        background-color: #145214;
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+    }
+    .form-control:focus {
         border-color: #145214;
+        outline: none;
+    }
+    .btn-submit {
+        background-color: #145214;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn-submit:hover {
+        background-color: #0e3a0e;
     }
     .result-card {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 12px;
-        padding: 20px;
-        margin-top: 20px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 2rem;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     }
-    .parameter-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px 0;
-        border-bottom: 1px solid #eee;
-    }
-    .parameter-value {
-        font-weight: 600;
-        color: #0b3d0b;
-    }
-    .prediction-result {
+    .result-title {
+        color: #145214;
         font-size: 1.3rem;
-        font-weight: 700;
-        color: #0b3d0b;
-        margin-top: 15px;
+        margin-bottom: 1rem;
+        font-weight: 600;
     }
-    .crop-suggestion {
-        background: #f0f7f0;
-        padding: 15px;
-        border-radius: 8px;
-        margin-top: 15px;
+    .result-value {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
     }
-    .loading-spinner {
+    .table-responsive {
+        overflow-x: auto;
+    }
+    .harvest-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5rem;
+    }
+    .harvest-table th, .harvest-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .harvest-table th {
+        background-color: #145214;
+        color: white;
+        font-weight: 600;
+    }
+    .harvest-table tr:nth-child(even) {
+        background-color: rgba(20, 82, 20, 0.05);
+    }
+    .harvest-table tr:hover {
+        background-color: rgba(20, 82, 20, 0.1);
+    }
+    .loading {
         display: none;
         text-align: center;
-        margin: 20px 0;
+        padding: 1rem;
+        color: #145214;
     }
-    .spinner-border {
-        color: #0b3d0b;
+    .spinner {
+        border: 4px solid rgba(20, 82, 20, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid #145214;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 </style>
 
@@ -110,296 +155,311 @@
     <h1 class="welcome-title">Prediksi Panen</h1>
 
     <div class="dashboard-section">
-        <form id="harvestPredictionForm">
-            @csrf
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="province">Provinsi</label>
-                        <select class="form-control" id="province" name="province" required>
-                            <option value="">Pilih Provinsi</option>
-                            <!-- Options will be filled by JavaScript -->
-                        </select>
-                    </div>
+        <div class="input-form">
+            <form id="harvestPredictionForm">
+                <div class="form-group">
+                    <label for="region" class="form-label">Daerah Pertanian</label>
+                    <select id="region" class="form-control" required>
+                        <option value="">Pilih daerah</option>
+                        <option value="jawa-barat">Jawa Barat</option>
+                        <option value="jawa-tengah">Jawa Tengah</option>
+                        <option value="jawa-timur">Jawa Timur</option>
+                        <option value="sumatera-utara">Sumatera Utara</option>
+                        <option value="bali">Bali</option>
+                        <option value="kalimantan-tengah">Kalimantan Tengah</option>
+                    </select>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="regency">Kabupaten/Kota</label>
-                        <select class="form-control" id="regency" name="regency" required disabled>
-                            <option value="">Pilih Kabupaten/Kota</option>
-                        </select>
-                    </div>
+                
+                <div class="form-group">
+                    <label for="plantType" class="form-label">Jenis Tanaman</label>
+                    <select id="plantType" class="form-control" required>
+                        <option value="">Pilih jenis tanaman</option>
+                        <option value="padi">Padi</option>
+                        <option value="jagung">Jagung</option>
+                        <option value="kedelai">Kedelai</option>
+                        <option value="cabai">Cabai</option>
+                        <option value="tomat">Tomat</option>
+                        <option value="tebu">Tebu</option>
+                    </select>
                 </div>
-            </div>
-            
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="district">Kecamatan</label>
-                        <select class="form-control" id="district" name="district" required disabled>
-                            <option value="">Pilih Kecamatan</option>
-                        </select>
-                    </div>
+                
+                <div class="form-group">
+                    <label for="soilCondition" class="form-label">Kondisi Tanah</label>
+                    <select id="soilCondition" class="form-control" required>
+                        <option value="">Pilih kondisi tanah</option>
+                        <option value="subur">Subur</option>
+                        <option value="sedang">Sedang</option>
+                        <option value="kurang-subur">Kurang Subur</option>
+                    </select>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="village">Desa/Kelurahan</label>
-                        <select class="form-control" id="village" name="village" required disabled>
-                            <option value="">Pilih Desa/Kelurahan</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary">Prediksi Panen</button>
-            </div>
-        </form>
-        
-        <div class="loading-spinner" id="loadingSpinner">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-            <p class="mt-2">Mengambil data dan menganalisis...</p>
+                
+                <button type="submit" class="btn-submit">Prediksi Panen</button>
+            </form>
         </div>
         
-        <div class="result-card" id="predictionResult" style="display: none;">
-            <h4 class="section-title">Hasil Prediksi</h4>
-            <div id="locationInfo"></div>
-            
-            <div class="mt-3">
-                <h5>Kondisi Lingkungan:</h5>
-                <div id="environmentInfo"></div>
-            </div>
-            
-            <div class="mt-3">
-                <h5>Prediksi Hasil Panen:</h5>
-                <div class="prediction-result" id="harvestPrediction"></div>
-                <div class="crop-suggestion" id="cropSuggestion"></div>
-            </div>
-            
-            <div class="mt-3">
-                <h5>Rekomendasi:</h5>
-                <div id="recommendations"></div>
-            </div>
-            
-            <div class="mt-3 text-muted small">
-                <p>Data diperbarui: <span id="dataUpdatedAt"></span></p>
-                <p>Sumber data: API BMKG & Kementerian Pertanian</p>
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>Mengambil data prediksi dari API pemerintah...</p>
+        </div>
+        
+        <div id="predictionResult" style="display: none;">
+            <div class="result-card">
+                <h3 class="result-title">Hasil Prediksi Panen</h3>
+                <div class="result-value">
+                    <p><strong>Daerah:</strong> <span id="resultRegion"></span></p>
+                    <p><strong>Jenis Tanaman:</strong> <span id="resultPlant"></span></p>
+                    <p><strong>Kondisi Tanah:</strong> <span id="resultSoil"></span></p>
+                    <p><strong>Perkiraan Waktu Panen:</strong> <span id="resultHarvestTime"></span></p>
+                </div>
+                
+                <h4 class="section-title">Rencana Perawatan Tanaman</h4>
+                <div class="table-responsive">
+                    <table class="harvest-table">
+                        <thead>
+                            <tr>
+                                <th>Hari Ke-</th>
+                                <th>Kegiatan</th>
+                                <th>Kondisi Ideal</th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="carePlanTable">
+                            <!-- Table content will be filled by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Load province data from API
-        fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json')
-            .then(response => response.json())
-            .then(provinces => {
-                const provinceSelect = document.getElementById('province');
-                provinces.forEach(province => {
-                    const option = document.createElement('option');
-                    option.value = province.id;
-                    option.textContent = province.name;
-                    provinceSelect.appendChild(option);
-                });
+    document.getElementById('harvestPredictionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading indicator
+        document.getElementById('loadingIndicator').style.display = 'block';
+        document.getElementById('predictionResult').style.display = 'none';
+        
+        // Get form values
+        const region = document.getElementById('region').value;
+        const plantType = document.getElementById('plantType').value;
+        const soilCondition = document.getElementById('soilCondition').value;
+        
+        // Simulate API call (in a real app, this would be an actual API call)
+        setTimeout(function() {
+            // Hide loading indicator
+            document.getElementById('loadingIndicator').style.display = 'none';
+            
+            // Display results
+            document.getElementById('resultRegion').textContent = document.getElementById('region').options[document.getElementById('region').selectedIndex].text;
+            document.getElementById('resultPlant').textContent = document.getElementById('plantType').options[document.getElementById('plantType').selectedIndex].text;
+            document.getElementById('resultSoil').textContent = document.getElementById('soilCondition').options[document.getElementById('soilCondition').selectedIndex].text;
+            
+            // Generate prediction based on inputs
+            const prediction = generatePrediction(region, plantType, soilCondition);
+            document.getElementById('resultHarvestTime').textContent = prediction.harvestTime;
+            
+            // Fill care plan table
+            const tableBody = document.getElementById('carePlanTable');
+            tableBody.innerHTML = '';
+            
+            prediction.carePlan.forEach(day => {
+                const row = document.createElement('tr');
+                
+                const dayCell = document.createElement('td');
+                dayCell.textContent = day.day;
+                row.appendChild(dayCell);
+                
+                const activityCell = document.createElement('td');
+                activityCell.textContent = day.activity;
+                row.appendChild(activityCell);
+                
+                const conditionCell = document.createElement('td');
+                conditionCell.textContent = day.condition;
+                row.appendChild(conditionCell);
+                
+                const noteCell = document.createElement('td');
+                noteCell.textContent = day.note;
+                row.appendChild(noteCell);
+                
+                tableBody.appendChild(row);
             });
-        
-        // Province change event
-        document.getElementById('province').addEventListener('change', function() {
-            const provinceId = this.value;
-            const regencySelect = document.getElementById('regency');
             
-            regencySelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
-            regencySelect.disabled = !provinceId;
-            
-            if (provinceId) {
-                fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`)
-                    .then(response => response.json())
-                    .then(regencies => {
-                        regencies.forEach(regency => {
-                            const option = document.createElement('option');
-                            option.value = regency.id;
-                            option.textContent = regency.name;
-                            regencySelect.appendChild(option);
-                        });
-                    });
-            }
-            
-            // Reset district and village
-            document.getElementById('district').innerHTML = '<option value="">Pilih Kecamatan</option>';
-            document.getElementById('district').disabled = true;
-            document.getElementById('village').innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
-            document.getElementById('village').disabled = true;
-        });
-        
-        // Regency change event
-        document.getElementById('regency').addEventListener('change', function() {
-            const regencyId = this.value;
-            const districtSelect = document.getElementById('district');
-            
-            districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-            districtSelect.disabled = !regencyId;
-            
-            if (regencyId) {
-                fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${regencyId}.json`)
-                    .then(response => response.json())
-                    .then(districts => {
-                        districts.forEach(district => {
-                            const option = document.createElement('option');
-                            option.value = district.id;
-                            option.textContent = district.name;
-                            districtSelect.appendChild(option);
-                        });
-                    });
-            }
-            
-            // Reset village
-            document.getElementById('village').innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
-            document.getElementById('village').disabled = true;
-        });
-        
-        // District change event
-        document.getElementById('district').addEventListener('change', function() {
-            const districtId = this.value;
-            const villageSelect = document.getElementById('village');
-            
-            villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
-            villageSelect.disabled = !districtId;
-            
-            if (districtId) {
-                fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${districtId}.json`)
-                    .then(response => response.json())
-                    .then(villages => {
-                        villages.forEach(village => {
-                            const option = document.createElement('option');
-                            option.value = village.id;
-                            option.textContent = village.name;
-                            villageSelect.appendChild(option);
-                        });
-                    });
-            }
-        });
-        
-        // Form submission
-        document.getElementById('harvestPredictionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const province = document.getElementById('province');
-            const regency = document.getElementById('regency');
-            const district = document.getElementById('district');
-            const village = document.getElementById('village');
-            
-            if (!province.value || !regency.value || !district.value || !village.value) {
-                alert('Silakan lengkapi semua data wilayah!');
-                return;
-            }
-            
-            // Show loading spinner
-            document.getElementById('loadingSpinner').style.display = 'block';
-            document.getElementById('predictionResult').style.display = 'none';
-            
-            // Simulate API call to government weather and soil data
-            // In a real implementation, this would call your backend which then calls government APIs
-            setTimeout(() => {
-                // This is a simulation - in real app you would call actual APIs
-                const selectedProvince = province.options[province.selectedIndex].text;
-                const selectedRegency = regency.options[regency.selectedIndex].text;
-                const selectedDistrict = district.options[district.selectedIndex].text;
-                const selectedVillage = village.options[village.selectedIndex].text;
-                
-                // Mock data - replace with actual API calls in production
-                const mockWeatherData = {
-                    temperature: 28 + Math.floor(Math.random() * 5),
-                    humidity: 70 + Math.floor(Math.random() * 20),
-                    rainfall: Math.floor(Math.random() * 100),
-                    sunlight: 8 + Math.floor(Math.random() * 4)
-                };
-                
-                const mockSoilData = {
-                    pH: (6.0 + Math.random() * 1.5).toFixed(1),
-                    nitrogen: (0.1 + Math.random() * 0.3).toFixed(2),
-                    phosphorus: (15 + Math.random() * 30).toFixed(0),
-                    potassium: (100 + Math.random() * 200).toFixed(0),
-                    moisture: (40 + Math.random() * 40).toFixed(0)
-                };
-                
-                // Determine prediction based on conditions
-                let prediction, suggestion, recommendations;
-                
-                if (mockWeatherData.rainfall > 70 && mockSoilData.moisture > 60) {
-                    prediction = "Potensi hasil panen BAIK";
-                    suggestion = "Padi, Jagung, atau Singkong";
-                    recommendations = [
-                        "Perhatikan saluran drainase untuk menghindari genangan air berlebihan",
-                        "Pemupukan nitrogen dapat dikurangi karena kandungan tanah sudah cukup",
-                        "Waspada terhadap hama yang berkembang biak di kondisi lembab"
-                    ];
-                } else if (mockWeatherData.rainfall < 30 && mockSoilData.moisture < 50) {
-                    prediction = "Potensi hasil panen SEDANG (perlu irigasi)";
-                    suggestion = "Kedelai, Kacang Tanah, atau Gandum";
-                    recommendations = [
-                        "Perlu sistem irigasi tambahan untuk menjaga kelembaban tanah",
-                        "Pemupukan kalium dapat membantu tanaman bertahan di kondisi kering",
-                        "Pilih varietas tanaman yang tahan kekeringan"
-                    ];
-                } else {
-                    prediction = "Potensi hasil panen SANGAT BAIK";
-                    suggestion = "Berbagai jenis tanaman cocok ditanam";
-                    recommendations = [
-                        "Pertahankan kondisi tanah dengan rotasi tanaman",
-                        "Pemupukan seimbang sesuai kebutuhan tanaman",
-                        "Pantau perkembangan tanaman secara rutin"
-                    ];
-                }
-                
-                // Display results
-                document.getElementById('locationInfo').innerHTML = `
-                    <p><strong>Lokasi:</strong> ${selectedVillage}, ${selectedDistrict}, ${selectedRegency}, ${selectedProvince}</p>
-                `;
-                
-                document.getElementById('environmentInfo').innerHTML = `
-                    <div class="parameter-item">
-                        <span>Suhu Udara:</span>
-                        <span class="parameter-value">${mockWeatherData.temperature}°C</span>
-                    </div>
-                    <div class="parameter-item">
-                        <span>Kelembaban:</span>
-                        <span class="parameter-value">${mockWeatherData.humidity}%</span>
-                    </div>
-                    <div class="parameter-item">
-                        <span>Curah Hujan:</span>
-                        <span class="parameter-value">${mockWeatherData.rainfall} mm</span>
-                    </div>
-                    <div class="parameter-item">
-                        <span>Penyinaran Matahari:</span>
-                        <span class="parameter-value">${mockWeatherData.sunlight} jam/hari</span>
-                    </div>
-                    <div class="parameter-item">
-                        <span>pH Tanah:</span>
-                        <span class="parameter-value">${mockSoilData.pH}</span>
-                    </div>
-                    <div class="parameter-item">
-                        <span>Nitrogen Tanah:</span>
-                        <span class="parameter-value">${mockSoilData.nitrogen}%</span>
-                    </div>
-                `;
-                
-                document.getElementById('harvestPrediction').textContent = prediction;
-                document.getElementById('cropSuggestion').innerHTML = `<strong>Tanaman yang disarankan:</strong> ${suggestion}`;
-                
-                const recommendationsList = recommendations.map(rec => `<li>${rec}</li>`).join('');
-                document.getElementById('recommendations').innerHTML = `<ul>${recommendationsList}</ul>`;
-                
-                const now = new Date();
-                document.getElementById('dataUpdatedAt').textContent = now.toLocaleString();
-                
-                // Hide loading and show results
-                document.getElementById('loadingSpinner').style.display = 'none';
-                document.getElementById('predictionResult').style.display = 'block';
-            }, 1500); // Simulate API delay
-        });
+            // Show results
+            document.getElementById('predictionResult').style.display = 'block';
+        }, 1500); // Simulate API delay
     });
+    
+    // Function to generate prediction based on inputs
+    function generatePrediction(region, plantType, soilCondition) {
+        // This is mock data - in a real app, this would come from government API
+        const predictions = {
+            'padi': {
+                'subur': {
+                    harvestTime: '90-100 hari',
+                    carePlan: generateRiceCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '100-110 hari',
+                    carePlan: generateRiceCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '110-120 hari',
+                    carePlan: generateRiceCarePlan('kurang-subur')
+                }
+            },
+            'jagung': {
+                'subur': {
+                    harvestTime: '80-90 hari',
+                    carePlan: generateCornCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '90-100 hari',
+                    carePlan: generateCornCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '100-110 hari',
+                    carePlan: generateCornCarePlan('kurang-subur')
+                }
+            },
+            'kedelai': {
+                'subur': {
+                    harvestTime: '75-85 hari',
+                    carePlan: generateSoybeanCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '85-95 hari',
+                    carePlan: generateSoybeanCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '95-105 hari',
+                    carePlan: generateSoybeanCarePlan('kurang-subur')
+                }
+            }
+        };
+        
+        // Default to padi if plant type not in mock data
+        const plantData = predictions[plantType] || predictions['padi'];
+        return plantData[soilCondition] || plantData['subur'];
+    }
+    
+    // Functions to generate care plans for different plants
+    function generateRiceCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 100 : (soilCondition === 'sedang' ? 110 : 120);
+        const plan = [];
+        
+        // Week 1-2: Preparation and planting
+        for (let i = 1; i <= 14; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
+                condition: 'Kelembaban tanah sedang',
+                note: i <= 7 ? 'Pembajakan dan pengairan' : 'Bibit umur 21 hari'
+            });
+        }
+        
+        // Week 3-8: Growth phase
+        for (let i = 15; i <= 56; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Ketinggian air 2-5 cm',
+                note: week >= 4 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+            });
+        }
+        
+        // Week 9-14: Flowering to harvest
+        for (let i = 57; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 12 ? 'Persiapan panen' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: week >= 12 ? 'Pengeringan lahan' : 'Penyemprotan pestisida'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateCornCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 90 : (soilCondition === 'sedang' ? 100 : 110);
+        const plan = [];
+        
+        // Week 1-3: Planting
+        for (let i = 1; i <= 21; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman benih',
+                condition: 'Tanah gembur',
+                note: i <= 7 ? 'Pengolahan tanah' : 'Benih berkualitas'
+            });
+        }
+        
+        // Week 4-8: Growth phase
+        for (let i = 22; i <= 56; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Cukup air',
+                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan'
+            });
+        }
+        
+        // Week 9-13: Flowering to harvest
+        for (let i = 57; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 12 ? 'Panen' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: week >= 12 ? 'Pemanenan biji' : 'Pemantauan tongkol'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateSoybeanCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 85 : (soilCondition === 'sedang' ? 95 : 105);
+        const plan = [];
+        
+        // Week 1-2: Preparation and planting
+        for (let i = 1; i <= 14; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman benih',
+                condition: 'Tanah lembab',
+                note: i <= 7 ? 'Pengolahan tanah' : 'Jarak tanam 30x20 cm'
+            });
+        }
+        
+        // Week 3-6: Growth phase
+        for (let i = 15; i <= 42; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Kelembaban sedang',
+                note: week >= 4 ? 'Pemupukan susulan' : 'Penyiangan'
+            });
+        }
+        
+        // Week 7-12: Flowering to harvest
+        for (let i = 43; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 10 ? 'Panen' : 'Pengendalian hama',
+                condition: 'Sinar matahari cukup',
+                note: week >= 10 ? 'Panen saat polong matang' : 'Penyemprotan pestisida'
+            });
+        }
+        
+        return plan;
+    }
 </script>
 @endsection
