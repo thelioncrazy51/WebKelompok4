@@ -57,12 +57,8 @@
     <h1 class="welcome-title">Prediksi Panen</h1>
 
     <div class="dashboard-section">
-        <h3 class="section-title">Admin Dashboard</h3>
-        <p style="color: #145214;">Anda login sebagai administrator. Gunakan menu navigasi untuk mengelola sistem.</p>
         
         <!-- You can add more dashboard content here -->
-
-        
         
     </div>
 </div>
