@@ -94,6 +94,24 @@
         </div>
     </div>
 </div>
+
+<!-- Modal untuk notifikasi -->
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalMessage"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <a href="/login" class="btn btn-success" id="goToLogin">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function togglePassword(fieldId) {
     const passwordField = document.getElementById(fieldId);
