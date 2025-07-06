@@ -62,4 +62,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::resource('users', UserController::class)->except(['show']);
 
-Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
+Route::get('/export-users', [ExportController::class, 'exportUsers'])->name('export.users');
