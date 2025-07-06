@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\PredictionController;
 
 // Halaman Home
 Route::get('/', function () {
