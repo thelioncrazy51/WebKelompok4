@@ -70,20 +70,20 @@ class ExportController extends Controller
         <Worksheet ss:Name="Users">
         <Table>
             <!-- Column Widths -->
-            <Column ss:Width="5"/>   <!-- ID -->
-            <Column ss:Width="30"/>  <!-- Nama -->
-            <Column ss:Width="30"/>  <!-- Email -->
-            <Column ss:Width="15"/>  <!-- Role -->';
+            <Column ss:Width="20"/>   <!-- ID -->
+            <Column ss:Width="200"/>  <!-- Nama -->
+            <Column ss:Width="200"/>  <!-- Email -->
+            <Column ss:Width="50"/>  <!-- Role -->';
 
         // Hanya tambahkan header jika ada data
         if ($users->count() > 0) {
             $content .= '
             <!-- Header Row -->
             <Row ss:Height="20" ss:StyleID="Header">
-                <Cell><Data ss:Type="String">ID</Data></Cell>
-                <Cell><Data ss:Type="String">Nama</Data></Cell>
-                <Cell><Data ss:Type="String">Email</Data></Cell>
-                <Cell><Data ss:Type="String">Role</Data></Cell>
+                <Cell ss:StyleID="Header"><Data ss:Type="String">ID</Data></Cell>
+                <Cell ss:StyleID="Header"><Data ss:Type="String">Nama</Data></Cell>
+                <Cell ss:StyleID="Header"><Data ss:Type="String">Email</Data></Cell>
+                <Cell ss:StyleID="Header"><Data ss:Type="String">Role</Data></Cell>
             </Row>';
         }
 
