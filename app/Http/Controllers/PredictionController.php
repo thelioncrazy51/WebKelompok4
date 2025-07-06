@@ -26,6 +26,7 @@ class PredictionController extends Controller
             'soil_condition' => $request->soil,
             'harvest_time' => $request->harvestTime,
             'care_plan' => json_encode($request->carePlan),
+            'prediction_date' => now(),
         ]);
 
         return response()->json(['success' => true]);

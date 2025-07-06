@@ -889,41 +889,5 @@
             alert('Terjadi kesalahan saat menyimpan prediksi');
         });
     });
-    
-    document.getElementById('savePredictionBtn').addEventListener('click', function() {
-        const predictionData = {
-            location: document.getElementById('resultLocation').innerText,
-            plant: document.getElementById('resultPlant').innerText,
-            soil: document.getElementById('resultSoil').innerText,
-            harvestTime: document.getElementById('resultHarvestTime').innerText,
-            carePlan: []
-        };
-
-        // Ambil data dari tabel
-        document.querySelectorAll('#carePlanTable tr').forEach(row => {
-            predictionData.carePlan.push({
-                day: row.cells[0].innerText,
-                activity: row.cells[1].innerText,
-                condition: row.cells[2].innerText,
-                note: row.cells[3].innerText
-            });
-        });
-
-        // Kirim ke backend
-        fetch('/save-prediction', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify(predictionData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = '/history'; // Redirect ke history
-            }
-        });
-    });
 </script>
 @endsection

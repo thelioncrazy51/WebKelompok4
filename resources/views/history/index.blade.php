@@ -24,6 +24,7 @@
                     <tr>
                         <td>{{ $prediction->title }}</td>
                         <td>{{ $prediction->plant_type }}</td>
+                        <td>{{ $prediction->prediction_date->format('d M Y') }}</td>
                         <td>
                             <a href="{{ route('history.show', $prediction->id) }}" class="btn-submit">Lihat</a>
                         </td>
