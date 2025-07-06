@@ -60,6 +60,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/data', [DataController::class, 'showData'])->name('admin.data'); // Tambahkan ini
 });
 
-Route::resource('users', UserController::class);
+Route::resource('users', UserController::class)->except(['show']);
 
 Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
