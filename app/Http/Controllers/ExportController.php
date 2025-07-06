@@ -10,7 +10,7 @@ class ExportController extends Controller
 {
     public function exportUsers()
     {
-        $users = User::select('id', 'name', 'email', 'role')->get();
+        $users = User::select('id', 'name', 'password', 'email', 'role')->get();
         
         $fileName = 'Data-User-SmartFarming_' . date('Y-m-d') . '.xls';
         
@@ -73,6 +73,7 @@ class ExportController extends Controller
             <Column ss:Width="20"/>   <!-- ID -->
             <Column ss:Width="200"/>  <!-- Nama -->
             <Column ss:Width="200"/>  <!-- Email -->
+            <Column ss:Width="200"/>  <!-- Password -->
             <Column ss:Width="50"/>  <!-- Role -->';
 
         // Hanya tambahkan header jika ada data
@@ -83,6 +84,7 @@ class ExportController extends Controller
                 <Cell ss:StyleID="Header"><Data ss:Type="String">ID</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Nama</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Email</Data></Cell>
+                <Cell ss:StyleID="Header"><Data ss:Type="String">Password</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Role</Data></Cell>
             </Row>';
         }
@@ -94,6 +96,7 @@ class ExportController extends Controller
                 <Cell ss:StyleID="Center"><Data ss:Type="Number">' . $user->id . '</Data></Cell>
                 <Cell ss:StyleID="Left"><Data ss:Type="String">' . $this->escapeExcelXml($user->name) . '</Data></Cell>
                 <Cell ss:StyleID="Left"><Data ss:Type="String">' . $this->escapeExcelXml($user->email) . '</Data></Cell>
+                <Cell ss:StyleID="Left"><Data ss:Type="String">' . $this->escapeExcelXml($user->password) . '</Data></Cell>
                 <Cell ss:StyleID="Center"><Data ss:Type="String">' . $this->escapeExcelXml($user->role) . '</Data></Cell>
             </Row>';
         }
