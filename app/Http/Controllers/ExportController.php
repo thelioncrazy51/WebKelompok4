@@ -12,7 +12,7 @@ class ExportController extends Controller
     {
         $users = User::select('id', 'name', 'email', 'role')->get();
         
-        $fileName = 'users_' . date('Y-m-d') . '.xls';
+        $fileName = 'Data-User-SmartFarming_' . date('Y-m-d') . '.xls';
         
         $headers = [
             'Content-Type' => 'application/vnd.ms-excel',
@@ -52,10 +52,10 @@ class ExportController extends Controller
         <Worksheet ss:Name="Users">
         <Table>
             <!-- Column Widths -->
-            <Column ss:Width="5"/>   <!-- ID -->
-            <Column ss:Width="30"/>  <!-- Nama -->
-            <Column ss:Width="30"/>  <!-- Email -->
-            <Column ss:Width="15"/>  <!-- Role -->
+            <Column ss:Width="10"/>   <!-- ID -->
+            <Column ss:Width="10"/>  <!-- Nama -->
+            <Column ss:Width="10"/>  <!-- Email -->
+            <Column ss:Width="10"/>  <!-- Role -->
             
             <!-- Header Row -->
             <Row ss:Height="20" ss:StyleID="Header">
