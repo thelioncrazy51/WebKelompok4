@@ -52,10 +52,10 @@ class ExportController extends Controller
         <Worksheet ss:Name="Users">
         <Table>
             <!-- Column Widths -->
-            <Column ss:Width="10"/>   <!-- ID -->
-            <Column ss:Width="10"/>  <!-- Nama -->
-            <Column ss:Width="10"/>  <!-- Email -->
-            <Column ss:Width="10"/>  <!-- Role -->
+            <Column ss:Width="20"/>   <!-- ID -->
+            <Column ss:Width="100"/>  <!-- Nama -->
+            <Column ss:Width="100"/>  <!-- Email -->
+            <Column ss:Width="50"/>  <!-- Role -->
             
             <!-- Header Row -->
             <Row ss:Height="20" ss:StyleID="Header">
