@@ -38,25 +38,46 @@ class ExportController extends Controller
         <Styles>
             <Style ss:ID="Header">
                 <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
-                <Font ss:Bold="1"/>
-                <Interior ss:Color="#D3D3D3" ss:Pattern="Solid"/>
+                <Font ss:Bold="1" ss:Color="#FFFFFF"/>
+                <Interior ss:Color="#4CAF50" ss:Pattern="Solid"/>
+                <Borders>
+                    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                </Borders>
             </Style>
             <Style ss:ID="Center">
                 <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+                <Borders>
+                    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                </Borders>
             </Style>
             <Style ss:ID="Left">
                 <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+                <Borders>
+                    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#000000"/>
+                </Borders>
             </Style>
         </Styles>
         
         <Worksheet ss:Name="Users">
         <Table>
             <!-- Column Widths -->
-            <Column ss:Width="20"/>   <!-- ID -->
-            <Column ss:Width="100"/>  <!-- Nama -->
-            <Column ss:Width="100"/>  <!-- Email -->
-            <Column ss:Width="50"/>  <!-- Role -->
-            
+            <Column ss:Width="5"/>   <!-- ID -->
+            <Column ss:Width="30"/>  <!-- Nama -->
+            <Column ss:Width="30"/>  <!-- Email -->
+            <Column ss:Width="15"/>  <!-- Role -->';
+
+        // Hanya tambahkan header jika ada data
+        if ($users->count() > 0) {
+            $content .= '
             <!-- Header Row -->
             <Row ss:Height="20" ss:StyleID="Header">
                 <Cell><Data ss:Type="String">ID</Data></Cell>
@@ -64,6 +85,7 @@ class ExportController extends Controller
                 <Cell><Data ss:Type="String">Email</Data></Cell>
                 <Cell><Data ss:Type="String">Role</Data></Cell>
             </Row>';
+        }
 
         // Data rows
         foreach ($users as $user) {
