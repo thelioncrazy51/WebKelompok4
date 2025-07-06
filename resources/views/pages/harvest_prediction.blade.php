@@ -215,7 +215,7 @@
                 </div>
                 
                 <div id="soilInfoContainer" class="soil-info" style="display: none;">
-                    <p><strong>Kondisi Tanah Otomatis Terdeteksi:</strong></p>
+                    <p><strong>Kondisi Tanah:</strong></p>
                     <p id="soilTypeDisplay">Jenis Tanah: -</p>
                     <p id="soilFertilityDisplay">Tingkat Kesuburan: -</p>
                     <p id="soilPhDisplay">pH Tanah: -</p>
@@ -241,7 +241,7 @@
         
         <div class="loading" id="loadingIndicator">
             <div class="spinner"></div>
-            <p>Mengambil data prediksi dari API pemerintah...</p>
+            <p>Memproses...</p>
         </div>
         
         <div id="predictionResult" style="display: none;">
