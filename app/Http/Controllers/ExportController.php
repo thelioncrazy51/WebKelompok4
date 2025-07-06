@@ -36,6 +36,11 @@ class ExportController extends Controller
         
         <!-- Define Styles -->
         <Styles>
+            <Style ss:ID="Title">
+                <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+                <Font ss:Size="36" ss:Color="#4CAF50" ss:Bold="1"/>
+                <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+            </Style>
             <Style ss:ID="Header">
                 <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
                 <Font ss:Bold="1" ss:Color="#FFFFFF"/>
@@ -74,7 +79,13 @@ class ExportController extends Controller
             <Column ss:Width="200"/>  <!-- Nama -->
             <Column ss:Width="200"/>  <!-- Email -->
             <Column ss:Width="200"/>  <!-- Password -->
-            <Column ss:Width="50"/>  <!-- Role -->';
+            <Column ss:Width="50"/>  <!-- Role -->
+            
+            <!-- Baris Judul -->
+            <Row ss:Height="30">
+                <Cell ss:MergeAcross="4" ss:StyleID="Title"><Data ss:Type="String">Data User</Data></Cell>
+            </Row>
+            <Row></Row>';  // Baris kosong sebagai pemisah
 
         // Hanya tambahkan header jika ada data
         if ($users->count() > 0) {

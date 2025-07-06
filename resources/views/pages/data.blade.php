@@ -108,7 +108,7 @@
 
 <div class="glass-card p-4 mb-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="section-title">Data dari Database</h2>
+        <h2 class="section-title">Data User</h2>
         <a href="{{ route('export.users') }}" class="btn btn-info me-2">
             <i class="fas fa-file-excel"></i> Export Excel
         </a>
