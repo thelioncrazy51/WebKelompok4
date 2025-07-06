@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Str;
 
 class ExportController extends Controller
 {
@@ -14,56 +12,57 @@ class ExportController extends Controller
     {
         $users = User::select('id', 'name', 'email', 'role')->get();
         
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
+        $fileName = 'users_' . date('Y-m-d') . '.xls';
         
-        // Set header
-        $sheet->setCellValue('A1', 'ID');
-        $sheet->setCellValue('B1', 'Nama');
-        $sheet->setCellValue('C1', 'Email');
-        $sheet->setCellValue('D1', 'Role');
-        
-        // Style untuk header
-        $headerStyle = [
-            'font' => [
-                'bold' => true,
-                'color' => ['rgb' => 'FFFFFF']
-            ],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['rgb' => '4CAF50']
-            ]
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
         ];
+
+        $content = $this->generateExcelContent($users);
         
-        $sheet->getStyle('A1:D1')->applyFromArray($headerStyle);
-        
-        // Isi data
-        $row = 2;
+        return response()->make($content, 200, $headers);
+    }
+
+    private function generateExcelContent($users)
+    {
+        // Header Excel XML
+        $content = '<?xml version="1.0"?>
+        <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+        xmlns:o="urn:schemas-microsoft-com:office:office"
+        xmlns:x="urn:schemas-microsoft-com:office:excel"
+        xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+        xmlns:html="http://www.w3.org/TR/REC-html40">
+        <Worksheet ss:Name="Users">
+        <Table>
+        <Row>
+            <Cell><Data ss:Type="String">ID</Data></Cell>
+            <Cell><Data ss:Type="String">Nama</Data></Cell>
+            <Cell><Data ss:Type="String">Email</Data></Cell>
+            <Cell><Data ss:Type="String">Role</Data></Cell>
+        </Row>';
+
+        // Data rows
         foreach ($users as $user) {
-            $sheet->setCellValue('A'.$row, $user->id);
-            $sheet->setCellValue('B'.$row, $user->name);
-            $sheet->setCellValue('C'.$row, $user->email);
-            $sheet->setCellValue('D'.$row, ucfirst($user->role));
-            $row++;
+            $content .= '
+            <Row>
+                <Cell><Data ss:Type="Number">' . $user->id . '</Data></Cell>
+                <Cell><Data ss:Type="String">' . $this->escapeExcelXml($user->name) . '</Data></Cell>
+                <Cell><Data ss:Type="String">' . $this->escapeExcelXml($user->email) . '</Data></Cell>
+                <Cell><Data ss:Type="String">' . $this->escapeExcelXml($user->role) . '</Data></Cell>
+            </Row>';
         }
-        
-        // Auto size kolom
-        foreach(range('A','D') as $columnID) {
-            $sheet->getColumnDimension($columnID)->setAutoSize(true);
-        }
-        
-        $writer = new Xlsx($spreadsheet);
-        
-        $response = new StreamedResponse(
-            function () use ($writer) {
-                $writer->save('php://output');
-            }
-        );
-        
-        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $response->headers->set('Content-Disposition', 'attachment;filename="users.xlsx"');
-        $response->headers->set('Cache-Control', 'max-age=0');
-        
-        return $response;
+
+        $content .= '
+        </Table>
+        </Worksheet>
+        </Workbook>';
+
+        return $content;
+    }
+
+    private function escapeExcelXml($value)
+    {
+        return htmlspecialchars($value, ENT_QUOTES | ENT_XML1, 'UTF-8');
     }
 }
