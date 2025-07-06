@@ -79,7 +79,7 @@ class ExportController extends Controller
         if ($users->count() > 0) {
             $content .= '
             <!-- Header Row -->
-            <Row ss:Height="20" ss:StyleID="Header">
+            <Row ss:Height="20">
                 <Cell ss:StyleID="Header"><Data ss:Type="String">ID</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Nama</Data></Cell>
                 <Cell ss:StyleID="Header"><Data ss:Type="String">Email</Data></Cell>
