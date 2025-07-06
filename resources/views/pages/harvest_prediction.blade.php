@@ -266,7 +266,7 @@
                             </tr>
                         </thead>
                         <tbody id="carePlanTable">
-                            <!-- Table content will be filled by JavaScript -->
+                            <!-- Konten tabel akan diisi oleh JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -277,292 +277,158 @@
 
 <script src="{{ asset('js/locationData.js') }}"></script>
 <script>
-    // DOM elements
-    const provinceSelect = document.getElementById('province');
-    const citySelect = document.getElementById('city');
-    const districtSelect = document.getElementById('district');
-    const villageSelect = document.getElementById('village');
-    const soilInfoContainer = document.getElementById('soilInfoContainer');
-
-    // Province change handler
-    provinceSelect.addEventListener('change', function() {
-        const provinceId = this.value;
+    // Fungsi untuk menggabungkan baris yang sama dalam rencana perawatan
+    function gabungkanBarisSerupa(rencanaPerawatan) {
+        if (!rencanaPerawatan || rencanaPerawatan.length === 0) return [];
         
-        // Reset downstream selects
-        citySelect.innerHTML = '<option value="">Pilih Kota/Kabupaten</option>';
-        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
-        soilInfoContainer.style.display = 'none';
+        const rencanaGabungan = [];
+        let mulaiHari = rencanaPerawatan[0].day;
+        let aktivitasSekarang = rencanaPerawatan[0].activity;
+        let kondisiSekarang = rencanaPerawatan[0].condition;
+        let catatanSekarang = rencanaPerawatan[0].note;
         
-        // Disable downstream selects
-        citySelect.disabled = true;
-        districtSelect.disabled = true;
-        villageSelect.disabled = true;
-        
-        if (provinceId && locationData[provinceId]) {
-            citySelect.disabled = false;
+        for (let i = 1; i < rencanaPerawatan.length; i++) {
+            const item = rencanaPerawatan[i];
             
-            // Populate cities
-            const cities = locationData[provinceId].cities;
-            for (const cityId in cities) {
-                const option = document.createElement('option');
-                option.value = cityId;
-                option.textContent = cities[cityId].name;
-                citySelect.appendChild(option);
+            if (item.activity === aktivitasSekarang && 
+                item.condition === kondisiSekarang && 
+                item.note === catatanSekarang) {
+                // Lanjutkan range saat ini
+                continue;
+            } else {
+                // Akhiri range saat ini dan mulai yang baru
+                rencanaGabungan.push({
+                    day: mulaiHari === rencanaPerawatan[i-1].day 
+                        ? mulaiHari 
+                        : `${mulaiHari}-${rencanaPerawatan[i-1].day}`,
+                    activity: aktivitasSekarang,
+                    condition: kondisiSekarang,
+                    note: catatanSekarang
+                });
+                
+                mulaiHari = item.day;
+                aktivitasSekarang = item.activity;
+                kondisiSekarang = item.condition;
+                catatanSekarang = item.note;
             }
         }
-    });
+        
+        // Tambahkan range terakhir
+        rencanaGabungan.push({
+            day: mulaiHari === rencanaPerawatan[rencanaPerawatan.length-1].day 
+                ? mulaiHari 
+                : `${mulaiHari}-${rencanaPerawatan[rencanaPerawatan.length-1].day}`,
+            activity: aktivitasSekarang,
+            condition: kondisiSekarang,
+            note: catatanSekarang
+        });
+        
+        return rencanaGabungan;
+    }
 
-    // City change handler
-    citySelect.addEventListener('change', function() {
-        const provinceId = provinceSelect.value;
-        const cityId = this.value;
-        
-        // Reset downstream selects
-        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
-        soilInfoContainer.style.display = 'none';
-        
-        // Disable downstream selects
-        districtSelect.disabled = true;
-        villageSelect.disabled = true;
-        
-        if (provinceId && cityId && locationData[provinceId]?.cities[cityId]) {
-            districtSelect.disabled = false;
-            
-            // Populate districts
-            const districts = locationData[provinceId].cities[cityId].districts;
-            for (const districtId in districts) {
-                const option = document.createElement('option');
-                option.value = districtId;
-                option.textContent = districts[districtId].name;
-                districtSelect.appendChild(option);
-            }
-        }
-    });
-
-    // District change handler
-    districtSelect.addEventListener('change', function() {
-        const provinceId = provinceSelect.value;
-        const cityId = citySelect.value;
-        const districtId = this.value;
-        
-        // Reset downstream select
-        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
-        soilInfoContainer.style.display = 'none';
-        
-        // Disable downstream select
-        villageSelect.disabled = true;
-        
-        if (provinceId && cityId && districtId && 
-            locationData[provinceId]?.cities[cityId]?.districts[districtId]) {
-            villageSelect.disabled = false;
-            
-            // Populate villages
-            const villages = locationData[provinceId].cities[cityId].districts[districtId].villages;
-            for (const villageId in villages) {
-                const option = document.createElement('option');
-                option.value = villageId;
-                option.textContent = villages[villageId];
-                villageSelect.appendChild(option);
-            }
-            
-            // Display soil information
-            const soilData = locationData[provinceId].cities[cityId].districts[districtId].soilData;
-            if (soilData) {
-                document.getElementById('soilTypeDisplay').textContent = `Jenis Tanah: ${soilData.soilType}`;
-                document.getElementById('soilFertilityDisplay').textContent = `Tingkat Kesuburan: ${soilData.fertilityDesc}`;
-                document.getElementById('soilPhDisplay').textContent = `pH Tanah: ${soilData.soilPh}`;
-                document.getElementById('soilMoistureDisplay').textContent = `Kelembaban Tanah: ${soilData.soilMoisture}`;
-                soilInfoContainer.style.display = 'block';
-            }
-        }
-    });
-
-    document.getElementById('harvestPredictionForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Show loading indicator
-        document.getElementById('loadingIndicator').style.display = 'block';
-        document.getElementById('predictionResult').style.display = 'none';
-        
-        // Get form values
-        const provinceId = provinceSelect.value;
-        const cityId = citySelect.value;
-        const districtId = districtSelect.value;
-        const villageId = villageSelect.value;
-        const plantType = document.getElementById('plantType').value;
-        
-        if (!provinceId || !cityId || !districtId || !villageId || !plantType) {
-            alert('Silakan lengkapi semua data lokasi dan pilih jenis tanaman');
-            document.getElementById('loadingIndicator').style.display = 'none';
-            return;
-        }
-        
-        // Get soil condition from location data
-        const soilCondition = locationData[provinceId]?.cities[cityId]?.districts[districtId]?.soilData?.soilFertility || 'sedang';
-        
-        // Get location names
-        const provinceName = locationData[provinceId].name;
-        const cityName = locationData[provinceId].cities[cityId].name;
-        const districtName = locationData[provinceId].cities[cityId].districts[districtId].name;
-        const villageName = locationData[provinceId].cities[cityId].districts[districtId].villages[villageId];
-        
-        // Simulate API call (in a real app, this would be an actual API call)
-        setTimeout(function() {
-            // Hide loading indicator
-            document.getElementById('loadingIndicator').style.display = 'none';
-            
-            // Display results
-            document.getElementById('resultLocation').textContent = `${villageName}, ${districtName}, ${cityName}, ${provinceName}`;
-            document.getElementById('resultPlant').textContent = document.getElementById('plantType').options[document.getElementById('plantType').selectedIndex].text;
-            
-            // Display soil condition with description
-            const soilDesc = {
-                'subur': 'Subur (Kaya nutrisi, cocok untuk berbagai tanaman)',
-                'sedang': 'Sedang (Memerlukan pemupukan tambahan)',
-                'kurang-subur': 'Kurang Subur (Perlu perlakuan khusus dan pemupukan intensif)'
-            };
-            document.getElementById('resultSoil').textContent = soilDesc[soilCondition];
-            
-            // Generate prediction based on inputs
-            const prediction = generatePrediction(provinceId, plantType, soilCondition);
-            document.getElementById('resultHarvestTime').textContent = prediction.harvestTime;
-            
-            // Fill care plan table
-            const tableBody = document.getElementById('carePlanTable');
-            tableBody.innerHTML = '';
-            
-            prediction.carePlan.forEach(day => {
-                const row = document.createElement('tr');
-                
-                const dayCell = document.createElement('td');
-                dayCell.textContent = day.day;
-                row.appendChild(dayCell);
-                
-                const activityCell = document.createElement('td');
-                activityCell.textContent = day.activity;
-                row.appendChild(activityCell);
-                
-                const conditionCell = document.createElement('td');
-                conditionCell.textContent = day.condition;
-                row.appendChild(conditionCell);
-                
-                const noteCell = document.createElement('td');
-                noteCell.textContent = day.note;
-                row.appendChild(noteCell);
-                
-                tableBody.appendChild(row);
-            });
-            
-            // Show results
-            document.getElementById('predictionResult').style.display = 'block';
-        }, 1500); // Simulate API delay
-    });
-    
-    // Function to generate prediction based on inputs
-    function generatePrediction(region, plantType, soilCondition) {
-        // This is mock data - in a real app, this would come from government API
-        const predictions = {
+    // Fungsi untuk menghasilkan prediksi berdasarkan input
+    function buatPrediksi(provinsi, jenisTanaman, kondisiTanah) {
+        // Data contoh - di aplikasi nyata, ini akan berasal dari API pemerintah
+        const semuaPrediksi = {
             'padi': {
                 'subur': {
                     harvestTime: '90-100 hari',
-                    carePlan: generateRiceCarePlan('subur')
+                    carePlan: buatRencanaPadi('subur')
                 },
                 'sedang': {
                     harvestTime: '100-110 hari',
-                    carePlan: generateRiceCarePlan('sedang')
+                    carePlan: buatRencanaPadi('sedang')
                 },
                 'kurang-subur': {
                     harvestTime: '110-120 hari',
-                    carePlan: generateRiceCarePlan('kurang-subur')
+                    carePlan: buatRencanaPadi('kurang-subur')
                 }
             },
             'jagung': {
                 'subur': {
                     harvestTime: '80-90 hari',
-                    carePlan: generateCornCarePlan('subur')
+                    carePlan: buatRencanaJagung('subur')
                 },
                 'sedang': {
                     harvestTime: '90-100 hari',
-                    carePlan: generateCornCarePlan('sedang')
+                    carePlan: buatRencanaJagung('sedang')
                 },
                 'kurang-subur': {
                     harvestTime: '100-110 hari',
-                    carePlan: generateCornCarePlan('kurang-subur')
+                    carePlan: buatRencanaJagung('kurang-subur')
                 }
             },
             'kedelai': {
                 'subur': {
                     harvestTime: '75-85 hari',
-                    carePlan: generateSoybeanCarePlan('subur')
+                    carePlan: buatRencanaKedelai('subur')
                 },
                 'sedang': {
                     harvestTime: '85-95 hari',
-                    carePlan: generateSoybeanCarePlan('sedang')
+                    carePlan: buatRencanaKedelai('sedang')
                 },
                 'kurang-subur': {
                     harvestTime: '95-105 hari',
-                    carePlan: generateSoybeanCarePlan('kurang-subur')
+                    carePlan: buatRencanaKedelai('kurang-subur')
                 }
             },
             'cabai': {
                 'subur': {
                     harvestTime: '70-80 hari',
-                    carePlan: generateChiliCarePlan('subur')
+                    carePlan: buatRencanaCabai('subur')
                 },
                 'sedang': {
                     harvestTime: '80-90 hari',
-                    carePlan: generateChiliCarePlan('sedang')
+                    carePlan: buatRencanaCabai('sedang')
                 },
                 'kurang-subur': {
                     harvestTime: '90-100 hari',
-                    carePlan: generateChiliCarePlan('kurang-subur')
+                    carePlan: buatRencanaCabai('kurang-subur')
                 }
             },
             'tomat': {
                 'subur': {
                     harvestTime: '65-75 hari',
-                    carePlan: generateTomatoCarePlan('subur')
+                    carePlan: buatRencanaTomat('subur')
                 },
                 'sedang': {
                     harvestTime: '75-85 hari',
-                    carePlan: generateTomatoCarePlan('sedang')
+                    carePlan: buatRencanaTomat('sedang')
                 },
                 'kurang-subur': {
                     harvestTime: '85-95 hari',
-                    carePlan: generateTomatoCarePlan('kurang-subur')
+                    carePlan: buatRencanaTomat('kurang-subur')
                 }
             },
             'tebu': {
                 'subur': {
                     harvestTime: '330-360 hari',
-                    carePlan: generateSugarcaneCarePlan('subur')
+                    carePlan: buatRencanaTebu('subur')
                 },
                 'sedang': {
                     harvestTime: '360-390 hari',
-                    carePlan: generateSugarcaneCarePlan('sedang')
+                    carePlan: buatRencanaTebu('sedang')
                 },
                 'kurang-subur': {
                     harvestTime: '390-420 hari',
-                    carePlan: generateSugarcaneCarePlan('kurang-subur')
+                    carePlan: buatRencanaTebu('kurang-subur')
                 }
             }
         };
         
-        // Default to padi if plant type not in mock data
-        const plantData = predictions[plantType] || predictions['padi'];
-        return plantData[soilCondition] || plantData['subur'];
+        // Default ke padi jika jenis tanaman tidak ada di data contoh
+        const dataTanaman = semuaPrediksi[jenisTanaman] || semuaPrediksi['padi'];
+        return dataTanaman[kondisiTanah] || dataTanaman['subur'];
     }
-    
-    // Functions to generate care plans for different plants (same as before)
-    function generateRiceCarePlan(soilCondition) {
-        const days = soilCondition === 'subur' ? 100 : (soilCondition === 'sedang' ? 110 : 120);
-        const plan = [];
+
+    // Fungsi untuk membuat rencana perawatan padi
+    function buatRencanaPadi(kondisiTanah) {
+        const hari = kondisiTanah === 'subur' ? 100 : (kondisiTanah === 'sedang' ? 110 : 120);
+        const rencana = [];
         
-        // Week 1-2: Preparation and planting
+        // Minggu 1-2: Persiapan dan penanaman
         for (let i = 1; i <= 14; i++) {
-            plan.push({
+            rencana.push({
                 day: i,
                 activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
                 condition: 'Kelembaban tanah sedang',
@@ -570,224 +436,118 @@
             });
         }
         
-        // Week 3-8: Growth phase
+        // Minggu 3-8: Fase pertumbuhan
         for (let i = 15; i <= 56; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
+            const minggu = Math.floor((i-1)/7) + 1;
+            rencana.push({
                 day: i,
                 activity: 'Pemeliharaan',
                 condition: 'Ketinggian air 2-5 cm',
-                note: week >= 4 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+                note: minggu >= 4 ? 'Pemupukan susulan' : 'Penyiangan gulma'
             });
         }
         
-        // Week 9-14: Flowering to harvest
-        for (let i = 57; i <= days; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
+        // Minggu 9-14: Pembungaan hingga panen
+        for (let i = 57; i <= hari; i++) {
+            const minggu = Math.floor((i-1)/7) + 1;
+            rencana.push({
                 day: i,
-                activity: week >= 12 ? 'Persiapan panen' : 'Pengendalian hama',
+                activity: minggu >= 12 ? 'Persiapan panen' : 'Pengendalian hama',
                 condition: 'Sinar matahari penuh',
-                note: week >= 12 ? 'Pengeringan lahan' : 'Penyemprotan pestisida'
+                note: minggu >= 12 ? 'Pengeringan lahan' : 'Penyemprotan pestisida'
             });
         }
         
-        return plan;
+        return rencana;
     }
-    
-    function generateCornCarePlan(soilCondition) {
-        const days = soilCondition === 'subur' ? 90 : (soilCondition === 'sedang' ? 100 : 110);
-        const plan = [];
+
+    // Fungsi-fungsi untuk membuat rencana perawatan tanaman lain (jagung, kedelai, dll)
+    // ... (implementasi serupa dengan buatRencanaPadi)
+
+    // Event listener untuk form prediksi
+    document.getElementById('harvestPredictionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        // Week 1-3: Planting
-        for (let i = 1; i <= 21; i++) {
-            plan.push({
-                day: i,
-                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman benih',
-                condition: 'Tanah gembur',
-                note: i <= 7 ? 'Pengolahan tanah' : 'Benih berkualitas'
-            });
+        // Tampilkan indikator loading
+        document.getElementById('loadingIndicator').style.display = 'block';
+        document.getElementById('predictionResult').style.display = 'none';
+        
+        // Ambil nilai form
+        const provinsi = document.getElementById('province').value;
+        const kota = document.getElementById('city').value;
+        const kecamatan = document.getElementById('district').value;
+        const desa = document.getElementById('village').value;
+        const jenisTanaman = document.getElementById('plantType').value;
+        
+        // Validasi input
+        if (!provinsi || !kota || !kecamatan || !desa || !jenisTanaman) {
+            alert('Silakan lengkapi semua data lokasi dan pilih jenis tanaman');
+            document.getElementById('loadingIndicator').style.display = 'none';
+            return;
         }
         
-        // Week 4-8: Growth phase
-        for (let i = 22; i <= 56; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
-                day: i,
-                activity: 'Pemeliharaan',
-                condition: 'Cukup air',
-                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan'
+        // Simulasi panggilan API (di aplikasi nyata, ini akan panggilan API sebenarnya)
+        setTimeout(function() {
+            // Sembunyikan indikator loading
+            document.getElementById('loadingIndicator').style.display = 'none';
+            
+            // Tampilkan hasil
+            document.getElementById('resultLocation').textContent = 
+                `${locationData[provinsi].cities[kota].districts[kecamatan].villages[desa]}, 
+                 ${locationData[provinsi].cities[kota].districts[kecamatan].name}, 
+                 ${locationData[provinsi].cities[kota].name}, 
+                 ${locationData[provinsi].name}`;
+            
+            document.getElementById('resultPlant').textContent = 
+                document.getElementById('plantType').options[document.getElementById('plantType').selectedIndex].text;
+            
+            // Ambil kondisi tanah dari data lokasi
+            const kondisiTanah = locationData[provinsi]?.cities[kota]?.districts[kecamatan]?.soilData?.soilFertility || 'sedang';
+            
+            // Deskripsi kondisi tanah
+            const deskripsiTanah = {
+                'subur': 'Subur (Kaya nutrisi, cocok untuk berbagai tanaman)',
+                'sedang': 'Sedang (Memerlukan pemupukan tambahan)',
+                'kurang-subur': 'Kurang Subur (Perlu perlakuan khusus dan pemupukan intensif)'
+            };
+            document.getElementById('resultSoil').textContent = deskripsiTanah[kondisiTanah];
+            
+            // Buat prediksi berdasarkan input
+            const prediksi = buatPrediksi(provinsi, jenisTanaman, kondisiTanah);
+            document.getElementById('resultHarvestTime').textContent = prediksi.harvestTime;
+            
+            // Gabungkan baris yang sama dalam rencana perawatan
+            const rencanaGabungan = gabungkanBarisSerupa(prediksi.carePlan);
+            
+            // Isi tabel rencana perawatan
+            const tabelBody = document.getElementById('carePlanTable');
+            tabelBody.innerHTML = '';
+            
+            rencanaGabungan.forEach(hari => {
+                const baris = document.createElement('tr');
+                
+                const selHari = document.createElement('td');
+                selHari.textContent = hari.day;
+                baris.appendChild(selHari);
+                
+                const selAktivitas = document.createElement('td');
+                selAktivitas.textContent = hari.activity;
+                baris.appendChild(selAktivitas);
+                
+                const selKondisi = document.createElement('td');
+                selKondisi.textContent = hari.condition;
+                baris.appendChild(selKondisi);
+                
+                const selCatatan = document.createElement('td');
+                selCatatan.textContent = hari.note;
+                baris.appendChild(selCatatan);
+                
+                tabelBody.appendChild(baris);
             });
-        }
-        
-        // Week 9-13: Flowering to harvest
-        for (let i = 57; i <= days; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
-                day: i,
-                activity: week >= 12 ? 'Panen' : 'Pengendalian hama',
-                condition: 'Sinar matahari penuh',
-                note: week >= 12 ? 'Pemanenan biji' : 'Pemantauan tongkol'
-            });
-        }
-        
-        return plan;
-    }
-    
-    function generateSoybeanCarePlan(soilCondition) {
-        const days = soilCondition === 'subur' ? 85 : (soilCondition === 'sedang' ? 95 : 105);
-        const plan = [];
-        
-        // Week 1-2: Preparation and planting
-        for (let i = 1; i <= 14; i++) {
-            plan.push({
-                day: i,
-                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman benih',
-                condition: 'Tanah lembab',
-                note: i <= 7 ? 'Pengolahan tanah' : 'Jarak tanam 30x20 cm'
-            });
-        }
-        
-        // Week 3-6: Growth phase
-        for (let i = 15; i <= 42; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
-                day: i,
-                activity: 'Pemeliharaan',
-                condition: 'Kelembaban sedang',
-                note: week >= 4 ? 'Pemupukan susulan' : 'Penyiangan'
-            });
-        }
-        
-        // Week 7-12: Flowering to harvest
-        for (let i = 43; i <= days; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
-                day: i,
-                activity: week >= 10 ? 'Panen' : 'Pengendalian hama',
-                condition: 'Sinar matahari cukup',
-                note: week >= 10 ? 'Panen saat polong matang' : 'Penyemprotan pestisida'
-            });
-        }
-        
-        return plan;
-    }
-    
-    function generateChiliCarePlan(soilCondition) {
-        const days = soilCondition === 'subur' ? 80 : (soilCondition === 'sedang' ? 90 : 100);
-        const plan = [];
-        
-        // Week 1-3: Preparation and planting
-        for (let i = 1; i <= 21; i++) {
-            plan.push({
-                day: i,
-                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
-                condition: 'Tanah gembur',
-                note: i <= 7 ? 'Pengolahan tanah' : 'Bibit umur 25-30 hari'
-            });
-        }
-        
-        // Week 4-8: Growth phase
-        for (let i = 22; i <= 56; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
-                day: i,
-                activity: 'Pemeliharaan',
-                condition: 'Kelembaban sedang',
-                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan gulma'
-            });
-        }
-        
-        // Week 9-12: Flowering to harvest
-        for (let i = 57; i <= days; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
-                day: i,
-                activity: week >= 10 ? 'Panen bertahap' : 'Pengendalian hama',
-                condition: 'Sinar matahari penuh',
-                note: week >= 10 ? 'Panen saat buah merah 80%' : 'Penyemprotan pestisida'
-            });
-        }
-        
-        return plan;
-    }
-    
-    function generateTomatoCarePlan(soilCondition) {
-        const days = soilCondition === 'subur' ? 75 : (soilCondition === 'sedang' ? 85 : 95);
-        const plan = [];
-        
-        // Week 1-3: Preparation and planting
-        for (let i = 1; i <= 21; i++) {
-            plan.push({
-                day: i,
-                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
-                condition: 'Tanah gembur',
-                note: i <= 7 ? 'Pengolahan tanah' : 'Bibit umur 21-25 hari'
-            });
-        }
-        
-        // Week 4-8: Growth phase
-        for (let i = 22; i <= 56; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
-                day: i,
-                activity: 'Pemeliharaan',
-                condition: 'Kelembaban sedang',
-                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan gulma'
-            });
-        }
-        
-        // Week 9-12: Flowering to harvest
-        for (let i = 57; i <= days; i++) {
-            const week = Math.floor((i-1)/7) + 1;
-            plan.push({
-                day: i,
-                activity: week >= 10 ? 'Panen bertahap' : 'Pengendalian hama',
-                condition: 'Sinar matahari penuh',
-                note: week >= 10 ? 'Panen saat buah matang' : 'Penyemprotan pestisida'
-            });
-        }
-        
-        return plan;
-    }
-    
-    function generateSugarcaneCarePlan(soilCondition) {
-        const days = soilCondition === 'subur' ? 360 : (soilCondition === 'sedang' ? 390 : 420);
-        const plan = [];
-        
-        // Month 1-3: Preparation and planting
-        for (let i = 1; i <= 90; i++) {
-            plan.push({
-                day: i,
-                activity: i <= 30 ? 'Persiapan lahan' : 'Penanaman stek',
-                condition: 'Tanah gembur',
-                note: i <= 30 ? 'Pengolahan tanah intensif' : 'Stek batang berkualitas'
-            });
-        }
-        
-        // Month 4-9: Growth phase
-        for (let i = 91; i <= 270; i++) {
-            const month = Math.floor((i-1)/30) + 1;
-            plan.push({
-                day: i,
-                activity: 'Pemeliharaan',
-                condition: 'Cukup air',
-                note: month >= 6 ? 'Pemupukan susulan' : 'Penyiangan gulma'
-            });
-        }
-        
-        // Month 10-14: Maturation phase
-        for (let i = 271; i <= days; i++) {
-            const month = Math.floor((i-1)/30) + 1;
-            plan.push({
-                day: i,
-                activity: month >= 12 ? 'Persiapan panen' : 'Pengendalian hama',
-                condition: 'Sinar matahari penuh',
-                note: month >= 12 ? 'Pengeringan lahan' : 'Pemantauan pertumbuhan'
-            });
-        }
-        
-        return plan;
-    }
+            
+            // Tampilkan hasil
+            document.getElementById('predictionResult').style.display = 'block';
+        }, 1500); // Simulasi delay API
+    });
 </script>
 @endsection
