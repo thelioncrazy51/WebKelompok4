@@ -26,30 +26,53 @@ class ExportController extends Controller
 
     private function generateExcelContent($users)
     {
-        // Header Excel XML
+        // Header Excel XML dengan styling
         $content = '<?xml version="1.0"?>
         <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
         xmlns:o="urn:schemas-microsoft-com:office:office"
         xmlns:x="urn:schemas-microsoft-com:office:excel"
         xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
         xmlns:html="http://www.w3.org/TR/REC-html40">
+        
+        <!-- Define Styles -->
+        <Styles>
+            <Style ss:ID="Header">
+                <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+                <Font ss:Bold="1"/>
+                <Interior ss:Color="#D3D3D3" ss:Pattern="Solid"/>
+            </Style>
+            <Style ss:ID="Center">
+                <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+            </Style>
+            <Style ss:ID="Left">
+                <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+            </Style>
+        </Styles>
+        
         <Worksheet ss:Name="Users">
         <Table>
-        <Row>
-            <Cell><Data ss:Type="String">ID</Data></Cell>
-            <Cell><Data ss:Type="String">Nama</Data></Cell>
-            <Cell><Data ss:Type="String">Email</Data></Cell>
-            <Cell><Data ss:Type="String">Role</Data></Cell>
-        </Row>';
+            <!-- Column Widths -->
+            <Column ss:Width="5"/>   <!-- ID -->
+            <Column ss:Width="30"/>  <!-- Nama -->
+            <Column ss:Width="30"/>  <!-- Email -->
+            <Column ss:Width="15"/>  <!-- Role -->
+            
+            <!-- Header Row -->
+            <Row ss:Height="20" ss:StyleID="Header">
+                <Cell><Data ss:Type="String">ID</Data></Cell>
+                <Cell><Data ss:Type="String">Nama</Data></Cell>
+                <Cell><Data ss:Type="String">Email</Data></Cell>
+                <Cell><Data ss:Type="String">Role</Data></Cell>
+            </Row>';
 
         // Data rows
         foreach ($users as $user) {
             $content .= '
             <Row>
-                <Cell><Data ss:Type="Number">' . $user->id . '</Data></Cell>
-                <Cell><Data ss:Type="String">' . $this->escapeExcelXml($user->name) . '</Data></Cell>
-                <Cell><Data ss:Type="String">' . $this->escapeExcelXml($user->email) . '</Data></Cell>
-                <Cell><Data ss:Type="String">' . $this->escapeExcelXml($user->role) . '</Data></Cell>
+                <Cell ss:StyleID="Center"><Data ss:Type="Number">' . $user->id . '</Data></Cell>
+                <Cell ss:StyleID="Left"><Data ss:Type="String">' . $this->escapeExcelXml($user->name) . '</Data></Cell>
+                <Cell ss:StyleID="Left"><Data ss:Type="String">' . $this->escapeExcelXml($user->email) . '</Data></Cell>
+                <Cell ss:StyleID="Center"><Data ss:Type="String">' . $this->escapeExcelXml($user->role) . '</Data></Cell>
             </Row>';
         }
 
