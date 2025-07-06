@@ -275,41 +275,8 @@
     </div>
 </div>
 
+<script src="{{ asset('js/locationData.js') }}"></script>
 <script>
-    // Data lokasi (disarankan dipindahkan ke file terpisah locationData.js)
-    const locationData = {
-        'jawa-barat': {
-            name: 'Jawa Barat',
-            cities: {
-                'bandung': {
-                    name: 'Kota Bandung',
-                    districts: {
-                        'bandung-kulon': {
-                            name: 'Bandung Kulon',
-                            villages: {
-                                'cirobon': 'Cirobon',
-                                'cibuntu': 'Cibuntu',
-                                'gempolsari': 'Gempolsari',
-                                'kebonjeruk': 'Kebonjeruk',
-                                'maleber': 'Maleber'
-                            },
-                            soilData: {
-                                soilType: 'Latosol',
-                                soilFertility: 'subur',
-                                soilPh: '5.5 - 6.5',
-                                soilMoisture: 'Tinggi',
-                                fertilityDesc: 'Sangat subur dengan kandungan organik tinggi'
-                            }
-                        },
-                        // Data kecamatan lainnya...
-                    }
-                },
-                // Data kota/kabupaten lainnya...
-            }
-        },
-        // Data provinsi lainnya...
-    };
-
     // Elemen DOM
     const provinceSelect = document.getElementById('province');
     const citySelect = document.getElementById('city');
