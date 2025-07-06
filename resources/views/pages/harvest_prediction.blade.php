@@ -275,7 +275,8 @@
     </div>
 </div>
 
-<script src="{{ asset('js/locationData.js') }}"></script>
+<script src="{{ asset('js/locationDataFile.js') }}"></script>
+<script src="{{ asset('js/plantDataFile.js') }}"></script>
 <script>
     // Elemen DOM
     const provinceSelect = document.getElementById('province');
@@ -516,25 +517,6 @@
     
     // Fungsi untuk menghasilkan prediksi berdasarkan input
     function generatePrediction(region, plantType, soilCondition) {
-        // Data mock - pada aplikasi nyata, ini akan berasal dari API pemerintah
-        const predictions = {
-            'padi': {
-                'subur': {
-                    harvestTime: '90-100 hari',
-                    carePlan: generateRiceCarePlan('subur')
-                },
-                'sedang': {
-                    harvestTime: '100-110 hari',
-                    carePlan: generateRiceCarePlan('sedang')
-                },
-                'kurang-subur': {
-                    harvestTime: '110-120 hari',
-                    carePlan: generateRiceCarePlan('kurang-subur')
-                }
-            },
-            // Data tanaman lainnya...
-        };
-        
         // Default ke padi jika jenis tanaman tidak ada dalam data mock
         const plantData = predictions[plantType] || predictions['padi'];
         return plantData[soilCondition] || plantData['subur'];
