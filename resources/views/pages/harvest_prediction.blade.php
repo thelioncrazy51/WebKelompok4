@@ -270,6 +270,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div style="text-align: right; margin-top: 1rem;">
+                    <button id="savePredictionBtn" class="btn-submit">Simpan Prediksi</button>
+                </div>
             </div>
         </div>
     </div>
@@ -844,5 +847,83 @@
         
         return plan;
     }
+
+    // Handler tombol simpan prediksi
+    document.getElementById('savePredictionBtn').addEventListener('click', function() {
+        // Ambil semua data yang akan disimpan
+        const predictionData = {
+            location: document.getElementById('resultLocation').textContent,
+            plant: document.getElementById('resultPlant').textContent,
+            soil: document.getElementById('resultSoil').textContent,
+            harvestTime: document.getElementById('resultHarvestTime').textContent,
+            carePlan: Array.from(document.querySelectorAll('#carePlanTable tr')).map(row => ({
+                day: row.cells[0].textContent,
+                activity: row.cells[1].textContent,
+                condition: row.cells[2].textContent,
+                note: row.cells[3].textContent
+            })),
+            predictionDate: new Date().toISOString()
+        };
+
+        // Kirim data ke server untuk disimpan
+        fetch('/api/save-prediction', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify(predictionData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Prediksi berhasil disimpan!');
+                // Redirect ke halaman history jika diperlukan
+                window.location.href = '/history';
+            } else {
+                alert('Gagal menyimpan prediksi: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menyimpan prediksi');
+        });
+    });
+    
+    document.getElementById('savePredictionBtn').addEventListener('click', function() {
+        const predictionData = {
+            location: document.getElementById('resultLocation').innerText,
+            plant: document.getElementById('resultPlant').innerText,
+            soil: document.getElementById('resultSoil').innerText,
+            harvestTime: document.getElementById('resultHarvestTime').innerText,
+            carePlan: []
+        };
+
+        // Ambil data dari tabel
+        document.querySelectorAll('#carePlanTable tr').forEach(row => {
+            predictionData.carePlan.push({
+                day: row.cells[0].innerText,
+                activity: row.cells[1].innerText,
+                condition: row.cells[2].innerText,
+                note: row.cells[3].innerText
+            });
+        });
+
+        // Kirim ke backend
+        fetch('/save-prediction', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify(predictionData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '/history'; // Redirect ke history
+            }
+        });
+    });
 </script>
 @endsection

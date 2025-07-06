@@ -64,3 +64,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::resource('users', UserController::class)->except(['show']);
 
 Route::get('/export-users', [ExportController::class, 'exportUsers'])->name('export.users');
+
+Route::post('/api/save-prediction', [PredictionController::class, 'savePrediction'])->middleware('auth');
+
+Route::get('/history', [HistoryController::class, 'index'])->middleware('auth')->name('history');
+Route::get('/history/{id}', [HistoryController::class, 'show'])->middleware('auth');
