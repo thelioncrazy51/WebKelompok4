@@ -517,19 +517,107 @@
     
     // Fungsi untuk menghasilkan prediksi berdasarkan input
     function generatePrediction(region, plantType, soilCondition) {
-        // Default ke padi jika jenis tanaman tidak ada dalam data mock
+        // This is mock data - in a real app, this would come from government API
+        const predictions = {
+            'padi': {
+                'subur': {
+                    harvestTime: '90-100 hari',
+                    carePlan: generateRiceCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '100-110 hari',
+                    carePlan: generateRiceCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '110-120 hari',
+                    carePlan: generateRiceCarePlan('kurang-subur')
+                }
+            },
+            'jagung': {
+                'subur': {
+                    harvestTime: '80-90 hari',
+                    carePlan: generateCornCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '90-100 hari',
+                    carePlan: generateCornCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '100-110 hari',
+                    carePlan: generateCornCarePlan('kurang-subur')
+                }
+            },
+            'kedelai': {
+                'subur': {
+                    harvestTime: '75-85 hari',
+                    carePlan: generateSoybeanCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '85-95 hari',
+                    carePlan: generateSoybeanCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '95-105 hari',
+                    carePlan: generateSoybeanCarePlan('kurang-subur')
+                }
+            },
+            'cabai': {
+                'subur': {
+                    harvestTime: '70-80 hari',
+                    carePlan: generateChiliCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '80-90 hari',
+                    carePlan: generateChiliCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '90-100 hari',
+                    carePlan: generateChiliCarePlan('kurang-subur')
+                }
+            },
+            'tomat': {
+                'subur': {
+                    harvestTime: '65-75 hari',
+                    carePlan: generateTomatoCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '75-85 hari',
+                    carePlan: generateTomatoCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '85-95 hari',
+                    carePlan: generateTomatoCarePlan('kurang-subur')
+                }
+            },
+            'tebu': {
+                'subur': {
+                    harvestTime: '330-360 hari',
+                    carePlan: generateSugarcaneCarePlan('subur')
+                },
+                'sedang': {
+                    harvestTime: '360-390 hari',
+                    carePlan: generateSugarcaneCarePlan('sedang')
+                },
+                'kurang-subur': {
+                    harvestTime: '390-420 hari',
+                    carePlan: generateSugarcaneCarePlan('kurang-subur')
+                }
+            }
+        };
+        
+        // Default to padi if plant type not in mock data
         const plantData = predictions[plantType] || predictions['padi'];
         return plantData[soilCondition] || plantData['subur'];
     }
     
-    // Fungsi untuk menghasilkan rencana perawatan padi
+    // Functions to generate care plans for different plants (same as before)
     function generateRiceCarePlan(soilCondition) {
         const days = soilCondition === 'subur' ? 100 : (soilCondition === 'sedang' ? 110 : 120);
-        const rencana = [];
+        const plan = [];
         
-        // Minggu 1-2: Persiapan dan penanaman
+        // Week 1-2: Preparation and planting
         for (let i = 1; i <= 14; i++) {
-            rencana.push({
+            plan.push({
                 day: i,
                 activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
                 condition: 'Kelembaban tanah sedang',
@@ -537,32 +625,224 @@
             });
         }
         
-        // Minggu 3-8: Fase pertumbuhan
+        // Week 3-8: Growth phase
         for (let i = 15; i <= 56; i++) {
-            const minggu = Math.floor((i-1)/7) + 1;
-            rencana.push({
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
                 day: i,
                 activity: 'Pemeliharaan',
                 condition: 'Ketinggian air 2-5 cm',
-                note: minggu >= 4 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+                note: week >= 4 ? 'Pemupukan susulan' : 'Penyiangan gulma'
             });
         }
         
-        // Minggu 9-14: Pembungaan hingga panen
+        // Week 9-14: Flowering to harvest
         for (let i = 57; i <= days; i++) {
-            const minggu = Math.floor((i-1)/7) + 1;
-            rencana.push({
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
                 day: i,
-                activity: minggu >= 12 ? 'Persiapan panen' : 'Pengendalian hama',
+                activity: week >= 12 ? 'Persiapan panen' : 'Pengendalian hama',
                 condition: 'Sinar matahari penuh',
-                note: minggu >= 12 ? 'Pengeringan lahan' : 'Penyemprotan pestisida'
+                note: week >= 12 ? 'Pengeringan lahan' : 'Penyemprotan pestisida'
             });
         }
         
-        return rencana;
+        return plan;
     }
     
-    // Fungsi untuk menghasilkan rencana perawatan tanaman lainnya...
-    // (generateCornCarePlan, generateSoybeanCarePlan, dll.)
+    function generateCornCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 90 : (soilCondition === 'sedang' ? 100 : 110);
+        const plan = [];
+        
+        // Week 1-3: Planting
+        for (let i = 1; i <= 21; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman benih',
+                condition: 'Tanah gembur',
+                note: i <= 7 ? 'Pengolahan tanah' : 'Benih berkualitas'
+            });
+        }
+        
+        // Week 4-8: Growth phase
+        for (let i = 22; i <= 56; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Cukup air',
+                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan'
+            });
+        }
+        
+        // Week 9-13: Flowering to harvest
+        for (let i = 57; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 12 ? 'Panen' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: week >= 12 ? 'Pemanenan biji' : 'Pemantauan tongkol'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateSoybeanCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 85 : (soilCondition === 'sedang' ? 95 : 105);
+        const plan = [];
+        
+        // Week 1-2: Preparation and planting
+        for (let i = 1; i <= 14; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman benih',
+                condition: 'Tanah lembab',
+                note: i <= 7 ? 'Pengolahan tanah' : 'Jarak tanam 30x20 cm'
+            });
+        }
+        
+        // Week 3-6: Growth phase
+        for (let i = 15; i <= 42; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Kelembaban sedang',
+                note: week >= 4 ? 'Pemupukan susulan' : 'Penyiangan'
+            });
+        }
+        
+        // Week 7-12: Flowering to harvest
+        for (let i = 43; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 10 ? 'Panen' : 'Pengendalian hama',
+                condition: 'Sinar matahari cukup',
+                note: week >= 10 ? 'Panen saat polong matang' : 'Penyemprotan pestisida'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateChiliCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 80 : (soilCondition === 'sedang' ? 90 : 100);
+        const plan = [];
+        
+        // Week 1-3: Preparation and planting
+        for (let i = 1; i <= 21; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
+                condition: 'Tanah gembur',
+                note: i <= 7 ? 'Pengolahan tanah' : 'Bibit umur 25-30 hari'
+            });
+        }
+        
+        // Week 4-8: Growth phase
+        for (let i = 22; i <= 56; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Kelembaban sedang',
+                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+            });
+        }
+        
+        // Week 9-12: Flowering to harvest
+        for (let i = 57; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 10 ? 'Panen bertahap' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: week >= 10 ? 'Panen saat buah merah 80%' : 'Penyemprotan pestisida'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateTomatoCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 75 : (soilCondition === 'sedang' ? 85 : 95);
+        const plan = [];
+        
+        // Week 1-3: Preparation and planting
+        for (let i = 1; i <= 21; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 7 ? 'Persiapan lahan' : 'Penanaman bibit',
+                condition: 'Tanah gembur',
+                note: i <= 7 ? 'Pengolahan tanah' : 'Bibit umur 21-25 hari'
+            });
+        }
+        
+        // Week 4-8: Growth phase
+        for (let i = 22; i <= 56; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Kelembaban sedang',
+                note: week >= 5 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+            });
+        }
+        
+        // Week 9-12: Flowering to harvest
+        for (let i = 57; i <= days; i++) {
+            const week = Math.floor((i-1)/7) + 1;
+            plan.push({
+                day: i,
+                activity: week >= 10 ? 'Panen bertahap' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: week >= 10 ? 'Panen saat buah matang' : 'Penyemprotan pestisida'
+            });
+        }
+        
+        return plan;
+    }
+    
+    function generateSugarcaneCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 360 : (soilCondition === 'sedang' ? 390 : 420);
+        const plan = [];
+        
+        // Month 1-3: Preparation and planting
+        for (let i = 1; i <= 90; i++) {
+            plan.push({
+                day: i,
+                activity: i <= 30 ? 'Persiapan lahan' : 'Penanaman stek',
+                condition: 'Tanah gembur',
+                note: i <= 30 ? 'Pengolahan tanah intensif' : 'Stek batang berkualitas'
+            });
+        }
+        
+        // Month 4-9: Growth phase
+        for (let i = 91; i <= 270; i++) {
+            const month = Math.floor((i-1)/30) + 1;
+            plan.push({
+                day: i,
+                activity: 'Pemeliharaan',
+                condition: 'Cukup air',
+                note: month >= 6 ? 'Pemupukan susulan' : 'Penyiangan gulma'
+            });
+        }
+        
+        // Month 10-14: Maturation phase
+        for (let i = 271; i <= days; i++) {
+            const month = Math.floor((i-1)/30) + 1;
+            plan.push({
+                day: i,
+                activity: month >= 12 ? 'Persiapan panen' : 'Pengendalian hama',
+                condition: 'Sinar matahari penuh',
+                note: month >= 12 ? 'Pengeringan lahan' : 'Pemantauan pertumbuhan'
+            });
+        }
+        
+        return plan;
+    }
 </script>
 @endsection
