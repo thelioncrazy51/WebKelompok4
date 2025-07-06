@@ -39,7 +39,6 @@ class ExportController extends Controller
             <Style ss:ID="Title">
                 <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
                 <Font ss:Size="36" ss:Color="#4CAF50" ss:Bold="1"/>
-                <Interior ss:Pattern="Solid"/>
             </Style>
             <Style ss:ID="Header">
                 <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
