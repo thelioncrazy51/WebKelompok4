@@ -87,5 +87,5 @@ const predictions = {
 
 // Export data agar bisa diimpor di file lain
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = plantData;
+    module.exports = predictions;
 }
