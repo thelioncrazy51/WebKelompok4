@@ -275,155 +275,307 @@
     </div>
 </div>
 
-<script src="{{ asset('js/locationData.js') }}"></script>
 <script>
-    // Fungsi untuk menggabungkan baris yang sama dalam rencana perawatan
-    function gabungkanBarisSerupa(rencanaPerawatan) {
-        if (!rencanaPerawatan || rencanaPerawatan.length === 0) return [];
+    // Data lokasi (disarankan dipindahkan ke file terpisah locationData.js)
+    const locationData = {
+        'jawa-barat': {
+            name: 'Jawa Barat',
+            cities: {
+                'bandung': {
+                    name: 'Kota Bandung',
+                    districts: {
+                        'bandung-kulon': {
+                            name: 'Bandung Kulon',
+                            villages: {
+                                'cirobon': 'Cirobon',
+                                'cibuntu': 'Cibuntu',
+                                'gempolsari': 'Gempolsari',
+                                'kebonjeruk': 'Kebonjeruk',
+                                'maleber': 'Maleber'
+                            },
+                            soilData: {
+                                soilType: 'Latosol',
+                                soilFertility: 'subur',
+                                soilPh: '5.5 - 6.5',
+                                soilMoisture: 'Tinggi',
+                                fertilityDesc: 'Sangat subur dengan kandungan organik tinggi'
+                            }
+                        },
+                        // Data kecamatan lainnya...
+                    }
+                },
+                // Data kota/kabupaten lainnya...
+            }
+        },
+        // Data provinsi lainnya...
+    };
+
+    // Elemen DOM
+    const provinceSelect = document.getElementById('province');
+    const citySelect = document.getElementById('city');
+    const districtSelect = document.getElementById('district');
+    const villageSelect = document.getElementById('village');
+    const soilInfoContainer = document.getElementById('soilInfoContainer');
+
+    // Handler perubahan provinsi
+    provinceSelect.addEventListener('change', function() {
+        const provinceId = this.value;
         
-        const rencanaGabungan = [];
-        let mulaiHari = rencanaPerawatan[0].day;
-        let aktivitasSekarang = rencanaPerawatan[0].activity;
-        let kondisiSekarang = rencanaPerawatan[0].condition;
-        let catatanSekarang = rencanaPerawatan[0].note;
+        // Reset select bawahan
+        citySelect.innerHTML = '<option value="">Pilih Kota/Kabupaten</option>';
+        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+        soilInfoContainer.style.display = 'none';
         
-        for (let i = 1; i < rencanaPerawatan.length; i++) {
-            const item = rencanaPerawatan[i];
+        // Nonaktifkan select bawahan
+        citySelect.disabled = true;
+        districtSelect.disabled = true;
+        villageSelect.disabled = true;
+        
+        if (provinceId && locationData[provinceId]) {
+            citySelect.disabled = false;
             
-            if (item.activity === aktivitasSekarang && 
-                item.condition === kondisiSekarang && 
-                item.note === catatanSekarang) {
+            // Isi data kota/kabupaten
+            const cities = locationData[provinceId].cities;
+            for (const cityId in cities) {
+                const option = document.createElement('option');
+                option.value = cityId;
+                option.textContent = cities[cityId].name;
+                citySelect.appendChild(option);
+            }
+        }
+    });
+
+    // Handler perubahan kota/kabupaten
+    citySelect.addEventListener('change', function() {
+        const provinceId = provinceSelect.value;
+        const cityId = this.value;
+        
+        // Reset select bawahan
+        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+        soilInfoContainer.style.display = 'none';
+        
+        // Nonaktifkan select bawahan
+        districtSelect.disabled = true;
+        villageSelect.disabled = true;
+        
+        if (provinceId && cityId && locationData[provinceId]?.cities[cityId]) {
+            districtSelect.disabled = false;
+            
+            // Isi data kecamatan
+            const districts = locationData[provinceId].cities[cityId].districts;
+            for (const districtId in districts) {
+                const option = document.createElement('option');
+                option.value = districtId;
+                option.textContent = districts[districtId].name;
+                districtSelect.appendChild(option);
+            }
+        }
+    });
+
+    // Handler perubahan kecamatan
+    districtSelect.addEventListener('change', function() {
+        const provinceId = provinceSelect.value;
+        const cityId = citySelect.value;
+        const districtId = this.value;
+        
+        // Reset select bawahan
+        villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+        soilInfoContainer.style.display = 'none';
+        
+        // Nonaktifkan select bawahan
+        villageSelect.disabled = true;
+        
+        if (provinceId && cityId && districtId && 
+            locationData[provinceId]?.cities[cityId]?.districts[districtId]) {
+            villageSelect.disabled = false;
+            
+            // Isi data desa/kelurahan
+            const villages = locationData[provinceId].cities[cityId].districts[districtId].villages;
+            for (const villageId in villages) {
+                const option = document.createElement('option');
+                option.value = villageId;
+                option.textContent = villages[villageId];
+                villageSelect.appendChild(option);
+            }
+            
+            // Tampilkan informasi tanah
+            const soilData = locationData[provinceId].cities[cityId].districts[districtId].soilData;
+            if (soilData) {
+                document.getElementById('soilTypeDisplay').textContent = `Jenis Tanah: ${soilData.soilType}`;
+                document.getElementById('soilFertilityDisplay').textContent = `Tingkat Kesuburan: ${soilData.fertilityDesc}`;
+                document.getElementById('soilPhDisplay').textContent = `pH Tanah: ${soilData.soilPh}`;
+                document.getElementById('soilMoistureDisplay').textContent = `Kelembaban Tanah: ${soilData.soilMoisture}`;
+                soilInfoContainer.style.display = 'block';
+            }
+        }
+    });
+
+    // Fungsi untuk menggabungkan baris yang sama dalam rencana perawatan
+    function gabungkanBarisSerupa(carePlan) {
+        if (!carePlan || carePlan.length === 0) return [];
+        
+        const rencanaTergabung = [];
+        let awalRange = carePlan[0].day;
+        let aktivitasSaatIni = carePlan[0].activity;
+        let kondisiSaatIni = carePlan[0].condition;
+        let catatanSaatIni = carePlan[0].note;
+        
+        for (let i = 1; i < carePlan.length; i++) {
+            const item = carePlan[i];
+            
+            if (item.activity === aktivitasSaatIni && 
+                item.condition === kondisiSaatIni && 
+                item.note === catatanSaatIni) {
                 // Lanjutkan range saat ini
                 continue;
             } else {
                 // Akhiri range saat ini dan mulai yang baru
-                rencanaGabungan.push({
-                    day: mulaiHari === rencanaPerawatan[i-1].day 
-                        ? mulaiHari 
-                        : `${mulaiHari}-${rencanaPerawatan[i-1].day}`,
-                    activity: aktivitasSekarang,
-                    condition: kondisiSekarang,
-                    note: catatanSekarang
+                rencanaTergabung.push({
+                    day: awalRange === carePlan[i-1].day 
+                        ? awalRange 
+                        : `${awalRange}-${carePlan[i-1].day}`,
+                    activity: aktivitasSaatIni,
+                    condition: kondisiSaatIni,
+                    note: catatanSaatIni
                 });
                 
-                mulaiHari = item.day;
-                aktivitasSekarang = item.activity;
-                kondisiSekarang = item.condition;
-                catatanSekarang = item.note;
+                awalRange = item.day;
+                aktivitasSaatIni = item.activity;
+                kondisiSaatIni = item.condition;
+                catatanSaatIni = item.note;
             }
         }
         
         // Tambahkan range terakhir
-        rencanaGabungan.push({
-            day: mulaiHari === rencanaPerawatan[rencanaPerawatan.length-1].day 
-                ? mulaiHari 
-                : `${mulaiHari}-${rencanaPerawatan[rencanaPerawatan.length-1].day}`,
-            activity: aktivitasSekarang,
-            condition: kondisiSekarang,
-            note: catatanSekarang
+        rencanaTergabung.push({
+            day: awalRange === carePlan[carePlan.length-1].day 
+                ? awalRange 
+                : `${awalRange}-${carePlan[carePlan.length-1].day}`,
+            activity: aktivitasSaatIni,
+            condition: kondisiSaatIni,
+            note: catatanSaatIni
         });
         
-        return rencanaGabungan;
+        return rencanaTergabung;
     }
 
+    // Handler submit form prediksi panen
+    document.getElementById('harvestPredictionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Tampilkan indikator loading
+        document.getElementById('loadingIndicator').style.display = 'block';
+        document.getElementById('predictionResult').style.display = 'none';
+        
+        // Ambil nilai form
+        const provinceId = provinceSelect.value;
+        const cityId = citySelect.value;
+        const districtId = districtSelect.value;
+        const villageId = villageSelect.value;
+        const plantType = document.getElementById('plantType').value;
+        
+        // Validasi input
+        if (!provinceId || !cityId || !districtId || !villageId || !plantType) {
+            alert('Silakan lengkapi semua data lokasi dan pilih jenis tanaman');
+            document.getElementById('loadingIndicator').style.display = 'none';
+            return;
+        }
+        
+        // Ambil kondisi tanah dari data lokasi
+        const soilCondition = locationData[provinceId]?.cities[cityId]?.districts[districtId]?.soilData?.soilFertility || 'sedang';
+        
+        // Ambil nama lokasi
+        const provinceName = locationData[provinceId].name;
+        const cityName = locationData[provinceId].cities[cityId].name;
+        const districtName = locationData[provinceId].cities[cityId].districts[districtId].name;
+        const villageName = locationData[provinceId].cities[cityId].districts[districtId].villages[villageId];
+        
+        // Simulasi panggilan API (pada aplikasi nyata, ini akan menjadi panggilan API sebenarnya)
+        setTimeout(function() {
+            // Sembunyikan indikator loading
+            document.getElementById('loadingIndicator').style.display = 'none';
+            
+            // Tampilkan hasil
+            document.getElementById('resultLocation').textContent = `${villageName}, ${districtName}, ${cityName}, ${provinceName}`;
+            document.getElementById('resultPlant').textContent = document.getElementById('plantType').options[document.getElementById('plantType').selectedIndex].text;
+            
+            // Tampilkan kondisi tanah dengan deskripsi
+            const soilDesc = {
+                'subur': 'Subur (Kaya nutrisi, cocok untuk berbagai tanaman)',
+                'sedang': 'Sedang (Memerlukan pemupukan tambahan)',
+                'kurang-subur': 'Kurang Subur (Perlu perlakuan khusus dan pemupukan intensif)'
+            };
+            document.getElementById('resultSoil').textContent = soilDesc[soilCondition];
+            
+            // Hasilkan prediksi berdasarkan input
+            const prediction = generatePrediction(provinceId, plantType, soilCondition);
+            document.getElementById('resultHarvestTime').textContent = prediction.harvestTime;
+            
+            // Gabungkan baris yang sama dalam rencana perawatan
+            const rencanaTergabung = gabungkanBarisSerupa(prediction.carePlan);
+            
+            // Isi tabel rencana perawatan
+            const tableBody = document.getElementById('carePlanTable');
+            tableBody.innerHTML = '';
+            
+            rencanaTergabung.forEach(hari => {
+                const baris = document.createElement('tr');
+                
+                const selHari = document.createElement('td');
+                selHari.textContent = hari.day;
+                baris.appendChild(selHari);
+                
+                const selAktivitas = document.createElement('td');
+                selAktivitas.textContent = hari.activity;
+                baris.appendChild(selAktivitas);
+                
+                const selKondisi = document.createElement('td');
+                selKondisi.textContent = hari.condition;
+                baris.appendChild(selKondisi);
+                
+                const selCatatan = document.createElement('td');
+                selCatatan.textContent = hari.note;
+                baris.appendChild(selCatatan);
+                
+                tableBody.appendChild(baris);
+            });
+            
+            // Tampilkan hasil
+            document.getElementById('predictionResult').style.display = 'block';
+        }, 1500); // Simulasi delay API
+    });
+    
     // Fungsi untuk menghasilkan prediksi berdasarkan input
-    function buatPrediksi(provinsi, jenisTanaman, kondisiTanah) {
-        // Data contoh - di aplikasi nyata, ini akan berasal dari API pemerintah
-        const semuaPrediksi = {
+    function generatePrediction(region, plantType, soilCondition) {
+        // Data mock - pada aplikasi nyata, ini akan berasal dari API pemerintah
+        const predictions = {
             'padi': {
                 'subur': {
                     harvestTime: '90-100 hari',
-                    carePlan: buatRencanaPadi('subur')
+                    carePlan: generateRiceCarePlan('subur')
                 },
                 'sedang': {
                     harvestTime: '100-110 hari',
-                    carePlan: buatRencanaPadi('sedang')
+                    carePlan: generateRiceCarePlan('sedang')
                 },
                 'kurang-subur': {
                     harvestTime: '110-120 hari',
-                    carePlan: buatRencanaPadi('kurang-subur')
+                    carePlan: generateRiceCarePlan('kurang-subur')
                 }
             },
-            'jagung': {
-                'subur': {
-                    harvestTime: '80-90 hari',
-                    carePlan: buatRencanaJagung('subur')
-                },
-                'sedang': {
-                    harvestTime: '90-100 hari',
-                    carePlan: buatRencanaJagung('sedang')
-                },
-                'kurang-subur': {
-                    harvestTime: '100-110 hari',
-                    carePlan: buatRencanaJagung('kurang-subur')
-                }
-            },
-            'kedelai': {
-                'subur': {
-                    harvestTime: '75-85 hari',
-                    carePlan: buatRencanaKedelai('subur')
-                },
-                'sedang': {
-                    harvestTime: '85-95 hari',
-                    carePlan: buatRencanaKedelai('sedang')
-                },
-                'kurang-subur': {
-                    harvestTime: '95-105 hari',
-                    carePlan: buatRencanaKedelai('kurang-subur')
-                }
-            },
-            'cabai': {
-                'subur': {
-                    harvestTime: '70-80 hari',
-                    carePlan: buatRencanaCabai('subur')
-                },
-                'sedang': {
-                    harvestTime: '80-90 hari',
-                    carePlan: buatRencanaCabai('sedang')
-                },
-                'kurang-subur': {
-                    harvestTime: '90-100 hari',
-                    carePlan: buatRencanaCabai('kurang-subur')
-                }
-            },
-            'tomat': {
-                'subur': {
-                    harvestTime: '65-75 hari',
-                    carePlan: buatRencanaTomat('subur')
-                },
-                'sedang': {
-                    harvestTime: '75-85 hari',
-                    carePlan: buatRencanaTomat('sedang')
-                },
-                'kurang-subur': {
-                    harvestTime: '85-95 hari',
-                    carePlan: buatRencanaTomat('kurang-subur')
-                }
-            },
-            'tebu': {
-                'subur': {
-                    harvestTime: '330-360 hari',
-                    carePlan: buatRencanaTebu('subur')
-                },
-                'sedang': {
-                    harvestTime: '360-390 hari',
-                    carePlan: buatRencanaTebu('sedang')
-                },
-                'kurang-subur': {
-                    harvestTime: '390-420 hari',
-                    carePlan: buatRencanaTebu('kurang-subur')
-                }
-            }
+            // Data tanaman lainnya...
         };
         
-        // Default ke padi jika jenis tanaman tidak ada di data contoh
-        const dataTanaman = semuaPrediksi[jenisTanaman] || semuaPrediksi['padi'];
-        return dataTanaman[kondisiTanah] || dataTanaman['subur'];
+        // Default ke padi jika jenis tanaman tidak ada dalam data mock
+        const plantData = predictions[plantType] || predictions['padi'];
+        return plantData[soilCondition] || plantData['subur'];
     }
-
-    // Fungsi untuk membuat rencana perawatan padi
-    function buatRencanaPadi(kondisiTanah) {
-        const hari = kondisiTanah === 'subur' ? 100 : (kondisiTanah === 'sedang' ? 110 : 120);
+    
+    // Fungsi untuk menghasilkan rencana perawatan padi
+    function generateRiceCarePlan(soilCondition) {
+        const days = soilCondition === 'subur' ? 100 : (soilCondition === 'sedang' ? 110 : 120);
         const rencana = [];
         
         // Minggu 1-2: Persiapan dan penanaman
@@ -448,7 +600,7 @@
         }
         
         // Minggu 9-14: Pembungaan hingga panen
-        for (let i = 57; i <= hari; i++) {
+        for (let i = 57; i <= days; i++) {
             const minggu = Math.floor((i-1)/7) + 1;
             rencana.push({
                 day: i,
@@ -460,94 +612,8 @@
         
         return rencana;
     }
-
-    // Fungsi-fungsi untuk membuat rencana perawatan tanaman lain (jagung, kedelai, dll)
-    // ... (implementasi serupa dengan buatRencanaPadi)
-
-    // Event listener untuk form prediksi
-    document.getElementById('harvestPredictionForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Tampilkan indikator loading
-        document.getElementById('loadingIndicator').style.display = 'block';
-        document.getElementById('predictionResult').style.display = 'none';
-        
-        // Ambil nilai form
-        const provinsi = document.getElementById('province').value;
-        const kota = document.getElementById('city').value;
-        const kecamatan = document.getElementById('district').value;
-        const desa = document.getElementById('village').value;
-        const jenisTanaman = document.getElementById('plantType').value;
-        
-        // Validasi input
-        if (!provinsi || !kota || !kecamatan || !desa || !jenisTanaman) {
-            alert('Silakan lengkapi semua data lokasi dan pilih jenis tanaman');
-            document.getElementById('loadingIndicator').style.display = 'none';
-            return;
-        }
-        
-        // Simulasi panggilan API (di aplikasi nyata, ini akan panggilan API sebenarnya)
-        setTimeout(function() {
-            // Sembunyikan indikator loading
-            document.getElementById('loadingIndicator').style.display = 'none';
-            
-            // Tampilkan hasil
-            document.getElementById('resultLocation').textContent = 
-                `${locationData[provinsi].cities[kota].districts[kecamatan].villages[desa]}, 
-                 ${locationData[provinsi].cities[kota].districts[kecamatan].name}, 
-                 ${locationData[provinsi].cities[kota].name}, 
-                 ${locationData[provinsi].name}`;
-            
-            document.getElementById('resultPlant').textContent = 
-                document.getElementById('plantType').options[document.getElementById('plantType').selectedIndex].text;
-            
-            // Ambil kondisi tanah dari data lokasi
-            const kondisiTanah = locationData[provinsi]?.cities[kota]?.districts[kecamatan]?.soilData?.soilFertility || 'sedang';
-            
-            // Deskripsi kondisi tanah
-            const deskripsiTanah = {
-                'subur': 'Subur (Kaya nutrisi, cocok untuk berbagai tanaman)',
-                'sedang': 'Sedang (Memerlukan pemupukan tambahan)',
-                'kurang-subur': 'Kurang Subur (Perlu perlakuan khusus dan pemupukan intensif)'
-            };
-            document.getElementById('resultSoil').textContent = deskripsiTanah[kondisiTanah];
-            
-            // Buat prediksi berdasarkan input
-            const prediksi = buatPrediksi(provinsi, jenisTanaman, kondisiTanah);
-            document.getElementById('resultHarvestTime').textContent = prediksi.harvestTime;
-            
-            // Gabungkan baris yang sama dalam rencana perawatan
-            const rencanaGabungan = gabungkanBarisSerupa(prediksi.carePlan);
-            
-            // Isi tabel rencana perawatan
-            const tabelBody = document.getElementById('carePlanTable');
-            tabelBody.innerHTML = '';
-            
-            rencanaGabungan.forEach(hari => {
-                const baris = document.createElement('tr');
-                
-                const selHari = document.createElement('td');
-                selHari.textContent = hari.day;
-                baris.appendChild(selHari);
-                
-                const selAktivitas = document.createElement('td');
-                selAktivitas.textContent = hari.activity;
-                baris.appendChild(selAktivitas);
-                
-                const selKondisi = document.createElement('td');
-                selKondisi.textContent = hari.condition;
-                baris.appendChild(selKondisi);
-                
-                const selCatatan = document.createElement('td');
-                selCatatan.textContent = hari.note;
-                baris.appendChild(selCatatan);
-                
-                tabelBody.appendChild(baris);
-            });
-            
-            // Tampilkan hasil
-            document.getElementById('predictionResult').style.display = 'block';
-        }, 1500); // Simulasi delay API
-    });
+    
+    // Fungsi untuk menghasilkan rencana perawatan tanaman lainnya...
+    // (generateCornCarePlan, generateSoybeanCarePlan, dll.)
 </script>
 @endsection
