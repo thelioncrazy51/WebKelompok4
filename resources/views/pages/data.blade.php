@@ -112,6 +112,9 @@
         <a href="{{ route('export.users') }}" class="btn btn-info me-2">
             <i class="fas fa-file-excel"></i> Export Excel
         </a>
+        <button onclick="exportToPDF()" class="btn btn-danger me-2">
+            <i class="fas fa-file-pdf"></i> Export PDF (Client-side)
+        </button>
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
             <i class="fas fa-plus"></i> Add User
         </button>
@@ -249,6 +252,8 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 <script>
     function togglePassword(fieldId) {
         const passwordField = document.getElementById(fieldId);
@@ -261,6 +266,59 @@
             passwordField.type = "password";
             eyeIcon.textContent = "👁️";
         }
+    }
+
+    function exportToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Title
+        doc.setFontSize(18);
+        doc.text('Users Report', 105, 15, { align: 'center' });
+        doc.setFontSize(12);
+        doc.text('Generated on: ' + new Date().toLocaleString(), 105, 22, { align: 'center' });
+        
+        // Get table data
+        const headers = [['ID', 'Name', 'Email', 'Role']];
+        const rows = [];
+        
+        // Loop melalui setiap baris di tabel
+        document.querySelectorAll('table tbody tr').forEach(row => {
+            const cols = row.querySelectorAll('td');
+            // Skip kolom aksi (terakhir)
+            rows.push([
+                cols[0].innerText,
+                cols[1].innerText,
+                cols[2].innerText,
+                cols[4].innerText
+            ]);
+        });
+        
+        // Add table
+        doc.autoTable({
+            head: headers,
+            body: rows,
+            startY: 30,
+            theme: 'grid',
+            headStyles: {
+                fillColor: [11, 61, 11], // Warna hijau tua
+                textColor: 255
+            },
+            styles: {
+                cellPadding: 3,
+                fontSize: 10,
+                valign: 'middle'
+            },
+            columnStyles: {
+                0: { cellWidth: 15 },
+                1: { cellWidth: 40 },
+                2: { cellWidth: 60 },
+                3: { cellWidth: 25 }
+            }
+        });
+        
+        // Save PDF
+        doc.save('users_report.pdf');
     }
 
     // Script untuk mengisi data ke modal edit
