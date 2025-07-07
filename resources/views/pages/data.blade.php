@@ -274,9 +274,7 @@
         
         // Title
         doc.setFontSize(18);
-        doc.text('Users Report', 105, 15, { align: 'center' });
-        doc.setFontSize(12);
-        doc.text('Generated on: ' + new Date().toLocaleString(), 105, 22, { align: 'center' });
+        doc.text('Data User', 105, 15, { align: 'center' });
         
         // Get table data
         const headers = [['ID', 'Name', 'Email', 'Password', 'Role']];
@@ -312,9 +310,9 @@
             },
             columnStyles: {
                 0: { cellWidth: 15 },
-                1: { cellWidth: 50 },
-                2: { cellWidth: 50 },
-                3: { cellWidth: 50 },
+                1: { cellWidth: 40 },
+                2: { cellWidth: 40 },
+                3: { cellWidth: 40 },
                 4: { cellWidth: 25 }
             }
         });
