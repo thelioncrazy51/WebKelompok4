@@ -310,8 +310,8 @@
             },
             columnStyles: {
                 0: { cellWidth: 15 },
-                1: { cellWidth: 40 },
-                2: { cellWidth: 40 },
+                1: { cellWidth: 50 },
+                2: { cellWidth: 50 },
                 3: { cellWidth: 40 },
                 4: { cellWidth: 25 }
             }
