@@ -18,12 +18,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/harvest_prediction', function () {
-    return view('pages.harvest_prediction', [
-        'title' => 'Prediksi Panen'
-    ])->name('harvest.prediction');
-});
-
 Route::get('/data', function () {
     return view('pages.data', [
         'title' => 'Data'
@@ -67,7 +61,9 @@ Route::resource('users', UserController::class)->except(['show']);
 
 Route::get('/export-users', [ExportController::class, 'exportUsers'])->name('export.users');
 
-Route::post('/api/save-prediction', [PredictionController::class, 'savePrediction'])->middleware('auth');
+Route::middleware('auth:api')->group(function() {
+    Route::post('/save-prediction', [PredictionController::class, 'savePrediction']);
+});
 
 Route::get('/history', [HistoryController::class, 'index'])->middleware('auth')->name('history');
 Route::get('/history/{id}', [HistoryController::class, 'show'])->middleware('auth');
