@@ -279,7 +279,7 @@
         doc.text('Generated on: ' + new Date().toLocaleString(), 105, 22, { align: 'center' });
         
         // Get table data
-        const headers = [['ID', 'Name', 'Email', 'Role']];
+        const headers = [['ID', 'Name', 'Email', 'Password', 'Role']];
         const rows = [];
         
         // Loop melalui setiap baris di tabel
@@ -290,6 +290,7 @@
                 cols[0].innerText,
                 cols[1].innerText,
                 cols[2].innerText,
+                cols[3].innerText,
                 cols[4].innerText
             ]);
         });
@@ -311,9 +312,10 @@
             },
             columnStyles: {
                 0: { cellWidth: 15 },
-                1: { cellWidth: 40 },
+                1: { cellWidth: 60 },
                 2: { cellWidth: 60 },
-                3: { cellWidth: 25 }
+                3: { cellWidth: 50 },
+                4: { cellWidth: 25 }
             }
         });
         
