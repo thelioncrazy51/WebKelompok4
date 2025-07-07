@@ -271,7 +271,7 @@
                     </table>
                 </div>
                 <div style="text-align: right; margin-top: 1rem;">
-                    <button id="savePredictionBtn" class="btn-submit">Simpan Prediksi</button>
+                    <button id="exportPdfBtn" class="btn-submit">Export PDF</button>
                 </div>
             </div>
         </div>
@@ -848,46 +848,31 @@
         return plan;
     }
 
-    // Handler tombol simpan prediksi
-    document.getElementById('savePredictionBtn').addEventListener('click', function() {
-        // Ambil semua data yang akan disimpan
-        const predictionData = {
-            location: document.getElementById('resultLocation').textContent,
-            plant: document.getElementById('resultPlant').textContent,
-            soil: document.getElementById('resultSoil').textContent,
-            harvestTime: document.getElementById('resultHarvestTime').textContent,
-            carePlan: Array.from(document.querySelectorAll('#carePlanTable tr')).map(row => ({
-                day: row.cells[0].textContent,
-                activity: row.cells[1].textContent,
-                condition: row.cells[2].textContent,
-                note: row.cells[3].textContent
-            })),
-            predictionDate: new Date().toISOString()
-        };
-
-        // Kirim data ke server untuk disimpan
-        fetch('/api/save-prediction', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify(predictionData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Prediksi berhasil disimpan!');
-                // Redirect ke halaman history jika diperlukan
-                window.location.href = '/history';
-            } else {
-                alert('Gagal menyimpan prediksi: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat menyimpan prediksi');
+    document.getElementById('exportPdfBtn').addEventListener('click', function() {
+        // Ambil elemen yang ingin dijadikan PDF (misal: div dengan class 'result-card')
+        const element = document.querySelector('.result-card');
+        
+        // Konfigurasi html2canvas
+        html2canvas(element, {
+            scale: 2, // Kualitas lebih tinggi
+            logging: false,
+            useCORS: true,
+            allowTaint: true,
+        }).then(canvas => {
+            // Konversi canvas ke gambar (PNG)
+            const imgData = canvas.toDataURL('image/png');
+            
+            // Buat PDF dengan jsPDF
+            const pdf = new jsPDF('p', 'mm', 'a4'); // Orientasi portrait, ukuran A4
+            const imgWidth = 190; // Lebar gambar di PDF (mm)
+            const imgHeight = (canvas.height * imgWidth) / canvas.width; // Hitung tinggi proporsional
+            
+            // Tambahkan gambar ke PDF
+            pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+            
+            // Simpan PDF
+            pdf.save('prediksi-panen.pdf');
         });
     });
 </script>
-@endsection
+@endsection 
