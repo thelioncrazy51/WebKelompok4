@@ -113,7 +113,7 @@
             <i class="fas fa-file-excel"></i> Export Excel
         </a>
         <button onclick="exportToPDF()" class="btn btn-danger me-2">
-            <i class="fas fa-file-pdf"></i> Export PDF (Client-side)
+            <i class="fas fa-file-pdf"></i> Export PDF
         </button>
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
             <i class="fas fa-plus"></i> Add User
