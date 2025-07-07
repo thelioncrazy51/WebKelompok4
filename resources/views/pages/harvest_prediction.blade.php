@@ -170,6 +170,16 @@
     .location-group {
         margin-bottom: 0;
     }
+    /* Pastikan tabel di HTML mirip dengan PDF */
+    .harvest-table th {
+        background-color: #145214 !important;
+        color: white !important;
+    }
+
+    .harvest-table tr:nth-child(even) {
+        background-color: rgba(20, 82, 20, 0.05) !important;
+    }
+
 </style>
 
 <div class="glass-card">
@@ -849,30 +859,69 @@
     }
 
     document.getElementById('exportPdfBtn').addEventListener('click', function() {
-        // Ambil elemen yang ingin dijadikan PDF (misal: div dengan class 'result-card')
-        const element = document.querySelector('.result-card');
+        // Inisialisasi PDF (A4, portrait)
+        const pdf = new jsPDF('p', 'pt', 'a4');
         
-        // Konfigurasi html2canvas
-        html2canvas(element, {
-            scale: 2, // Kualitas lebih tinggi
-            logging: false,
-            useCORS: true,
-            allowTaint: true,
-        }).then(canvas => {
-            // Konversi canvas ke gambar (PNG)
-            const imgData = canvas.toDataURL('image/png');
-            
-            // Buat PDF dengan jsPDF
-            const pdf = new jsPDF('p', 'mm', 'a4'); // Orientasi portrait, ukuran A4
-            const imgWidth = 190; // Lebar gambar di PDF (mm)
-            const imgHeight = (canvas.height * imgWidth) / canvas.width; // Hitung tinggi proporsional
-            
-            // Tambahkan gambar ke PDF
-            pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-            
-            // Simpan PDF
-            pdf.save('prediksi-panen.pdf');
+        // Data dari hasil prediksi
+        const location = document.getElementById('resultLocation').textContent;
+        const plant = document.getElementById('resultPlant').textContent;
+        const soil = document.getElementById('resultSoil').textContent;
+        const harvestTime = document.getElementById('resultHarvestTime').textContent;
+        
+        // Judul PDF
+        pdf.setFontSize(18);
+        pdf.text('HASIL PREDIKSI PANEN', 40, 40);
+        
+        // Garis pembatas
+        pdf.setDrawColor(20, 82, 20); // Warna hijau gelap
+        pdf.line(40, 50, 550, 50);
+        
+        // Konten utama
+        pdf.setFontSize(12);
+        pdf.text(`Lokasi          : ${location}`, 40, 80);
+        pdf.text(`Jenis Tanaman : ${plant}`, 40, 100);
+        pdf.text(`Kondisi Tanah : ${soil}`, 40, 120);
+        pdf.text(`Perkiraan Panen: ${harvestTime}`, 40, 140);
+        
+        // Header tabel rencana perawatan
+        pdf.setFontSize(14);
+        pdf.text('RENCANA PERAWATAN TANAMAN', 40, 180);
+        
+        // Data tabel (diambil dari HTML)
+        const table = document.getElementById('carePlanTable');
+        const rows = table.querySelectorAll('tr');
+        let yPosition = 210;
+        
+        // Style tabel
+        pdf.setFontSize(10);
+        pdf.setFillColor(20, 82, 20); // Warna header hijau
+        pdf.setTextColor(255, 255, 255); // Teks putih
+        
+        // Header tabel
+        pdf.rect(40, yPosition - 10, 510, 20, 'F');
+        pdf.text('Hari Ke-', 50, yPosition);
+        pdf.text('Kegiatan', 150, yPosition);
+        pdf.text('Kondisi Ideal', 350, yPosition);
+        pdf.text('Catatan', 450, yPosition);
+        
+        // Isi tabel
+        pdf.setTextColor(0, 0, 0); // Teks hitam
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            pdf.text(cells[0].textContent, 50, yPosition + 30);
+            pdf.text(cells[1].textContent, 150, yPosition + 30);
+            pdf.text(cells[2].textContent, 350, yPosition + 30);
+            pdf.text(cells[3].textContent, 450, yPosition + 30);
+            yPosition += 20;
         });
+        
+        // Footer
+        pdf.setFontSize(10);
+        pdf.setTextColor(100, 100, 100);
+        pdf.text(`Dibuat pada: ${new Date().toLocaleDateString()}`, 40, pdf.internal.pageSize.height - 20);
+        
+        // Simpan PDF
+        pdf.save('prediksi-panen.pdf');
     });
 </script>
 @endsection 
