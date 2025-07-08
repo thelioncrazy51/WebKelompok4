@@ -4,6 +4,12 @@
 
 @section('title', 'Prediksi panen')
 
+@php
+    // Generate unique cache key based on input parameters
+    $cacheKey = 'harvest_prediction_' . md5(json_encode(request()->all()));
+    $cacheDuration = 60; // Cache duration in minutes
+@endphp
+
 @section('container')
 <style>
     .glass-card {

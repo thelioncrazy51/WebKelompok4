@@ -18,7 +18,10 @@ class DashboardController extends Controller
     {
         return view('pages.dashboard.admin', [
             'title' => 'Admin Dashboard',
-            'user' => auth()->user()
+            'user' => auth()->user(),
+            'totalUsers' => \App\Models\User::count(),
+            'adminCount' => \App\Models\User::where('role', 'admin')->count(),
+            'memberCount' => \App\Models\User::where('role', 'member')->count()
         ]);
     }
 }
