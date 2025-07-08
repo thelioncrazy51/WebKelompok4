@@ -230,7 +230,7 @@
                         <input type="email" class="form-control" id="edit_email" name="email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_password" class="form-label">Password (Leave blank to keep current)</label>
+                        <label for="edit_password" class="form-label">Password (Kosongkan jika tidak ada perubahan)</label>
                         <div class="input-password">
                             <input type="password" class="password form-control" id="edit_password" name="password">
                             <button type="button" class="toggle-password" onclick="togglePassword('edit_password', this)">
