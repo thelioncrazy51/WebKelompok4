@@ -2,7 +2,7 @@
 
 @section('body-attr', 'style=background:linear-gradient(135deg, #0b3d0b, #a7d7a7);')
 
-@section('title', 'Dashboard Member')
+@section('title', 'Dashboard Admin')
 
 @section('container')
 <style>
@@ -72,11 +72,23 @@
 
 <div class="glass-card">
     <h1 class="welcome-title">Selamat Datang, {{ $user->name }}</h1>
+    
+    <div class="user-info">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-label">Email</div>
+                <div class="info-value">{{ $user->email }}</div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-label">Role</div>
+                <div class="info-value text-capitalize">{{ $user->role }}</div>
+            </div>
+        </div>
+    </div>
 
     <div class="dashboard-section">
-        
-        <!-- You can add more dashboard content here -->
-        
+        <h3 class="section-title">Member Dashboard</h3>
+        <p style="color: #145214;">Anda login sebagai member. Silahkan nikmati fitur yang telah disediakan</p>
     </div>
 </div>
 

@@ -54,21 +54,6 @@
             </a>
         </li>
         
-        <!-- Product -->
-        <li style="margin-bottom: 10px;">
-            <a href="{{ route('products') }}" style="
-                display: block;
-                padding: 10px 15px;
-                color: white;
-                text-decoration: none;
-                border-radius: 5px;
-                transition: all 0.3s;
-            " onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" 
-            onmouseout="this.style.backgroundColor='transparent'">
-                <i class="fas fa-shopping-bag" style="margin-right: 10px;"></i> Product
-            </a>
-        </li>
-        
         <!-- Menu Khusus Admin -->
         @if($isAdmin)
         <li style="margin-bottom: 10px;">
