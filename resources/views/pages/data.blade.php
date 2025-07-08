@@ -194,7 +194,7 @@
                         <label for="password" class="form-label">Password</label>
                         <div class="input-password">
                             <input type="password" class="password form-control" id="password" name="password" required>
-                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                            <button type="button" class="toggle-password" onclick="togglePassword('password', this)">
                                 <i class="eye-icon">👁️</i>
                             </button>
                         </div>
@@ -233,7 +233,7 @@
                         <label for="edit_password" class="form-label">Password (Leave blank to keep current)</label>
                         <div class="input-password">
                             <input type="password" class="password form-control" id="edit_password" name="password">
-                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                            <button type="button" class="toggle-password" onclick="togglePassword('edit_password', this)">
                                 <i class="eye-icon">👁️</i>
                             </button>
                         </div>
@@ -255,9 +255,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 <script>
-    function togglePassword(fieldId) {
+    function togglePassword(fieldId, eyeIconElement) {
         const passwordField = document.getElementById(fieldId);
-        const eyeIcon = passwordField.nextElementSibling.querySelector('.eye-icon');
+        const eyeIcon = eyeIconElement.querySelector('.eye-icon');
 
         if (passwordField.type === "password") {
             passwordField.type = "text";
