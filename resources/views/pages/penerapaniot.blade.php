@@ -2,8 +2,6 @@
 
 @section('body-attr', 'style=background:linear-gradient(135deg, #0b3d0b, #a7d7a7);')
 
-@section('title', 'Penerapan IoT dalam Pertanian')
-
 @section('container')
 <style>
     .glass-card {
