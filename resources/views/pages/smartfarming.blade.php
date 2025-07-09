@@ -91,59 +91,12 @@
 </style>
 
 <div class="glass-card">
-    <h1 class="article-title">Panen Pepaya Lebih Cepat dengan Teknologi Smart Farming</h1>
+    <h1 class="article-title">Mengapa Smart Farming Itu Penting?</h1>
     
-    <img src="{{ asset('image/teknik.png') }}" alt="Budidaya Pepaya dengan Smart Farming" class="article-image">
+    <img src="{{ asset('image/ketahanan.png') }}" alt="Mengapa Smart Farming Itu Penting?" class="article-image">
     
-    <div class="article-content">
-        <p>Pepaya merupakan tanaman buah yang bernilai ekonomi tinggi, namun masa panennya yang relatif lama (8-12 bulan) sering menjadi kendala bagi petani. Dengan penerapan <span class="highlight-keyword">smart farming</span>, masa panen pepaya dapat dipersingkat menjadi <span class="highlight-keyword">5-7 bulan</span> sekaligus meningkatkan kualitas buah.</p>
 
-        <h3 class="sub-title">1. Pemilihan Bibit Unggul & Perlakuan Khusus</h3>
-        <p>Gunakan bibit pepaya hasil <span class="highlight-keyword">kultur jaringan</span> atau varietas unggul seperti California, Bangkok, atau IPB 9 yang memiliki siklus panen lebih cepat. Teknik <span class="highlight-keyword">seed priming</span> (perendaman benih dalam larutan nutrisi khusus) dapat mempercepat perkecambahan hingga 40%.</p>
-
-        <h3 class="sub-title">2. Smart Irrigation System</h3>
-        <p>Pasang <span class="highlight-keyword">sensor kelembapan tanah</span> berbasis IoT yang terhubung dengan sistem irigasi otomatis. Tanaman pepaya membutuhkan kelembapan tanah 60-70% untuk pertumbuhan optimal. Penyiraman presisi ini mampu <span class="highlight-keyword">mempercepat fase vegetatif</span> 2-3 minggu lebih cepat dibanding cara konvensional.</p>
-
-        <div class="highlight-box">
-            <p>Integrasi IoT dengan <span class="highlight-keyword">kecerdasan buatan (AI)</span> dan <span class="highlight-keyword">big data</span> membawa pertanian pepaya ke level berikutnya. Sistem prediksi berbasis AI dapat menganalisis data historis dan kondisi cuaca untuk memberikan rekomendasi waktu tanam yang tepat.</p>
-        </div>
-
-        <h3 class="sub-title">3. Nutrisi Presisi dengan Fertigasi</h3>
-        <p>Terapkan sistem <span class="highlight-keyword">fertigasi IoT</span> yang mencampur pupuk dan air secara otomatis berdasarkan data sensor NPK tanah, kebutuhan fase tumbuh, dan kondisi cuaca real-time. Dosis yang tepat dapat <span class="highlight-keyword">meningkatkan pembungaan 30% lebih awal</span>.</p>
-
-        <h3 class="sub-title">4. Kontrol Lingkungan dengan Greenhouse</h3>
-        <p>Untuk lahan terbatas, <span class="highlight-keyword">greenhouse smart system</span> dengan pengatur suhu otomatis (optimal 25-30°C), LED grow light spektrum khusus, dan pengendalian kelembapan udara dapat memangkas waktu panen hingga <span class="highlight-keyword">20% lebih cepat</span>.</p>
-
-        <div class="benefits-grid">
-            <div class="benefit-item">
-                <i class="fas fa-clock"></i>
-                <span>Panen pertama 5-7 bulan</span>
-            </div>
-            <div class="benefit-item">
-                <i class="fas fa-chart-line"></i>
-                <span>Produktivitas +40-60%</span>
-            </div>
-            <div class="benefit-item">
-                <i class="fas fa-leaf"></i>
-                <span>Kualitas buah lebih seragam</span>
-            </div>
-            <div class="benefit-item">
-                <i class="fas fa-tint"></i>
-                <span>Penghematan air & pupuk</span>
-            </div>
-        </div>
-
-        <h3 class="sub-title">Tips Tambahan</h3>
-        <ul>
-            <li>Lakukan <span class="highlight-keyword">pemangkasan tunas samping</span> secara rutin</li>
-            <li>Gunakan <span class="highlight-keyword">drone multispektral</span> untuk pemantauan</li>
-            <li>Aplikasikan <span class="highlight-keyword">pupuk daun</span> mengandung Zn dan Bo saat pembungaan</li>
-        </ul>
-
-        <div class="highlight-box">
-            <p><strong>Ingin menerapkan teknik ini di kebun Anda?</strong> Dengan kombinasi teknologi tepat guna, petani pepaya kini bisa <span class="highlight-keyword">mendapatkan 3 siklus panen dalam 2 tahun</span>. Hubungi tim ahli smart farming kami untuk konsultasi gratis!</p>
-        </div>
-    </div>
+    
 </div>
 
 @endsection
