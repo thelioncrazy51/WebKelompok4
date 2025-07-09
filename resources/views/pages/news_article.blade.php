@@ -56,7 +56,7 @@
                 <div class="card-body">
                     <h5 class="card-title poppins fw-semibold">Penerapan IoT dalam Pertanian</h5>
                     <p class="text-muted" style="font-size: 13px;">Dipublikasikan: 10 Mei 2025</p>
-                    <p class="card-text">Bagaimana sensor dan data dapat membantu petani meningkatkan hasil panen secara presisi dan efisien.</p>
+                    <p class="card-text">Bagaimana Teknologi Internet of Things (IoT) dapat membantu petani meningkatkan hasil panen secara presisi dan efisien.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
                     <a href="/penerapaniot" class="btn btn-outline-success btn-read w-100">Baca Selengkapnya</a>
