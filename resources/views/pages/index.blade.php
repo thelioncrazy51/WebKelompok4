@@ -14,7 +14,6 @@
                 dan keberlanjutan lingkungan. Dengan sistem otomatisasi, sensor tanah, serta pengawasan berbasis
                 data, kami bantu petani menghadapi tantangan pertanian modern.
             </p>
-            <a href="#about" class="btn btn-success btn-lg mt-3 shadow">Pelajari Lebih Lanjut</a>
         </div>
         <div class="col-md-6 text-center">
             <img src="{{ asset('image/sm2.jpg') }}" alt="Smart Farming"
