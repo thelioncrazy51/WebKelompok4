@@ -94,7 +94,7 @@
 <div class="glass-card">
     <h1 class="article-title">Panen Pepaya Lebih Cepat dengan Teknologi Smart Farming</h1>
     
-    <img src="{{ asset('images/smart-pepaya.jpg') }}" alt="Budidaya Pepaya dengan Smart Farming" class="article-image">
+    <img src="{{ asset('image/teknik.png') }}" alt="Budidaya Pepaya dengan Smart Farming" class="article-image">
     
     <div class="article-content">
         <p>Pepaya merupakan tanaman buah yang bernilai ekonomi tinggi, namun masa panennya yang relatif lama (8-12 bulan) sering menjadi kendala bagi petani. Dengan penerapan <span class="highlight-keyword">smart farming</span>, masa panen pepaya dapat dipersingkat menjadi <span class="highlight-keyword">5-7 bulan</span> sekaligus meningkatkan kualitas buah.</p>
