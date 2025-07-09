@@ -41,7 +41,7 @@
         
         <!-- Prediksi Panen -->
         <li style="margin-bottom: 10px;">
-            <a href="{{ route('news-article') }}" style="
+            <a href="{{ route('harvest.prediction') }}" style="
                 display: block;
                 padding: 10px 15px;
                 color: white;
@@ -54,10 +54,9 @@
             </a>
         </li>
 
-
         <!-- News & Artikel -->
         <li style="margin-bottom: 10px;">
-            <a href="{{ route('harvest.prediction') }}" style="
+            <a href="{{ route('news-article') }}" style="
                 display: block;
                 padding: 10px 15px;
                 color: white;
