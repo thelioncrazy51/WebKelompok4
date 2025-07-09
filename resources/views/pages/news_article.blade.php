@@ -59,7 +59,7 @@
                     <p class="card-text">Bagaimana sensor dan data dapat membantu petani meningkatkan hasil panen secara presisi dan efisien.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="#" class="btn btn-outline-success btn-read w-100">Baca Selengkapnya</a>
+                    <a href="/penerapaniot" class="btn btn-outline-success btn-read w-100">Baca Selengkapnya</a>
                 </div>
             </div>
         </div>
