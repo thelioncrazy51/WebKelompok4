@@ -65,7 +65,7 @@
                 transition: all 0.3s;
             " onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" 
             onmouseout="this.style.backgroundColor='transparent'">
-                <i class="fas fa-chart-line" style="margin-right: 10px;"></i> News & Artikel
+                <i class="fas fa-newspaper" style="margin-right: 10px;"></i> News & Article
             </a>
         </li>
         
