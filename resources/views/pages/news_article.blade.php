@@ -74,7 +74,7 @@
                     <p class="card-text">Teknik pertanian modern mempercepat masa panen pepaya hingga 20% dibandingkan metode konvensional.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="#" class="btn btn-outline-success btn-read w-100">Baca Selengkapnya</a>
+                    <a href="/panenpepaya" class="btn btn-outline-success btn-read w-100">Baca Selengkapnya</a>
                 </div>
             </div>
         </div>
