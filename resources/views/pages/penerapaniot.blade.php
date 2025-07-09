@@ -50,9 +50,9 @@
         border-radius: 15px;
         margin: 1.5rem 0;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        max-height: 400px;
-        object-fit: cover;
         width: 100%;
+        height: auto;
+        display: block;
     }
     .highlight-box {
         background: rgba(20, 82, 20, 0.1);
