@@ -94,8 +94,8 @@
     <h1 class="article-title">Mengapa Smart Farming Itu Penting?</h1>
     
     <img src="{{ asset('image/ketahanan.png') }}" alt="Mengapa Smart Farming Itu Penting?" class="article-image">
-    
 
+    
     
 </div>
 
