@@ -74,10 +74,6 @@
 
         <p>Ke depan, penerapan IoT dalam pertanian akan semakin berkembang dengan integrasi <strong>kecerdasan buatan (AI)</strong> dan <strong>big data</strong>. Sistem peringatan dini berbasis IoT dapat memprediksi cuaca ekstrem atau serangan hama, membantu petani mengambil tindakan preventif. Dengan demikian, IoT tidak hanya mendorong pertanian yang lebih presisi dan berkelanjutan, tetapi juga membuka peluang bagi petani untuk bersaing di era digital. <strong>Smart Farming</strong> dengan IoT adalah solusi menjawab tantangan ketahanan pangan di masa depan.</p>
     </div>
-
-    <div class="text-center mt-4">
-        <small style="color: #0b3d0b; font-style: italic;">Artikel ini cocok untuk website Smart Farming yang ingin mengedukasi petani dan pelaku industri tentang manfaat teknologi IoT di sektor pertanian.</small>
-    </div>
 </div>
 
 @endsection
