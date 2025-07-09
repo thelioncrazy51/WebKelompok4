@@ -52,7 +52,8 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         width: 100%;
         height: auto;
-        display: block;
+        max-height: 500px;
+        object-fit: cover;
     }
     .highlight-box {
         background: rgba(20, 82, 20, 0.1);
@@ -65,25 +66,65 @@
         color: #145214;
         font-weight: 600;
     }
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+    .benefit-item {
+        background: rgba(20, 82, 20, 0.08);
+        padding: 1rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+    }
+    .benefit-item i {
+        margin-right: 10px;
+        color: #145214;
+    }
 </style>
 
 <div class="glass-card">
-    <h1 class="article-title">Penerapan IoT dalam Pertanian</h1>
+    <h1 class="article-title">Penerapan IoT dalam Pertanian: Revolusi Digital di Lahan Pertanian</h1>
     
     <img src="{{ asset('image/sensor.png') }}" alt="Smart Farming dengan IoT" class="article-image">
     
     <div class="article-content">
-        <p>Teknologi <span class="highlight-keyword">Internet of Things (IoT)</span> telah membawa revolusi besar di berbagai sektor, termasuk pertanian. Dalam konsep <span class="highlight-keyword">smart farming</span>, IoT memungkinkan petani memantau dan mengelola lahan secara real-time melalui sensor dan perangkat yang terhubung ke internet. Data seperti kelembapan tanah, suhu udara, intensitas cahaya, dan kondisi tanaman dapat dikumpulkan secara otomatis, membantu petani mengambil keputusan lebih cepat dan akurat. Dengan demikian, IoT tidak hanya meningkatkan produktivitas tetapi juga mengurangi pemborosan sumber daya.</p>
+        <p>Teknologi <span class="highlight-keyword">Internet of Things (IoT)</span> telah menjadi game changer dalam sektor pertanian modern. Dengan menghubungkan perangkat sensor, alat pintar, dan sistem analitik berbasis cloud, IoT memungkinkan petani untuk <span class="highlight-keyword">memantau kondisi lahan secara real-time</span> dari mana saja. Data akurat tentang kelembapan tanah, kadar nutrisi, intensitas cahaya, dan pertumbuhan tanaman dapat dikumpulkan secara otomatis, membantu pengambilan keputusan yang lebih presisi.</p>
 
         <div class="highlight-box">
-            <p>Salah satu penerapan IoT dalam pertanian adalah <span class="highlight-keyword">penggunaan sensor tanah dan cuaca</span>. Sensor-sensor ini ditempatkan di berbagai titik di lahan untuk mengumpulkan data tentang kondisi lingkungan. Informasi tersebut kemudian dikirim ke platform cloud untuk dianalisis, memberikan rekomendasi tentang jadwal irigasi, pemupukan, atau pemberantasan hama.</p>
+            <p>Salah satu implementasi IoT yang paling berdampak adalah <span class="highlight-keyword">sistem irigasi cerdas</span>. Sensor tanah yang terhubung dengan jaringan IoT dapat mengukur kadar air secara berkala dan mengaktifkan penyiraman hanya ketika diperlukan. Menurut penelitian, teknologi ini mampu <span class="highlight-keyword">mengurangi penggunaan air hingga 30%</span> sekaligus meningkatkan hasil panen hingga 20%.</p>
         </div>
 
-        <p>Selain itu, IoT juga memungkinkan <span class="highlight-keyword">monitoring ternak dan tanaman secara real-time</span>. Peternak dapat melacak kesehatan hewan melalui sensor yang dipasang pada collar atau tag, sementara petani bisa memantau pertumbuhan tanaman menggunakan drone atau kamera cerdas. Data seperti deteksi penyakit, pertumbuhan abnormal, atau kebutuhan nutrisi dapat diidentifikasi sejak dini, mencegah kerugian besar.</p>
+        <p>Selain itu, <span class="highlight-keyword">drone dan robot pertanian berbasis IoT</span> mulai banyak digunakan untuk berbagai tugas. Drone dilengkapi kamera multispektral dapat memetakan kesehatan tanaman, mendeteksi serangan hama sejak dini, bahkan menyemprot pestisida dengan presisi tinggi. Sementara robot tanam dan panen otomatis sudah digunakan di berbagai perkebunan besar, <span class="highlight-keyword">mengurangi ketergantungan pada tenaga kerja manual</span> sekaligus meningkatkan efisiensi.</p>
 
-        <p>Keuntungan lain dari IoT dalam pertanian adalah <span class="highlight-keyword">optimasi penggunaan sumber daya seperti air dan pupuk</span>. Sistem irigasi berbasis IoT hanya menyiram tanaman ketika dibutuhkan, mengurangi pemborosan air hingga 30%. Begitu juga dengan pemupukan, di mana sensor nutrisi tanah dapat menentukan dosis tepat sehingga tidak terjadi over-fertilization yang merusak lingkungan.</p>
+        <p>Integrasi IoT dengan <span class="highlight-keyword">kecerdasan buatan (AI)</span> dan <span class="highlight-keyword">big data</span> membawa pertanian ke level berikutnya. Sistem prediksi berbasis AI dapat menganalisis data historis dan kondisi cuaca untuk memberikan rekomendasi waktu tanam yang tepat, jenis pupuk yang dibutuhkan, atau potensi risiko gagal panen. Petani juga bisa menerima <span class="highlight-keyword">peringatan dini</span> tentang cuaca ekstrem atau wabah penyakit melalui notifikasi di smartphone mereka.</p>
 
-        <p>Di masa depan, integrasi IoT dengan <span class="highlight-keyword">kecerdasan buatan (AI)</span> dan <span class="highlight-keyword">big data</span> akan semakin memperkuat smart farming. Prediksi cuaca berbasis AI, robot penanam dan panen, serta sistem manajemen pertanian terpusat akan menjadi standar baru dalam industri pertanian. Dengan adopsi IoT, petani dapat meningkatkan hasil panen, mengurangi ketergantungan pada tenaga kerja manual, dan berkontribusi pada ketahanan pangan global.</p>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <i class="fas fa-tint"></i>
+                <span>Penghematan air dan pupuk hingga 30%</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Peningkatan hasil panen 15-25%</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-bug"></i>
+                <span>Deteksi dini masalah tanaman</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-robot"></i>
+                <span>Otomatisasi proses pertanian</span>
+            </div>
+        </div>
+
+        <p>Masa depan pertanian semakin cerah dengan adopsi IoT. <span class="highlight-keyword">Smart farming</span> tidak hanya membuat proses budidaya lebih efisien dan produktif, tetapi juga membuka peluang bagi petani skala kecil untuk bersaing di pasar global. Dengan dukungan teknologi ini, pertanian presisi yang berkelanjutan bukan lagi impian, melainkan kenyataan yang sedang kita jalani.</p>
+
+        <div class="highlight-box">
+            <p><strong>Tertarik menerapkan IoT di lahan Anda?</strong> Mulailah dengan sistem monitoring sederhana dan rasakan perbedaannya! Hubungi tim ahli smart farming kami untuk konsultasi gratis.</p>
+        </div>
     </div>
 </div>
 
