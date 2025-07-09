@@ -70,7 +70,7 @@
 <div class="glass-card">
     <h1 class="article-title">Penerapan IoT dalam Pertanian</h1>
     
-    <img src="{{ asset('images/iot-pertanian.jpg') }}" alt="Smart Farming dengan IoT" class="article-image">
+    <img src="{{ asset('image/sensor.png') }}" alt="Smart Farming dengan IoT" class="article-image">
     
     <div class="article-content">
         <p>Teknologi <span class="highlight-keyword">Internet of Things (IoT)</span> telah membawa revolusi besar di berbagai sektor, termasuk pertanian. Dalam konsep <span class="highlight-keyword">smart farming</span>, IoT memungkinkan petani memantau dan mengelola lahan secara real-time melalui sensor dan perangkat yang terhubung ke internet. Data seperti kelembapan tanah, suhu udara, intensitas cahaya, dan kondisi tanaman dapat dikumpulkan secara otomatis, membantu petani mengambil keputusan lebih cepat dan akurat. Dengan demikian, IoT tidak hanya meningkatkan produktivitas tetapi juga mengurangi pemborosan sumber daya.</p>
