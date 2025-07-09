@@ -20,7 +20,13 @@ Route::get('/', function () {
 
 Route::get('/penerapaniot', function () {
     return view('pages.penerapaniot', [
-        'title' => 'Penerapan IOT'
+        'title' => 'Penerapan IoT dalam Pertanian'
+    ]);
+});
+
+Route::get('/panenpepaya', function () {
+    return view('pages.panenpepaya', [
+        'title' => 'Panen Pepaya Lebih Cepat'
     ]);
 });
 
