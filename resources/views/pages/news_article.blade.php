@@ -52,7 +52,7 @@
         <!-- Artikel 1 -->
         <div class="col animate__animated animate__fadeInUp animate__delay-1s">
             <div class="card card-custom h-100 shadow-sm">
-                <img src="{{ asset('image/sensor.jpg') }}" class="card-img-top" alt="Artikel 1">
+                <img src="{{ asset('image/sensor.png') }}" class="card-img-top" alt="Artikel 1">
                 <div class="card-body">
                     <h5 class="card-title poppins fw-semibold">Penerapan IoT dalam Pertanian</h5>
                     <p class="text-muted" style="font-size: 13px;">Dipublikasikan: 10 Mei 2025</p>
@@ -67,7 +67,7 @@
         <!-- Artikel 2 -->
         <div class="col animate__animated animate__fadeInUp animate__delay-2s">
             <div class="card card-custom h-100 shadow-sm">
-                <img src="{{ asset('image/teknik.jpg') }}" class="card-img-top" alt="Artikel 2">
+                <img src="{{ asset('image/teknik.png') }}" class="card-img-top" alt="Artikel 2">
                 <div class="card-body">
                     <h5 class="card-title poppins fw-semibold">Panen Pepaya Lebih Cepat</h5>
                     <p class="text-muted" style="font-size: 13px;">Dipublikasikan: 8 Mei 2025</p>
@@ -82,7 +82,7 @@
         <!-- Artikel 3 -->
         <div class="col animate__animated animate__fadeInUp animate__delay-3s">
             <div class="card card-custom h-100 shadow-sm">
-                <img src="{{ asset('image/ketahanan.jpg') }}" class="card-img-top" alt="Artikel 3">
+                <img src="{{ asset('image/ketahanan.png') }}" class="card-img-top" alt="Artikel 3">
                 <div class="card-body">
                     <h5 class="card-title poppins fw-semibold">Mengapa Smart Farming Itu Penting?</h5>
                     <p class="text-muted" style="font-size: 13px;">Dipublikasikan: 6 Mei 2025</p>
