@@ -89,7 +89,7 @@
                     <p class="card-text">Mengenal konsep Smart Farming dan bagaimana kontribusinya terhadap ketahanan dan kemandirian pangan nasional.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="#" class="btn btn-outline-success btn-read w-100">Baca Selengkapnya</a>
+                    <a href="/smartfarmingart" class="btn btn-outline-success btn-read w-100">Baca Selengkapnya</a>
                 </div>
             </div>
         </div>
