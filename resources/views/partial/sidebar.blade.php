@@ -53,6 +53,22 @@
                 <i class="fas fa-chart-line" style="margin-right: 10px;"></i> Prediksi Panen
             </a>
         </li>
+
+
+        <!-- News & Artikel -->
+        <li style="margin-bottom: 10px;">
+            <a href="{{ route('harvest.prediction') }}" style="
+                display: block;
+                padding: 10px 15px;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: all 0.3s;
+            " onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" 
+            onmouseout="this.style.backgroundColor='transparent'">
+                <i class="fas fa-chart-line" style="margin-right: 10px;"></i> News & Artikel
+            </a>
+        </li>
         
         <!-- Menu Khusus Admin -->
         @if($isAdmin)
