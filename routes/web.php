@@ -18,10 +18,10 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/data', function () {
-    return view('pages.data', [
-        'title' => 'Data'
-    ])->name('admin.data');
+Route::get('/penerapaniot', function () {
+    return view('pages.penerapaniot', [
+        'title' => 'Penerapan IOT'
+    ]);
 });
 
 Route::get('/data', [DataController::class, 'showData']);
