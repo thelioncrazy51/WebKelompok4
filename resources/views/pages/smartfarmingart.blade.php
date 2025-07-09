@@ -93,8 +93,87 @@
     
     <img src="{{ asset('image/ketahanan.png') }}" alt="Mengapa Smart Farming Itu Penting?" class="article-image">
 
-    
-    
+    <div class="article-content">
+        <p>Pertanian konvensional menghadapi berbagai tantangan seperti perubahan iklim, kelangkaan sumber daya, dan peningkatan permintaan pangan global. <span class="highlight-keyword">Smart farming</span> hadir sebagai solusi berbasis teknologi yang mengubah paradigma budidaya tradisional menjadi sistem pertanian <span class="highlight-keyword">presisi, efisien, dan berkelanjutan</span>.</p>
+
+        <h3 class="sub-title">1. Efisiensi Sumber Daya yang Optimal</h3>
+        <p>Smart farming memanfaatkan <span class="highlight-keyword">sensor IoT, drone, dan AI</span> untuk:</p>
+        <ul>
+            <li>Mengurangi penggunaan air hingga <span class="highlight-keyword">30-50%</span> melalui irigasi presisi</li>
+            <li>Meminimalkan limbah pupuk dengan aplikasi berbasis data real-time</li>
+            <li>Mengoptimalkan tenaga kerja manusia dengan otomatisasi</li>
+        </ul>
+
+        <h3 class="sub-title">2. Peningkatan Produktivitas & Kualitas Hasil</h3>
+        <p>Data dari FAO menunjukkan bahwa smart farming dapat:</p>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Meningkatkan hasil panen 20-40%</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-bug"></i>
+                <span>Menekan kehilangan hasil akibat hama hingga 25%</span>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <p>Contoh nyata: Petani bawang di Brebes berhasil meningkatkan produktivitas <span class="highlight-keyword">35%</span> setelah menerapkan sistem monitoring tanah berbasis IoT.</p>
+        </div>
+
+        <h3 class="sub-title">3. Adaptasi terhadap Perubahan Iklim</h3>
+        <p>Smart farming dilengkapi dengan:</p>
+        <ul>
+            <li><span class="highlight-keyword">Prediksi cuaca hiper-lokal</span> berbasis AI</li>
+            <li>Sistem peringatan dini kekeringan atau banjir</li>
+            <li>Teknik budidaya hemat air seperti hidroponik otomatis</li>
+        </ul>
+
+        <h3 class="sub-title">Manfaat Smart Farming untuk Berbagai Stakeholder</h3>
+        <table class="stakeholder-table">
+            <thead>
+                <tr>
+                    <th>Stakeholder</th>
+                    <th>Manfaat Utama</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Petani kecil</td>
+                    <td>Akses teknologi terjangkau, peningkatan pendapatan</td>
+                </tr>
+                <tr>
+                    <td>Agribisnis besar</td>
+                    <td>Skalabilitas operasi, kontrol kualitas terpusat</td>
+                </tr>
+                <tr>
+                    <td>Pemerintah</td>
+                    <td>Ketahanan pangan nasional, data pertanian akurat</td>
+                </tr>
+                <tr>
+                    <td>Konsumen</td>
+                    <td>Produk lebih sehat, transparansi sumber bahan</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="quote-box">
+            <p>"Smart farming bukan sekadar pilihan, tapi kebutuhan untuk memastikan ketahanan pangan di tengah pertumbuhan populasi global yang pesat."</p>
+            <p>- Dr. Ani Widayati, Pakar Agritech IPB</p>
+        </div>
+
+        <h3 class="sub-title">Mulai Transisi Anda Sekarang!</h3>
+        <p>Smart farming dapat dimulai secara bertahap:</p>
+        <ol>
+            <li>Gunakan <span class="highlight-keyword">sensor kelembapan tanah</span> sederhana</li>
+            <li>Adopsi <span class="highlight-keyword">aplikasi pemantauan tanaman</span></li>
+            <li>Ikuti <span class="highlight-keyword">pelatihan teknologi pertanian</span></li>
+        </ol>
+
+        <div class="highlight-box">
+            <p>Dengan smart farming, kita tidak hanya meningkatkan hasil panen hari ini, tapi juga <span class="highlight-keyword">memastikan keberlanjutan pertanian untuk generasi mendatang</span>.</p>
+        </div>
+    </div>
 </div>
 
 @endsection
