@@ -30,6 +30,12 @@ Route::get('/panenpepaya', function () {
     ]);
 });
 
+Route::get('/smartfarminart', function () {
+    return view('pages.smartfarminart', [
+        'title' => 'Mengapa Smart Farming Itu Penting?'
+    ]);
+});
+
 Route::get('/data', [DataController::class, 'showData']);
 
 //Pages Processing
