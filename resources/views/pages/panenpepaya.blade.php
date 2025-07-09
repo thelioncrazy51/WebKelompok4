@@ -52,8 +52,7 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         width: 100%;
         height: auto;
-        max-height: 500px;
-        object-fit: cover;
+        display: block;
     }
     .highlight-box {
         background: rgba(20, 82, 20, 0.1);
