@@ -10,16 +10,16 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto mb-3 mb-lg-0 gap-3">
         <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Home') ? 'fw-bold text-success' : '' }}" href="/">HOME</a>
+            <a class="nav-link {{ ($title === 'Home') ? 'fw-bold text-white' : '' }}" href="/">HOME</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ ($title === 'About Us') ? 'fw-bold text-success' : '' }}" href="/about-us">ABOUT US</a>
+            <a class="nav-link {{ ($title === 'About Us') ? 'fw-bold text-white' : '' }}" href="/about-us">ABOUT US</a>
         </li>
         
         @auth
           {{-- Tampilan setelah login --}}
           <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Dashboard' || request()->routeIs('dashboard')) ? 'fw-bold text-success' : '' }}" 
+            <a class="nav-link {{ ($title === 'Dashboard' || request()->routeIs('dashboard')) ? 'fw-bold text-white' : '' }}" 
                href="{{ Auth::user()->role === 'admin' ? '/admin/dashboard' : '/member/dashboard' }}">DASHBOARD
             </a>
           </li>
@@ -34,10 +34,10 @@
         @else
           {{-- Tampilan sebelum login --}}
           <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Login') ? 'fw-bold text-success' : '' }}" href="/login">LOGIN</a>
+            <a class="nav-link {{ ($title === 'Login') ? 'fw-bold text-white' : '' }}" href="/login">LOGIN</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ ($title === 'Register') ? 'fw-bold text-success' : '' }}" href="/register">REGISTER</a>
+            <a class="nav-link {{ ($title === 'Register') ? 'fw-bold text-white' : '' }}" href="/register">REGISTER</a>
           </li>
         @endauth
       </ul>
